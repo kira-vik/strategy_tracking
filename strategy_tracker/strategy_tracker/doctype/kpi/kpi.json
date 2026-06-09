@@ -1,0 +1,128 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "naming_series:",
+ "creation": "2026-06-09 10:04:31.724389",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "naming_series",
+  "pillar",
+  "function",
+  "column_break_fvqc",
+  "active",
+  "section_break_kbio",
+  "kpi_name",
+  "section_break_uvvy",
+  "weight",
+  "target",
+  "baseline",
+  "column_break_tscx",
+  "key_actions"
+ ],
+ "fields": [
+  {
+   "fieldname": "naming_series",
+   "fieldtype": "Select",
+   "hidden": 1,
+   "label": "Naming Series",
+   "options": "KPI-."
+  },
+  {
+   "fieldname": "pillar",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Pillar",
+   "options": "Pillar",
+   "reqd": 1
+  },
+  {
+   "fieldname": "kpi_name",
+   "fieldtype": "Small Text",
+   "label": "KPI Name",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_fvqc",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "function",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Function",
+   "options": "Department",
+   "reqd": 1
+  },
+  {
+   "fieldname": "section_break_kbio",
+   "fieldtype": "Section Break"
+  },
+  {
+   "default": "0",
+   "fieldname": "active",
+   "fieldtype": "Check",
+   "label": "Active"
+  },
+  {
+   "fieldname": "section_break_uvvy",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "weight",
+   "fieldtype": "Percent",
+   "label": "Weight (%)"
+  },
+  {
+   "fieldname": "column_break_tscx",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "target",
+   "fieldtype": "Data",
+   "label": "Target"
+  },
+  {
+   "fieldname": "baseline",
+   "fieldtype": "Data",
+   "label": "Baseline"
+  },
+  {
+   "fieldname": "key_actions",
+   "fieldtype": "Small Text",
+   "label": "Key Actions"
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2026-06-09 10:17:04.618683",
+ "modified_by": "Administrator",
+ "module": "Strategy Tracker",
+ "name": "KPI",
+ "naming_rule": "By \"Naming Series\" field",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "rows_threshold_for_grid_search": 20,
+ "show_title_field_in_link": 1,
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "title_field": "kpi_name"
+}
