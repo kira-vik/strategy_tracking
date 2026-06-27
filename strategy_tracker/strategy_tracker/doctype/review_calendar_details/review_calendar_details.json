@@ -1,0 +1,96 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2026-06-27 18:50:29.010210",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "review_no",
+  "review_label",
+  "spillover",
+  "column_break_yrrs",
+  "calendar_year",
+  "quarter",
+  "section_break_xwod",
+  "review_window_start",
+  "review_meeting_date",
+  "column_break_ierb",
+  "submission_deadline"
+ ],
+ "fields": [
+  {
+   "fieldname": "review_no",
+   "fieldtype": "Int",
+   "label": "Review No"
+  },
+  {
+   "fieldname": "review_label",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Review Label"
+  },
+  {
+   "fieldname": "review_window_start",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "Review Window Start"
+  },
+  {
+   "fieldname": "submission_deadline",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "Submission Deadline"
+  },
+  {
+   "fieldname": "review_meeting_date",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "Review Meeting Date"
+  },
+  {
+   "fieldname": "quarter",
+   "fieldtype": "Select",
+   "label": "Quarter",
+   "options": "Q1\nQ2\nQ3\nQ4"
+  },
+  {
+   "fieldname": "calendar_year",
+   "fieldtype": "Int",
+   "label": "Calendar Year"
+  },
+  {
+   "default": "0",
+   "fieldname": "spillover",
+   "fieldtype": "Check",
+   "label": "Spillover"
+  },
+  {
+   "fieldname": "column_break_yrrs",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "section_break_xwod",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "column_break_ierb",
+   "fieldtype": "Column Break"
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2026-06-27 20:24:22.744484",
+ "modified_by": "Administrator",
+ "module": "Strategy Tracker",
+ "name": "Review Calendar Details",
+ "owner": "Administrator",
+ "permissions": [],
+ "row_format": "Dynamic",
+ "rows_threshold_for_grid_search": 20,
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

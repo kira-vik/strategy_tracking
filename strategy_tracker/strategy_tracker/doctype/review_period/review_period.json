@@ -1,0 +1,166 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "naming_series:",
+ "creation": "2026-06-27 18:39:06.474361",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "naming_series",
+  "calendar",
+  "calendar_year",
+  "review_no",
+  "column_break_nwit",
+  "review_name",
+  "status",
+  "current_phase",
+  "column_break_ldmf",
+  "review_window_start",
+  "submission_deadline",
+  "review_meeting_date",
+  "notifications_section",
+  "opening_notification_sent",
+  "reminder_notification_sent",
+  "column_break_aoyr",
+  "deadline_notification_sent",
+  "review_meeting_notification_sent"
+ ],
+ "fields": [
+  {
+   "fieldname": "naming_series",
+   "fieldtype": "Select",
+   "hidden": 1,
+   "label": "Naming Series",
+   "options": "RVP-.YYYY.-"
+  },
+  {
+   "fieldname": "review_name",
+   "fieldtype": "Data",
+   "label": "Review Name",
+   "unique": 1
+  },
+  {
+   "fieldname": "review_no",
+   "fieldtype": "Int",
+   "label": "Review No"
+  },
+  {
+   "fieldname": "calendar",
+   "fieldtype": "Link",
+   "label": "Calendar",
+   "options": "Review Calendar"
+  },
+  {
+   "fetch_from": "calendar.calendar_year",
+   "fieldname": "calendar_year",
+   "fieldtype": "Int",
+   "in_standard_filter": 1,
+   "label": "Calendar Year"
+  },
+  {
+   "fieldname": "review_window_start",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "Review Window Start"
+  },
+  {
+   "fieldname": "submission_deadline",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "Submission Deadline"
+  },
+  {
+   "fieldname": "review_meeting_date",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "Review Meeting Date"
+  },
+  {
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "in_standard_filter": 1,
+   "label": "Status",
+   "options": "Upcoming\nActive\nLocked\nIn Review\nCompleted"
+  },
+  {
+   "fieldname": "notifications_section",
+   "fieldtype": "Section Break",
+   "label": "Notifications"
+  },
+  {
+   "default": "0",
+   "fieldname": "reminder_notification_sent",
+   "fieldtype": "Check",
+   "label": "Reminder Notification Sent"
+  },
+  {
+   "default": "0",
+   "fieldname": "opening_notification_sent",
+   "fieldtype": "Check",
+   "label": "Opening Notification Sent"
+  },
+  {
+   "default": "0",
+   "fieldname": "deadline_notification_sent",
+   "fieldtype": "Check",
+   "label": "Deadline Notification Sent"
+  },
+  {
+   "default": "0",
+   "fieldname": "review_meeting_notification_sent",
+   "fieldtype": "Check",
+   "label": "Review Meeting Notification Sent"
+  },
+  {
+   "default": "Planning",
+   "fieldname": "current_phase",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Current Phase",
+   "options": "Planning\nOpen for KPI Submission\nSubmission Closed\nMeeting Due\nCompleted"
+  },
+  {
+   "fieldname": "column_break_nwit",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "column_break_aoyr",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "column_break_ldmf",
+   "fieldtype": "Column Break"
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2026-06-27 20:39:11.020262",
+ "modified_by": "Administrator",
+ "module": "Strategy Tracker",
+ "name": "Review Period",
+ "naming_rule": "By \"Naming Series\" field",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "rows_threshold_for_grid_search": 20,
+ "show_title_field_in_link": 1,
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "title_field": "review_name"
+}

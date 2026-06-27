@@ -148,23 +148,28 @@ app_license = "mit"
 # Scheduled Tasks
 # ---------------
 
-# scheduler_events = {
-# 	"all": [
-# 		"strategy_tracker.tasks.all"
-# 	],
-# 	"daily": [
-# 		"strategy_tracker.tasks.daily"
-# 	],
-# 	"hourly": [
-# 		"strategy_tracker.tasks.hourly"
-# 	],
-# 	"weekly": [
-# 		"strategy_tracker.tasks.weekly"
-# 	],
-# 	"monthly": [
-# 		"strategy_tracker.tasks.monthly"
-# 	],
-# }
+scheduler_events = {
+	# "all": [
+	# 	"strategy_tracker.tasks.all"
+	# ],
+	"daily": [
+		"strategy_tracker.tasks.daily"
+	],
+	# "hourly": [
+	# 	"strategy_tracker.tasks.hourly"
+	# ],
+	# "weekly": [
+	# 	"strategy_tracker.tasks.weekly"
+	# ],
+	# "monthly": [
+	# 	"strategy_tracker.tasks.monthly"
+	# ],
+     "cron": {
+          "0 1 * * *": [
+               "strategy_tracker.strategy_tracker.doctype.review_period.review_period.sync_review_periods"
+          ],
+     }
+}
 
 # Testing
 # -------

@@ -13,6 +13,8 @@
   "active",
   "section_break_kbio",
   "kpi_name",
+  "column_break_bija",
+  "kpi_description",
   "section_break_uvvy",
   "weight",
   "target",
@@ -26,7 +28,7 @@
    "fieldtype": "Select",
    "hidden": 1,
    "label": "Naming Series",
-   "options": "KPI-."
+   "options": "KPI-.function.-.###"
   },
   {
    "fieldname": "pillar",
@@ -93,12 +95,21 @@
    "fieldname": "key_actions",
    "fieldtype": "Small Text",
    "label": "Key Actions"
+  },
+  {
+   "fieldname": "kpi_description",
+   "fieldtype": "Small Text",
+   "label": "KPI Description"
+  },
+  {
+   "fieldname": "column_break_bija",
+   "fieldtype": "Column Break"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-06-09 10:17:04.618683",
+ "modified": "2026-06-24 15:57:53.838164",
  "modified_by": "Administrator",
  "module": "Strategy Tracker",
  "name": "KPI",

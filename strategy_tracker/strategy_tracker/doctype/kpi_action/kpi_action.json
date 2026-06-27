@@ -1,0 +1,148 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "naming_series:",
+ "creation": "2026-06-24 16:10:48.506125",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "naming_series",
+  "kpi_reference",
+  "function",
+  "action_description",
+  "action_owner",
+  "supporting_team",
+  "priority",
+  "start_date",
+  "due_date",
+  "status",
+  "rag_status",
+  "dependencies_and_risks",
+  "next_steps",
+  "escalated",
+  "last_updated"
+ ],
+ "fields": [
+  {
+   "fieldname": "naming_series",
+   "fieldtype": "Select",
+   "hidden": 1,
+   "label": "Naming Series",
+   "options": "SET-ACT-.YYYY.-####"
+  },
+  {
+   "fieldname": "kpi_reference",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "KPI Reference",
+   "options": "KPI",
+   "read_only": 1,
+   "reqd": 1
+  },
+  {
+   "fetch_from": "kpi_reference.function",
+   "fieldname": "function",
+   "fieldtype": "Link",
+   "label": "Function",
+   "options": "Department",
+   "reqd": 1
+  },
+  {
+   "fieldname": "action_description",
+   "fieldtype": "Small Text",
+   "label": "Action Description",
+   "reqd": 1
+  },
+  {
+   "fieldname": "action_owner",
+   "fieldtype": "Link",
+   "label": "Action Owner",
+   "options": "Employee"
+  },
+  {
+   "fieldname": "supporting_team",
+   "fieldtype": "Small Text",
+   "label": "Supporting Team"
+  },
+  {
+   "fieldname": "priority",
+   "fieldtype": "Select",
+   "label": "Priority",
+   "options": "High\nMedium\nLow",
+   "reqd": 1
+  },
+  {
+   "description": "When work formally begins",
+   "fieldname": "start_date",
+   "fieldtype": "Date",
+   "label": "Start Date"
+  },
+  {
+   "fieldname": "due_date",
+   "fieldtype": "Date",
+   "label": "Due Date"
+  },
+  {
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "label": "Status",
+   "options": "Not Started\nIn Progress\nCompleted\nOverdue"
+  },
+  {
+   "fieldname": "rag_status",
+   "fieldtype": "Select",
+   "label": "RAG Status",
+   "options": "Red\nAmber\nGreen"
+  },
+  {
+   "fieldname": "dependencies_and_risks",
+   "fieldtype": "Small Text",
+   "label": "Dependencies and Risks"
+  },
+  {
+   "fieldname": "next_steps",
+   "fieldtype": "Small Text",
+   "label": "Next Steps"
+  },
+  {
+   "default": "0",
+   "fieldname": "escalated",
+   "fieldtype": "Check",
+   "label": "Escalated"
+  },
+  {
+   "fieldname": "last_updated",
+   "fieldtype": "Datetime",
+   "label": "Last Updated",
+   "read_only": 1
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2026-06-24 16:26:10.343694",
+ "modified_by": "Administrator",
+ "module": "Strategy Tracker",
+ "name": "KPI Action",
+ "naming_rule": "By \"Naming Series\" field",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "rows_threshold_for_grid_search": 20,
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}
