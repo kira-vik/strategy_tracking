@@ -152,9 +152,9 @@ scheduler_events = {
 	# "all": [
 	# 	"strategy_tracker.tasks.all"
 	# ],
-	"daily": [
-		"strategy_tracker.tasks.daily"
-	],
+	# "daily": [
+	# 	"strategy_tracker.tasks.daily"
+	# ],
 	# "hourly": [
 	# 	"strategy_tracker.tasks.hourly"
 	# ],
