@@ -12,7 +12,22 @@ frappe.ui.form.on("KPI Period Entry", {
           if (!frappe.user.has_role("HR Manager")) return;
 
           add_hr_override_button(frm);
-     }
+     },
+
+     setup: function (frm) {
+          frm.set_query("review_period", function () {
+
+               const current_year = new Date().getFullYear();
+
+               return {
+                    filters: {
+                         status: ["!=", "Completed"],
+                         calendar_year: current_year
+                    },
+                    order_by: "review_meeting_date asc"
+               };
+          });
+     },
 });
 
 
