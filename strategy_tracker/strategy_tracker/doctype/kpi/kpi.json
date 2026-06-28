@@ -7,8 +7,8 @@
  "engine": "InnoDB",
  "field_order": [
   "naming_series",
-  "pillar",
   "function",
+  "pillar",
   "column_break_fvqc",
   "active",
   "section_break_kbio",
@@ -83,7 +83,7 @@
   },
   {
    "fieldname": "target",
-   "fieldtype": "Data",
+   "fieldtype": "Small Text",
    "label": "Target"
   },
   {
@@ -109,7 +109,7 @@
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-06-24 15:57:53.838164",
+ "modified": "2026-06-28 12:12:04.489343",
  "modified_by": "Administrator",
  "module": "Strategy Tracker",
  "name": "KPI",

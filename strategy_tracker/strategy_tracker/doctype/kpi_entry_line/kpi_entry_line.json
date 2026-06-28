@@ -1,0 +1,142 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2026-06-28 11:27:55.032426",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "reference_information_section",
+  "kpi",
+  "pillar",
+  "weight",
+  "column_break_tnab",
+  "target",
+  "baseline",
+  "performance_section",
+  "actual_performance",
+  "actual_numeric",
+  "variance",
+  "rag_status",
+  "corrective_action_section",
+  "corrective_action_summary",
+  "kpi_action",
+  "action_created",
+  "escalation"
+ ],
+ "fields": [
+  {
+   "fieldname": "kpi",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "KPI",
+   "options": "KPI"
+  },
+  {
+   "fieldname": "pillar",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Pillar",
+   "options": "Pillar"
+  },
+  {
+   "fieldname": "weight",
+   "fieldtype": "Percent",
+   "label": "Weight (%)",
+   "precision": "1"
+  },
+  {
+   "fieldname": "target",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Target"
+  },
+  {
+   "fieldname": "baseline",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Baseline"
+  },
+  {
+   "fieldname": "column_break_tnab",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "reference_information_section",
+   "fieldtype": "Section Break",
+   "label": "Reference Information"
+  },
+  {
+   "fieldname": "performance_section",
+   "fieldtype": "Section Break",
+   "label": "Performance"
+  },
+  {
+   "fieldname": "actual_performance",
+   "fieldtype": "Small Text",
+   "label": "Actual Performance"
+  },
+  {
+   "fieldname": "rag_status",
+   "fieldtype": "Select",
+   "label": "Status",
+   "options": "Red\nAmber\nGreen"
+  },
+  {
+   "fieldname": "variance",
+   "fieldtype": "Data",
+   "label": "Variance"
+  },
+  {
+   "fieldname": "actual_numeric",
+   "fieldtype": "Float",
+   "label": "Actual Numeric Performance",
+   "precision": "3"
+  },
+  {
+   "fieldname": "corrective_action_section",
+   "fieldtype": "Section Break",
+   "label": "Corrective Action"
+  },
+  {
+   "depends_on": "eval: doc.rag_status == \"Red\" || doc.rag_status == \"Amber\"",
+   "fieldname": "corrective_action_summary",
+   "fieldtype": "Small Text",
+   "label": "Corrective Action Summary",
+   "mandatory_depends_on": "eval: doc.rag_status == \"Red\" || doc.rag_status == \"Amber\""
+  },
+  {
+   "fieldname": "kpi_action",
+   "fieldtype": "Link",
+   "label": "KPI Action",
+   "options": "KPI Action"
+  },
+  {
+   "default": "0",
+   "fieldname": "action_created",
+   "fieldtype": "Check",
+   "label": "Action Created"
+  },
+  {
+   "default": "0",
+   "fieldname": "escalation",
+   "fieldtype": "Check",
+   "label": "Escalation"
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2026-06-28 11:38:26.961203",
+ "modified_by": "Administrator",
+ "module": "Strategy Tracker",
+ "name": "KPI Entry Line",
+ "owner": "Administrator",
+ "permissions": [],
+ "row_format": "Dynamic",
+ "rows_threshold_for_grid_search": 20,
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

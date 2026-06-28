@@ -3,6 +3,7 @@
 
 import frappe
 from frappe.model.document import Document
+from frappe.utils import getdate
 
 
 class ReviewPeriod(Document):
@@ -60,7 +61,7 @@ def sync_review_periods():
 		# -------------------------
 		# 3. Locked / Closed
 		# -------------------------
-		elif today <= meeting:
+		elif end < today < meeting:
 			new_status = "Locked"
 			new_phase = "Submission Closed"
 

@@ -9,7 +9,25 @@
   "section_break_uwgh",
   "amended_from",
   "naming_series",
+  "function",
   "review_period",
+  "column_break_hoqs",
+  "submission_deadline",
+  "review_meeting_date",
+  "column_break_qajz",
+  "submitted_by",
+  "submitted_by_name",
+  "submission_date",
+  "summary_section",
+  "total_kpis",
+  "overall_rag",
+  "escalation",
+  "column_break_qqmo",
+  "red_count",
+  "amber_count",
+  "green_count",
+  "section_break_kset",
+  "kpi_reviews",
   "section_break_eaaj",
   "general_comments",
   "division_head_comments",
@@ -24,7 +42,8 @@
  "fields": [
   {
    "fieldname": "section_break_uwgh",
-   "fieldtype": "Section Break"
+   "fieldtype": "Section Break",
+   "label": "Submission Information"
   },
   {
    "fieldname": "amended_from",
@@ -39,12 +58,14 @@
   {
    "fieldname": "naming_series",
    "fieldtype": "Select",
+   "hidden": 1,
    "label": "Naming Series",
    "options": "SET-KPE-.YYYY.-"
   },
   {
    "fieldname": "section_break_eaaj",
-   "fieldtype": "Section Break"
+   "fieldtype": "Section Break",
+   "label": "Comments"
   },
   {
    "fieldname": "general_comments",
@@ -64,8 +85,10 @@
   {
    "fieldname": "review_period",
    "fieldtype": "Link",
+   "in_list_view": 1,
    "label": "Review Period",
-   "options": "Review Period"
+   "options": "Review Period",
+   "reqd": 1
   },
   {
    "fieldname": "audit_log_section",
@@ -101,13 +124,107 @@
    "fieldtype": "Small Text",
    "label": "Override Reason",
    "read_only": 1
+  },
+  {
+   "fetch_from": "review_period.review_meeting_date",
+   "fieldname": "review_meeting_date",
+   "fieldtype": "Date",
+   "label": "Review Meeting Date"
+  },
+  {
+   "fetch_from": "review_period.submission_deadline",
+   "fieldname": "submission_deadline",
+   "fieldtype": "Date",
+   "label": "Submission Deadline"
+  },
+  {
+   "fieldname": "submitted_by",
+   "fieldtype": "Link",
+   "label": "Submitted By",
+   "options": "User"
+  },
+  {
+   "fieldname": "submitted_by_name",
+   "fieldtype": "Data",
+   "label": "Submitted By Name"
+  },
+  {
+   "fieldname": "function",
+   "fieldtype": "Link",
+   "label": "Function",
+   "options": "Department"
+  },
+  {
+   "fieldname": "submission_date",
+   "fieldtype": "Datetime",
+   "label": "Submission Date"
+  },
+  {
+   "fieldname": "column_break_qajz",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "column_break_hoqs",
+   "fieldtype": "Column Break"
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "summary_section",
+   "fieldtype": "Section Break",
+   "label": "Summary"
+  },
+  {
+   "fieldname": "total_kpis",
+   "fieldtype": "Int",
+   "label": "Total KPIs"
+  },
+  {
+   "fieldname": "green_count",
+   "fieldtype": "Int",
+   "label": "Green"
+  },
+  {
+   "fieldname": "amber_count",
+   "fieldtype": "Int",
+   "label": "Amber"
+  },
+  {
+   "fieldname": "red_count",
+   "fieldtype": "Int",
+   "label": "Red"
+  },
+  {
+   "fieldname": "column_break_qqmo",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "0",
+   "fieldname": "escalation",
+   "fieldtype": "Check",
+   "label": "Escalation"
+  },
+  {
+   "fieldname": "overall_rag",
+   "fieldtype": "Select",
+   "label": "Overall RAG",
+   "options": "Red\nAmber\nGreen"
+  },
+  {
+   "fieldname": "section_break_kset",
+   "fieldtype": "Section Break",
+   "label": "KPI Reviews"
+  },
+  {
+   "fieldname": "kpi_reviews",
+   "fieldtype": "Table",
+   "options": "KPI Entry Line"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2026-06-27 22:06:28.505530",
+ "modified": "2026-06-28 11:35:24.455915",
  "modified_by": "Administrator",
  "module": "Strategy Tracker",
  "name": "KPI Period Entry",
