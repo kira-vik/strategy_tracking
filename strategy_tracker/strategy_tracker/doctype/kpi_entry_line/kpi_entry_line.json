@@ -30,7 +30,8 @@
    "fieldtype": "Link",
    "in_list_view": 1,
    "label": "KPI",
-   "options": "KPI"
+   "options": "KPI",
+   "read_only": 1
   },
   {
    "fieldname": "pillar",
@@ -47,7 +48,7 @@
   },
   {
    "fieldname": "target",
-   "fieldtype": "Data",
+   "fieldtype": "Small Text",
    "in_list_view": 1,
    "label": "Target"
   },
@@ -128,7 +129,7 @@
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2026-06-28 11:38:26.961203",
+ "modified": "2026-06-28 12:24:08.811127",
  "modified_by": "Administrator",
  "module": "Strategy Tracker",
  "name": "KPI Entry Line",

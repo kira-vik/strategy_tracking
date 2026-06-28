@@ -68,3 +68,48 @@ class KPIPeriodEntry(Document):
 		}).insert(ignore_permissions=True)
 
 		return "HR override approved"
+
+
+	@frappe.whitelist()
+	def fetch_kpis(self, function):
+		"""
+		Fetch active KPIs for a given function (Department)
+		"""
+
+		if not function:
+			frappe.throw("Function is required to fetch KPIs")
+
+		kpis = frappe.get_all(
+		"KPI",
+		filters={
+			"function": function,
+			"active": 1
+		},
+		fields=[
+			"name",
+			"kpi_name",
+			"pillar",
+			"target",
+			"baseline",
+			"weight"
+		]
+		)
+
+		rows = []
+
+		for kpi in kpis:
+			rows.append({
+				"kpi": kpi.name,
+				"pillar": kpi.pillar,
+				"weight": kpi.weight,
+				"target": kpi.target,
+				"baseline": kpi.baseline,
+				"actual_performance": "",
+				"actual_numeric": None,
+				"variance": "",
+				"rag_status": None,
+				"corrective_action_summary": "",
+				"escalation": 0
+			})
+
+		return rows
