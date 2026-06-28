@@ -12,13 +12,14 @@
  "event": "Days Before",
  "idx": 0,
  "is_standard": 1,
- "message": "<!DOCTYPE html>\r\n<html lang=\"en\">\r\n<head>\r\n    <meta charset=\"UTF-8\">\r\n    <style>\r\n        body { font-family: Arial; background:#f4f4f4; margin:0; padding:0; }\r\n        .container { max-width:600px; margin:0 auto; background:#fff; padding:20px; border-radius:8px; }\r\n        h2 { font-size:18px; color:#333; }\r\n        p { font-size:14px; color:#555; }\r\n    </style>\r\n</head>\r\n<body>\r\n<div class=\"container\">\r\n\r\n<p>Only <strong>3 days remain</strong> for KPI submission for <strong>{{ doc.review_name }}</strong>.</p>\r\n\r\n<p><strong>Deadline:</strong> {{ doc.submission_deadline }}</p>\r\n\r\n<p>Please ensure:</p>\r\n<ul>\r\n    <li>All KPI Period Entries are completed</li>\r\n    <li>All KPIs are reviewed and approved</li>\r\n    <li>Final submissions are completed on time</li>\r\n</ul>\r\n\r\n<p>Late submissions may not be accepted after the deadline.</p>\r\n\r\n<p>Best Regards,<br>ERP System</p>\r\n\r\n</div>\r\n</body>\r\n</html>",
+ "message": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <style>\n        body { font-family: Arial; background:#f4f4f4; margin:0; padding:0; }\n        .container { max-width:600px; margin:0 auto; background:#fff; padding:20px; border-radius:8px; }\n        h2 { font-size:18px; color:#333; }\n        p { font-size:14px; color:#555; }\n    </style>\n</head>\n<body>\n<div class=\"container\">\n\n<p>Only <strong>3 days remain</strong> for KPI submission for <strong>{{ doc.review_name }}</strong>.</p>\n\n<p><strong>Deadline:</strong> {{ doc.submission_deadline }}</p>\n\n<p>Please ensure:</p>\n<ul>\n    <li>All KPI Period Entries are completed</li>\n    <li>All KPIs are reviewed and approved</li>\n    <li>Final submissions are completed on time</li>\n</ul>\n\n<p>Late submissions may not be accepted after the deadline.</p>\n\n<p>Best Regards,<br>ERP System</p>\n\n</div>\n</body>\n</html>",
  "message_type": "HTML",
- "modified": "2026-06-28 19:59:54.986324",
+ "modified": "2026-06-28 20:11:35.026351",
  "modified_by": "Administrator",
  "module": "Strategy Tracker",
  "name": "Function Heads - Deadline Reminder Notification",
  "owner": "Administrator",
+ "property_value": "1",
  "recipients": [
   {
    "receiver_by_role": "Function Head"
@@ -26,5 +27,6 @@
  ],
  "send_system_notification": 0,
  "send_to_all_assignees": 0,
+ "set_property_after_alert": "reminder_notification_sent",
  "subject": "Reminder: KPI Period Entry Submission Deadline Approaching"
 }
