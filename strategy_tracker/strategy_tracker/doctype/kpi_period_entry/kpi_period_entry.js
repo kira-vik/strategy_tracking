@@ -6,12 +6,17 @@ frappe.ui.form.on("KPI Period Entry", {
      refresh(frm) {
 
           if (frm.is_new()) {
+               if (!frm.doc.function_head) {
+                    frm.set_value("function_head", frappe.session.user);
+               }
+
                frm.add_custom_button(__('Fetch KPIs'), function () {
                     fetch_kpis(frm);
                });
           }
 
           const can_show_hr_override =
+               !frm.is_new() &&
                frm.doc.docstatus === 0 &&
                !frm.doc.hr_override_approved &&
                frappe.user.has_role("HR Manager");

@@ -9,6 +9,7 @@ from frappe.utils import now_datetime, getdate, now
 class KPIPeriodEntry(Document):
 	def validate(self):
 		self.prevent_duplicates()
+		self.validate_kpi_fetch()
 		self.calculate_summary()
 
 	def before_submit(self):
@@ -21,6 +22,13 @@ class KPIPeriodEntry(Document):
 	def on_cancel(self):
 		self.cancel_kpi_actions()
 		self.clear_kpi_action_links()
+
+	def validate_kpi_fetch(self):
+		if self.kpis_fetched != True:
+			frappe.throw(
+				f"Kindly fetch your assigned KPIs before saving this record",
+				title="KPI Fetch Alert"
+			)
   
 	def prevent_duplicates(self):
 		if not (self.review_period and self.function):
@@ -137,6 +145,8 @@ class KPIPeriodEntry(Document):
 				"corrective_action_summary": "",
 				"escalation": 0
 			})
+
+		self.kpis_fetched = True
 
 		return rows
 

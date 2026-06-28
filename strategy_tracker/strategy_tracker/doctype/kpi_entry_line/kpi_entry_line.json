@@ -82,8 +82,7 @@
    "fieldname": "rag_status",
    "fieldtype": "Select",
    "label": "Status",
-   "options": "Red\nAmber\nGreen",
-   "reqd": 1
+   "options": "Red\nAmber\nGreen"
   },
   {
    "fieldname": "variance",
@@ -138,7 +137,7 @@
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2026-06-28 13:25:14.845580",
+ "modified": "2026-06-28 18:15:10.248273",
  "modified_by": "Administrator",
  "module": "Strategy Tracker",
  "name": "KPI Entry Line",

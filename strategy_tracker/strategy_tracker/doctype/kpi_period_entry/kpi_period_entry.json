@@ -9,6 +9,7 @@
   "section_break_uwgh",
   "amended_from",
   "naming_series",
+  "function_head",
   "function",
   "review_period",
   "column_break_hoqs",
@@ -20,6 +21,7 @@
   "submission_date",
   "section_break_kset",
   "kpi_reviews",
+  "kpis_fetched",
   "section_break_eaaj",
   "general_comments",
   "division_head_comments",
@@ -129,35 +131,41 @@
    "fetch_from": "review_period.review_meeting_date",
    "fieldname": "review_meeting_date",
    "fieldtype": "Date",
-   "label": "Review Meeting Date"
+   "label": "Review Meeting Date",
+   "read_only": 1
   },
   {
    "fetch_from": "review_period.submission_deadline",
    "fieldname": "submission_deadline",
    "fieldtype": "Date",
-   "label": "Submission Deadline"
+   "label": "Submission Deadline",
+   "read_only": 1
   },
   {
    "fieldname": "submitted_by",
    "fieldtype": "Link",
    "label": "Submitted By",
-   "options": "User"
+   "options": "User",
+   "read_only": 1
   },
   {
    "fieldname": "submitted_by_name",
    "fieldtype": "Data",
-   "label": "Submitted By Name"
+   "label": "Submitted By Name",
+   "read_only": 1
   },
   {
    "fieldname": "function",
    "fieldtype": "Link",
    "label": "Function",
-   "options": "Department"
+   "options": "Department",
+   "reqd": 1
   },
   {
    "fieldname": "submission_date",
    "fieldtype": "Datetime",
-   "label": "Submission Date"
+   "label": "Submission Date",
+   "read_only": 1
   },
   {
    "fieldname": "column_break_qajz",
@@ -217,13 +225,27 @@
    "fieldname": "kpi_reviews",
    "fieldtype": "Table",
    "options": "KPI Entry Line"
+  },
+  {
+   "fieldname": "function_head",
+   "fieldtype": "Link",
+   "label": "Head of Function",
+   "options": "User",
+   "read_only": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "kpis_fetched",
+   "fieldtype": "Check",
+   "label": "KPIs Fetched",
+   "read_only": 1
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2026-06-28 12:22:22.149310",
+ "modified": "2026-06-28 18:17:28.203008",
  "modified_by": "Administrator",
  "module": "Strategy Tracker",
  "name": "KPI Period Entry",
