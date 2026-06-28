@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<style>
+body { font-family: Arial; background:#f4f4f4; margin:0; }
+.container { max-width:600px; margin:auto; background:#fff; padding:20px; border-radius:8px; }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+<p>Today is the <strong>final day</strong> for KPI submissions for <strong>{{ doc.review_name }}</strong>.</p>
+
+<p><strong>Deadline:</strong> {{ doc.submission_deadline }}</p>
+
+<p>Please ensure all KPI entries are:</p>
+<ul>
+<li>Completed</li>
+<li>Reviewed</li>
+<li>Submitted before close of business</li>
+</ul>
+
+<p>No submissions will be accepted after the deadline.</p>
+
+</div>
+
+</body>
+</html>

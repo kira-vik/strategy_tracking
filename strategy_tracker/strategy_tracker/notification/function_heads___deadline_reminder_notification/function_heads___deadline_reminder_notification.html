@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <style>
+        body { font-family: Arial; background:#f4f4f4; margin:0; padding:0; }
+        .container { max-width:600px; margin:0 auto; background:#fff; padding:20px; border-radius:8px; }
+        h2 { font-size:18px; color:#333; }
+        p { font-size:14px; color:#555; }
+    </style>
+</head>
+<body>
+<div class="container">
+
+<p>Only <strong>3 days remain</strong> for KPI submission for <strong>{{ doc.review_name }}</strong>.</p>
+
+<p><strong>Deadline:</strong> {{ doc.submission_deadline }}</p>
+
+<p>Please ensure:</p>
+<ul>
+    <li>All KPI Period Entries are completed</li>
+    <li>All KPIs are reviewed and approved</li>
+    <li>Final submissions are completed on time</li>
+</ul>
+
+<p>Late submissions may not be accepted after the deadline.</p>
+
+<p>Best Regards,<br>ERP System</p>
+
+</div>
+</body>
+</html>

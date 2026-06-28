@@ -37,43 +37,50 @@
    "fieldname": "review_name",
    "fieldtype": "Data",
    "label": "Review Name",
+   "read_only": 1,
    "unique": 1
   },
   {
    "fieldname": "review_no",
    "fieldtype": "Int",
-   "label": "Review No"
+   "label": "Review No",
+   "read_only": 1
   },
   {
    "fieldname": "calendar",
    "fieldtype": "Link",
    "label": "Calendar",
-   "options": "Review Calendar"
+   "options": "Review Calendar",
+   "read_only": 1
   },
   {
    "fetch_from": "calendar.calendar_year",
    "fieldname": "calendar_year",
    "fieldtype": "Int",
    "in_standard_filter": 1,
-   "label": "Calendar Year"
+   "label": "Calendar Year",
+   "read_only": 1
   },
   {
    "fieldname": "review_window_start",
    "fieldtype": "Date",
    "in_list_view": 1,
-   "label": "Review Window Start"
+   "label": "Review Window Start",
+   "read_only": 1
   },
   {
    "fieldname": "submission_deadline",
    "fieldtype": "Date",
    "in_list_view": 1,
-   "label": "Submission Deadline"
+   "label": "Submission Deadline",
+   "read_only": 1
   },
   {
    "fieldname": "review_meeting_date",
    "fieldtype": "Date",
    "in_list_view": 1,
-   "label": "Review Meeting Date"
+   "label": "Review Meeting Date",
+   "read_only": 1
   },
   {
    "fieldname": "status",
@@ -140,7 +147,7 @@
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-06-28 18:46:57.356434",
+ "modified": "2026-06-28 19:54:14.103455",
  "modified_by": "Administrator",
  "module": "Strategy Tracker",
  "name": "Review Period",

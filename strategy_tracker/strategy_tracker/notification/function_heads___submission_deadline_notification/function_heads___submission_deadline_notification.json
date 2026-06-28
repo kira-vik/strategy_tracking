@@ -1,0 +1,30 @@
+{
+ "attach_files": "",
+ "attach_print": 0,
+ "channel": "Email",
+ "creation": "2026-06-28 20:04:14.534701",
+ "date_changed": "submission_deadline",
+ "days_in_advance": 0,
+ "docstatus": 0,
+ "doctype": "Notification",
+ "document_type": "Review Period",
+ "enabled": 1,
+ "event": "Days Before",
+ "idx": 0,
+ "is_standard": 1,
+ "message": "<!DOCTYPE html>\r\n<html lang=\"en\">\r\n<head>\r\n<meta charset=\"UTF-8\">\r\n<style>\r\nbody { font-family: Arial; background:#f4f4f4; margin:0; }\r\n.container { max-width:600px; margin:auto; background:#fff; padding:20px; border-radius:8px; }\r\n</style>\r\n</head>\r\n<body>\r\n\r\n<div class=\"container\">\r\n\r\n<p>Today is the <strong>final day</strong> for KPI submissions for <strong>{{ doc.review_name }}</strong>.</p>\r\n\r\n<p><strong>Deadline:</strong> {{ doc.submission_deadline }}</p>\r\n\r\n<p>Please ensure all KPI entries are:</p>\r\n<ul>\r\n<li>Completed</li>\r\n<li>Reviewed</li>\r\n<li>Submitted before close of business</li>\r\n</ul>\r\n\r\n<p>No submissions will be accepted after the deadline.</p>\r\n\r\n</div>\r\n\r\n</body>\r\n</html>",
+ "message_type": "HTML",
+ "modified": "2026-06-28 20:04:14.534701",
+ "modified_by": "Administrator",
+ "module": "Strategy Tracker",
+ "name": "Function Heads - Submission Deadline Notification",
+ "owner": "Administrator",
+ "recipients": [
+  {
+   "receiver_by_role": "Function Head"
+  }
+ ],
+ "send_system_notification": 0,
+ "send_to_all_assignees": 0,
+ "subject": "Final KPI Submission Day - {{ doc.review_name }}"
+}

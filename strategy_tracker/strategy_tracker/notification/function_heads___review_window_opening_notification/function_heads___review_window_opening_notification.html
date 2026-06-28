@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>KPI Review Period Opened - {{ doc.review_name }}</title>
+    <style>
+        body { font-family: Arial; background:#f4f4f4; margin:0; padding:0; }
+        .container { max-width:600px; margin:0 auto; background:#fff; padding:20px; border-radius:8px; }
+        h2 { font-size:18px; color:#333; }
+        p { font-size:14px; color:#555; line-height:1.5; }
+        .footer { font-size:12px; color:#888; text-align:center; margin-top:20px; }
+    </style>
+</head>
+<body>
+<div class="container">
+
+<p>The KPI Review Period for <strong>{{ doc.review_name }} ({{ doc.calendar_year }})</strong> has officially opened.</p>
+
+<p>You are required to:</p>
+<ul>
+    <li>Create KPI Period Entry records for your function</li>
+    <li>Review and update all KPI entries</li>
+    <li>Forward completed entries for review</li>
+</ul>
+
+<p><strong>Submission Deadline:</strong> {{ doc.submission_deadline }}</p>
+
+<p>Please ensure all submissions are completed before the deadline.</p>
+
+<p>Access the record here:
+<a href="{{ frappe.utils.get_url() }}/app/kpi-period-entry">Go To KPI Period Entry List</a></p>
+
+<p>Best Regards,<br>ERP System</p>
+
+<div class="footer">This is an automated message. Please do not reply.</div>
+
+</div>
+</body>
+</html>

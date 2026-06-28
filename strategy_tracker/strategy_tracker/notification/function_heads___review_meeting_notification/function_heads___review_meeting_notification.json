@@ -1,0 +1,30 @@
+{
+ "attach_files": "",
+ "attach_print": 0,
+ "channel": "Email",
+ "creation": "2026-06-28 20:06:40.751381",
+ "date_changed": "review_meeting_date",
+ "days_in_advance": 0,
+ "docstatus": 0,
+ "doctype": "Notification",
+ "document_type": "Review Period",
+ "enabled": 1,
+ "event": "Days Before",
+ "idx": 0,
+ "is_standard": 1,
+ "message": "<!DOCTYPE html>\r\n<html lang=\"en\">\r\n<head>\r\n<meta charset=\"UTF-8\">\r\n</head>\r\n<body>\r\n\r\n<div class=\"container\">\r\n\r\n<p>The KPI Review Meeting for <strong>{{ doc.review_name }}</strong> is scheduled for today (<strong>{{ doc.review_meeting_date }}</strong>).</p>\r\n\r\n<p>Please ensure:</p>\r\n<ul>\r\n<li>All KPI documents are finalized</li>\r\n<li>All supporting materials are ready</li>\r\n<li>You are prepared for presentation and discussion</li>\r\n</ul>\r\n\r\n</div>\r\n\r\n</body>\r\n</html>",
+ "message_type": "HTML",
+ "modified": "2026-06-28 20:06:40.751381",
+ "modified_by": "Administrator",
+ "module": "Strategy Tracker",
+ "name": "Function Heads - Review Meeting Notification",
+ "owner": "Administrator",
+ "recipients": [
+  {
+   "receiver_by_role": "Function Head"
+  }
+ ],
+ "send_system_notification": 0,
+ "send_to_all_assignees": 0,
+ "subject": "KPI Review Meeting Today"
+}

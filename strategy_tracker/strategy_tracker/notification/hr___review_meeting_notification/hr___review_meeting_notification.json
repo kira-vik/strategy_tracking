@@ -1,0 +1,30 @@
+{
+ "attach_files": "",
+ "attach_print": 0,
+ "channel": "Email",
+ "creation": "2026-06-28 20:08:13.297451",
+ "date_changed": "review_meeting_date",
+ "days_in_advance": 0,
+ "docstatus": 0,
+ "doctype": "Notification",
+ "document_type": "Review Period",
+ "enabled": 1,
+ "event": "Days Before",
+ "idx": 0,
+ "is_standard": 1,
+ "message": "<!DOCTYPE html>\r\n<html lang=\"en\">\r\n<head>\r\n<meta charset=\"UTF-8\">\r\n</head>\r\n<body>\r\n\r\n<div class=\"container\">\r\n\r\n<p>The KPI Review Meeting for <strong>{{ doc.review_name }}</strong> is happening today.</p>\r\n\r\n<p>HR is requested to:</p>\r\n<ul>\r\n<li>Coordinate meeting readiness</li>\r\n<li>Ensure attendance of all Function Heads</li>\r\n<li>Support facilitation of the review process</li>\r\n</ul>\r\n\r\n</div>\r\n\r\n</body>\r\n</html>",
+ "message_type": "HTML",
+ "modified": "2026-06-28 20:08:13.297451",
+ "modified_by": "Administrator",
+ "module": "Strategy Tracker",
+ "name": "HR - Review Meeting Notification",
+ "owner": "Administrator",
+ "recipients": [
+  {
+   "receiver_by_role": "HR Manager"
+  }
+ ],
+ "send_system_notification": 0,
+ "send_to_all_assignees": 0,
+ "subject": "Review Meeting Coordination"
+}
