@@ -32,7 +32,7 @@
    "fieldtype": "Select",
    "hidden": 1,
    "label": "Naming Series",
-   "options": "KPI-ACT-.YYYY.-####"
+   "options": "KPI-ACT-.YYYY.-"
   },
   {
    "fieldname": "kpi_reference",
@@ -146,7 +146,7 @@
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-06-28 11:54:44.302475",
+ "modified": "2026-06-28 12:36:36.227680",
  "modified_by": "Administrator",
  "module": "Strategy Tracker",
  "name": "KPI Action",

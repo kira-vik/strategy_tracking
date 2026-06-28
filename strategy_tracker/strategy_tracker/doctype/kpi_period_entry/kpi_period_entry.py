@@ -10,9 +10,13 @@ class KPIPeriodEntry(Document):
 	def validate(self):
 		pass
 
-
 	def before_submit(self):
 		self.validate_review_period_status()
+		self.validate_kpi_rows()
+		self.set_submission_metadata()
+  
+	def on_submit(self):
+		self.create_kpi_actions()
 
 
 	def validate_review_period_status(self):
@@ -34,7 +38,6 @@ class KPIPeriodEntry(Document):
 					"Submission deadline has passed for this review period. Kindly contact HR for assistance.",
 					title="Submission Blocked"
 				)
-
 
 	@frappe.whitelist()
 	def approve_hr_override(self, reason):
@@ -68,7 +71,6 @@ class KPIPeriodEntry(Document):
 		}).insert(ignore_permissions=True)
 
 		return "HR override approved"
-
 
 	@frappe.whitelist()
 	def fetch_kpis(self, function):
@@ -113,3 +115,78 @@ class KPIPeriodEntry(Document):
 			})
 
 		return rows
+
+	def validate_kpi_rows(self):
+		"""
+		Ensure all Red/Amber KPIs have corrective actions
+		"""
+
+		for row in self.kpi_reviews:
+
+			if row.rag_status in ["Red", "Amber"]:
+
+				if not row.corrective_action_summary:
+					frappe.throw(
+					f"KPI '{row.kpi}' requires a corrective action summary because it is {row.rag_status}"
+					)
+     
+	def set_submission_metadata(self):
+		self.submitted_by = frappe.session.user
+		self.submitted_by_name = frappe.db.get_value(
+			"User", self.submitted_by, "full_name"
+		)
+		self.submission_date = now_datetime()
+  
+	def create_kpi_actions(self):
+		"""
+		Create KPI Action records for KPI review rows with Red/Amber status.
+
+		Skips rows that already have an action linked and ensures idempotency.
+		Links created actions back to the KPI review rows and updates the document.
+		"""
+		for row in self.kpi_reviews:
+
+			if row.rag_status not in ["Red", "Amber"]:
+				continue
+
+			# --------------------------------------------------
+			# SKIP if already created - idempotency
+			# --------------------------------------------------
+			if row.kpi_action:
+				continue
+
+			# --------------------------------------------------
+			# Create KPI Action
+			# --------------------------------------------------
+			action = frappe.get_doc({
+				"doctype": "KPI Action",
+				"review_period": self.review_period,
+				"kpi_period_entry": self.name,
+				"kpi_entry_line_id": row.name,
+
+				"kpi_reference": row.kpi,
+				"kpi_name": row.kpi_name if hasattr(row, "kpi_name") else row.kpi,
+
+				"function": self.function,
+
+				"action_description": row.corrective_action_summary,
+
+				"priority": "High" if row.rag_status == "Red" else "Medium",
+
+				"rag_status": row.rag_status,
+
+				"status": "Not Started",
+
+				"escalated": row.escalation or 0
+			})
+
+			action.insert(ignore_permissions=True)
+
+			# --------------------------------------------------
+			# Link back to child row
+			# --------------------------------------------------
+			row.kpi_action = action.name
+			row.action_created = 1
+
+		# save links back to document
+		self.db_update()
