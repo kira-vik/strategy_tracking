@@ -1,0 +1,146 @@
+{
+ "charts": [],
+ "content": "[{\"id\":\"FwCsFdziWf\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Reports &amp; Masters</b></span>\",\"col\":12}},{\"id\":\"Nb8EqKUMuv\",\"type\":\"card\",\"data\":{\"card_name\":\"KPI Execution\",\"col\":4}},{\"id\":\"0NJy1b-3Bf\",\"type\":\"card\",\"data\":{\"card_name\":\"Review Management\",\"col\":4}},{\"id\":\"WkNW9WdS64\",\"type\":\"card\",\"data\":{\"card_name\":\"KPI Library\",\"col\":4}},{\"id\":\"3ju-0bSip_\",\"type\":\"card\",\"data\":{\"card_name\":\"Action & Governance\",\"col\":4}}]",
+ "creation": "2026-06-24 15:32:27.555341",
+ "custom_blocks": [],
+ "docstatus": 0,
+ "doctype": "Workspace",
+ "for_user": "",
+ "hide_custom": 0,
+ "icon": "chart",
+ "idx": 0,
+ "indicator_color": "",
+ "is_hidden": 0,
+ "label": "Strategy Execution Tracking",
+ "links": [
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "KPI Execution",
+   "link_count": 2,
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "KPI Period Entry",
+   "link_count": 0,
+   "link_to": "KPI Period Entry",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "KPI Action",
+   "link_count": 0,
+   "link_to": "KPI Action",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Review Management",
+   "link_count": 2,
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Review Calendar",
+   "link_count": 0,
+   "link_to": "Review Calendar",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Review Period",
+   "link_count": 0,
+   "link_to": "Review Period",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Action & Governance",
+   "link_count": 2,
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "KPI Action",
+   "link_count": 0,
+   "link_to": "KPI Action",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Override Log",
+   "link_count": 0,
+   "link_to": "KPI Entry Submission Override Log",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "KPI Library",
+   "link_count": 2,
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Pillars",
+   "link_count": 0,
+   "link_to": "Pillar",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "KPI",
+   "link_count": 0,
+   "link_to": "KPI",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  }
+ ],
+ "modified": "2026-06-28 14:16:52.966039",
+ "modified_by": "Administrator",
+ "module": "Strategy Tracker",
+ "name": "Strategy Execution Tracking",
+ "number_cards": [],
+ "owner": "Administrator",
+ "parent_page": "",
+ "public": 1,
+ "quick_lists": [],
+ "roles": [],
+ "sequence_id": 33.0,
+ "shortcuts": [],
+ "title": "Strategy Execution Tracking"
+}
