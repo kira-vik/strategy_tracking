@@ -37,7 +37,7 @@
   {
    "fieldname": "kpi_reference",
    "fieldtype": "Link",
-   "in_list_view": 1,
+   "in_standard_filter": 1,
    "label": "KPI Reference",
    "options": "KPI",
    "read_only": 1,
@@ -47,6 +47,8 @@
    "fetch_from": "kpi_reference.function",
    "fieldname": "function",
    "fieldtype": "Link",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
    "label": "Function",
    "options": "Department",
    "reqd": 1
@@ -123,12 +125,16 @@
   {
    "fieldname": "review_period",
    "fieldtype": "Link",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
    "label": "Review Period",
    "options": "Review Period"
   },
   {
    "fieldname": "kpi_period_entry",
    "fieldtype": "Link",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
    "label": "KPI Period Entry",
    "options": "KPI Period Entry"
   },
@@ -146,7 +152,7 @@
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-06-28 12:36:36.227680",
+ "modified": "2026-06-28 13:22:38.323841",
  "modified_by": "Administrator",
  "module": "Strategy Tracker",
  "name": "KPI Action",

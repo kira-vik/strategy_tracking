@@ -8,15 +8,37 @@ from frappe.utils import now_datetime, getdate
 
 class KPIPeriodEntry(Document):
 	def validate(self):
-		pass
+		self.prevent_duplicates()
+		self.calculate_summary()
 
 	def before_submit(self):
 		self.validate_review_period_status()
+		self.calculate_summary()
 		self.validate_kpi_rows()
 		self.set_submission_metadata()
-  
-	def on_submit(self):
 		self.create_kpi_actions()
+  
+	# def on_submit(self):
+	# 	self.db_update()
+  
+	def prevent_duplicates(self):
+		if not (self.review_period and self.function):
+			return
+
+		exists = frappe.db.exists(
+			"KPI Period Entry",
+			{
+				"review_period": self.review_period,
+				"function": self.function,
+				"name": ["!=", self.name]
+			}
+		)
+
+		if exists:
+			frappe.throw(
+				f"A KPI Period Entry already exists for this Function in this Review Period.",
+				title="Duplicate Entry Blocked"
+			)
 
 
 	def validate_review_period_status(self):
@@ -138,34 +160,61 @@ class KPIPeriodEntry(Document):
 		self.submission_date = now_datetime()
   
 	def create_kpi_actions(self):
-		"""
-		Create KPI Action records for KPI review rows with Red/Amber status.
 
-		Skips rows that already have an action linked and ensures idempotency.
-		Links created actions back to the KPI review rows and updates the document.
-		"""
 		for row in self.kpi_reviews:
 
+			# Only Red/Amber require actions
 			if row.rag_status not in ["Red", "Amber"]:
 				continue
 
-			# --------------------------------------------------
-			# SKIP if already created - idempotency
-			# --------------------------------------------------
-			if row.kpi_action:
+			if not row.corrective_action_summary:
 				continue
 
 			# --------------------------------------------------
-			# Create KPI Action
+			# 1. Check if action already exists - idempotency key
+			# --------------------------------------------------
+			existing_action = frappe.db.get_value(
+				"KPI Action",
+				{
+					"kpi_period_entry": self.name,
+					"kpi_entry_line_id": row.name
+				},
+				"name"
+			)
+
+			# --------------------------------------------------
+			# 2. UPDATE existing action (NOT duplicate)
+			# --------------------------------------------------
+			if existing_action:
+
+				action = frappe.get_doc("KPI Action", existing_action)
+
+				action.action_description = row.corrective_action_summary
+				action.rag_status = row.rag_status
+				action.escalated = row.escalation or 0
+
+				# Optional: keep status fresh
+				action.status = "In Progress"
+
+				action.save(ignore_permissions=True)
+
+				row.kpi_action = action.name
+				row.action_created = 1
+
+				continue
+
+			# --------------------------------------------------
+			# 3. CREATE new action if none exists
 			# --------------------------------------------------
 			action = frappe.get_doc({
 				"doctype": "KPI Action",
+
 				"review_period": self.review_period,
 				"kpi_period_entry": self.name,
 				"kpi_entry_line_id": row.name,
 
 				"kpi_reference": row.kpi,
-				"kpi_name": row.kpi_name if hasattr(row, "kpi_name") else row.kpi,
+				"kpi_name": getattr(row, "kpi_name", row.kpi),
 
 				"function": self.function,
 
@@ -182,11 +231,39 @@ class KPIPeriodEntry(Document):
 
 			action.insert(ignore_permissions=True)
 
-			# --------------------------------------------------
-			# Link back to child row
-			# --------------------------------------------------
 			row.kpi_action = action.name
 			row.action_created = 1
 
-		# save links back to document
+		# persist child updates safely
 		self.db_update()
+
+	def calculate_summary(self):
+		red = 0
+		amber = 0
+		green = 0
+		escalation = False
+
+		for row in self.kpi_reviews:
+
+			if row.rag_status == "Red":
+				red += 1
+			elif row.rag_status == "Amber":
+				amber += 1
+			elif row.rag_status == "Green":
+				green += 1
+
+			if row.escalation or row.rag_status == "Red":
+				escalation = True
+
+		self.total_kpis = len(self.kpi_reviews)
+		self.red_count = red
+		self.amber_count = amber
+		self.green_count = green
+		self.escalation = 1 if escalation else 0
+
+		if red > 0:
+			self.overall_rag = "Red"
+		elif amber > 0:
+			self.overall_rag = "Amber"
+		else:
+			self.overall_rag = "Green"

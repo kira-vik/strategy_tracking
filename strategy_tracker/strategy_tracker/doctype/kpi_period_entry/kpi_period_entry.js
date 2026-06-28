@@ -19,6 +19,8 @@ frappe.ui.form.on("KPI Period Entry", {
           if (can_show_hr_override) {
                add_hr_override_button(frm);
           }
+
+          apply_rag_colors(frm);
      },
 
      setup: function (frm) {
@@ -35,6 +37,25 @@ frappe.ui.form.on("KPI Period Entry", {
                };
           });
      },
+
+     review_period(frm) {
+		check_duplicate(frm);
+	},
+
+	function(frm) {
+		check_duplicate(frm);
+	}
+});
+
+frappe.ui.form.on('KPI Entry Line', {
+
+     rag_status: function(frm) {
+          update_kpi_summary(frm);
+     },
+
+     escalation: function(frm) {
+          update_kpi_summary(frm);
+     }
 });
 
 
@@ -121,8 +142,99 @@ function fetch_kpis(frm) {
                });
 
                frm.refresh_field("kpi_reviews");
+               update_kpi_summary(frm);
 
                frappe.msgprint("KPIs loaded successfully");
           }
      });
+}
+
+function update_kpi_summary(frm) {
+
+     let total = frm.doc.kpi_reviews.length;
+
+     let red = 0;
+     let amber = 0;
+     let green = 0;
+     let escalation = false;
+
+     frm.doc.kpi_reviews.forEach(row => {
+
+          if (row.rag_status === "Red") red++;
+          else if (row.rag_status === "Amber") amber++;
+          else if (row.rag_status === "Green") green++;
+
+          if (row.escalation) escalation = true;
+          if (row.rag_status === "Red") escalation = true;
+     });
+
+     frm.set_value("total_kpis", total);
+     frm.set_value("red_count", red);
+     frm.set_value("amber_count", amber);
+     frm.set_value("green_count", green);
+     frm.set_value("escalation", escalation ? 1 : 0);
+
+     // Overall RAG logic
+     let overall = "Green";
+
+     if (red > 0) overall = "Red";
+     else if (amber > 0) overall = "Amber";
+
+     frm.set_value("overall_rag", overall);
+}
+
+function check_duplicate(frm) {
+	if (!frm.doc.review_period || !frm.doc.function) return;
+
+	frappe.call({
+		method: "frappe.client.get_list",
+		args: {
+			doctype: "KPI Period Entry",
+			filters: {
+				review_period: frm.doc.review_period,
+				function: frm.doc.function
+			},
+			limit_page_length: 1
+		},
+		callback: function (r) {
+			if (r.message && r.message.length) {
+				frappe.msgprint({
+					title: "Duplicate Warning",
+					message: "A KPI Period Entry already exists for this Function and Review Period.",
+					indicator: "red"
+				});
+			}
+		}
+	});
+}
+
+function apply_rag_colors(frm) {
+	setTimeout(() => {
+		const grid = frm.fields_dict["kpi_reviews"]?.grid;
+		if (!grid) return;
+
+		grid.grid_rows.forEach((row) => {
+			if (!row || !row.doc || !row.row) return;
+
+			let bg = "";
+			let text = "#fff";
+
+			if (row.doc.rag_status === "Green") {
+				bg = "#28a745";
+			} 
+			else if (row.doc.rag_status === "Amber") {
+				bg = "#ffc107";
+				text = "#000";
+			} 
+			else if (row.doc.rag_status === "Red") {
+				bg = "#dc3545";
+			}
+
+			$(row.row).css({
+				"background-color": bg,
+				"color": text,
+				"font-weight": "500"
+			});
+		});
+	}, 100);
 }

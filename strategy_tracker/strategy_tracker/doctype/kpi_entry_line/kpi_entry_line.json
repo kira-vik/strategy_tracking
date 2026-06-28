@@ -20,6 +20,7 @@
   "rag_status",
   "corrective_action_section",
   "corrective_action_summary",
+  "column_break_juma",
   "kpi_action",
   "action_created",
   "escalation"
@@ -95,6 +96,7 @@
    "precision": "3"
   },
   {
+   "depends_on": "eval: doc.rag_status == \"Red\" || doc.rag_status == \"Amber\"",
    "fieldname": "corrective_action_section",
    "fieldtype": "Section Break",
    "label": "Corrective Action"
@@ -110,26 +112,32 @@
    "fieldname": "kpi_action",
    "fieldtype": "Link",
    "label": "KPI Action",
-   "options": "KPI Action"
+   "options": "KPI Action",
+   "read_only": 1
   },
   {
    "default": "0",
    "fieldname": "action_created",
    "fieldtype": "Check",
-   "label": "Action Created"
+   "label": "Action Created",
+   "read_only": 1
   },
   {
    "default": "0",
    "fieldname": "escalation",
    "fieldtype": "Check",
    "label": "Escalation"
+  },
+  {
+   "fieldname": "column_break_juma",
+   "fieldtype": "Column Break"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2026-06-28 12:24:08.811127",
+ "modified": "2026-06-28 13:23:53.919393",
  "modified_by": "Administrator",
  "module": "Strategy Tracker",
  "name": "KPI Entry Line",
