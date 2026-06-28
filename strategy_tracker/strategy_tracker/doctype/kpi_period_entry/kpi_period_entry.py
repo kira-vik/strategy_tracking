@@ -31,6 +31,7 @@ class KPIPeriodEntry(Document):
 			{
 				"review_period": self.review_period,
 				"function": self.function,
+				"docstatus": ["!=", 2],
 				"name": ["!=", self.name]
 			}
 		)
