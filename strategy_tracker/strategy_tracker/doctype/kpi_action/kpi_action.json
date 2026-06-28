@@ -7,24 +7,29 @@
  "engine": "InnoDB",
  "field_order": [
   "naming_series",
+  "function",
   "review_period",
   "kpi_period_entry",
+  "column_break_uyyr",
   "kpi_entry_line_id",
-  "kpi_reference",
   "kpi_name",
-  "function",
-  "action_description",
-  "action_owner",
-  "supporting_team",
+  "kpi_reference",
+  "section_break_vxyp",
   "priority",
   "start_date",
   "due_date",
+  "column_break_arrx",
   "status",
   "rag_status",
+  "action_owner",
+  "section_break_nscv",
+  "action_description",
   "dependencies_and_risks",
   "next_steps",
   "escalated",
-  "last_updated"
+  "last_updated",
+  "column_break_iyvb",
+  "supporting_team"
  ],
  "fields": [
   {
@@ -63,6 +68,7 @@
    "fieldname": "action_owner",
    "fieldtype": "Link",
    "label": "Action Owner",
+   "mandatory_depends_on": "eval:!doc.__islocal",
    "options": "User"
   },
   {
@@ -81,18 +87,20 @@
    "description": "When work formally begins",
    "fieldname": "start_date",
    "fieldtype": "Date",
-   "label": "Start Date"
+   "label": "Start Date",
+   "mandatory_depends_on": "eval:!doc.__islocal"
   },
   {
    "fieldname": "due_date",
    "fieldtype": "Date",
-   "label": "Due Date"
+   "label": "Due Date",
+   "mandatory_depends_on": "eval:!doc.__islocal"
   },
   {
    "fieldname": "status",
    "fieldtype": "Select",
    "label": "Status",
-   "options": "Not Started\nIn Progress\nCompleted\nOverdue"
+   "options": "Not Started\nIn Progress\nCompleted\nOverdue\nCancelled"
   },
   {
    "fieldname": "rag_status",
@@ -103,12 +111,14 @@
   {
    "fieldname": "dependencies_and_risks",
    "fieldtype": "Small Text",
-   "label": "Dependencies and Risks"
+   "label": "Dependencies and Risks",
+   "mandatory_depends_on": "eval:!doc.__islocal"
   },
   {
    "fieldname": "next_steps",
    "fieldtype": "Small Text",
-   "label": "Next Steps"
+   "label": "Next Steps",
+   "mandatory_depends_on": "eval:!doc.__islocal"
   },
   {
    "default": "0",
@@ -141,18 +151,39 @@
   {
    "fieldname": "kpi_entry_line_id",
    "fieldtype": "Data",
+   "hidden": 1,
    "label": "KPI Entry Line ID"
   },
   {
    "fieldname": "kpi_name",
    "fieldtype": "Data",
-   "label": "KPI Name"
+   "label": "KPI ID"
+  },
+  {
+   "fieldname": "column_break_uyyr",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "section_break_nscv",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "section_break_vxyp",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "column_break_arrx",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "column_break_iyvb",
+   "fieldtype": "Column Break"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-06-28 13:22:38.323841",
+ "modified": "2026-06-28 13:48:42.326028",
  "modified_by": "Administrator",
  "module": "Strategy Tracker",
  "name": "KPI Action",

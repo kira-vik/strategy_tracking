@@ -3,7 +3,7 @@
 
 import frappe
 from frappe.model.document import Document
-from frappe.utils import now_datetime, getdate
+from frappe.utils import now_datetime, getdate, now
 
 
 class KPIPeriodEntry(Document):
@@ -18,8 +18,9 @@ class KPIPeriodEntry(Document):
 		self.set_submission_metadata()
 		self.create_kpi_actions()
   
-	# def on_submit(self):
-	# 	self.db_update()
+	def on_cancel(self):
+		self.cancel_kpi_actions()
+		self.clear_kpi_action_links()
   
 	def prevent_duplicates(self):
 		if not (self.review_period and self.function):
@@ -193,7 +194,6 @@ class KPIPeriodEntry(Document):
 				action.rag_status = row.rag_status
 				action.escalated = row.escalation or 0
 
-				# Optional: keep status fresh
 				action.status = "In Progress"
 
 				action.save(ignore_permissions=True)
@@ -226,7 +226,8 @@ class KPIPeriodEntry(Document):
 
 				"status": "Not Started",
 
-				"escalated": row.escalation or 0
+				"escalated": row.escalation or 0,
+				"last_updated": now_datetime()
 			})
 
 			action.insert(ignore_permissions=True)
@@ -267,3 +268,36 @@ class KPIPeriodEntry(Document):
 			self.overall_rag = "Amber"
 		else:
 			self.overall_rag = "Green"
+
+	def cancel_kpi_actions(self):
+		actions = frappe.get_all(
+			"KPI Action",
+			filters={
+				"kpi_period_entry": self.name
+			},
+			pluck="name"
+		)
+
+		for action_name in actions:
+
+			try:
+				action_doc = frappe.get_doc("KPI Action", action_name)
+
+				# Only cancel if not already cancelled
+				if action_doc.status != "Cancelled":
+					action_doc.status = "Cancelled"
+					action_doc.save(ignore_permissions=True)
+
+			except Exception as e:
+				frappe.log_error(
+					title="KPI Action Cancel Failed",
+					message=f"{action_name}: {str(e)}"
+				)
+
+	def clear_kpi_action_links(self):
+		for row in self.kpi_reviews:
+
+			row.kpi_action = None
+			row.action_created = 0
+
+		self.db_update()
