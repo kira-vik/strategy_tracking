@@ -82,14 +82,16 @@
   {
    "fieldname": "first_review_meeting_date",
    "fieldtype": "Date",
-   "label": "First Review Meeting Date"
+   "label": "First Review Meeting Date",
+   "reqd": 1
   },
   {
    "default": "Biweekly",
    "fieldname": "review_frequency",
    "fieldtype": "Select",
    "label": "Review Frequency",
-   "options": "Biweekly\nWeekly\nMonthly"
+   "options": "Biweekly\nWeekly\nMonthly",
+   "read_only": 1
   },
   {
    "fieldname": "last_review_meeting_date",
@@ -104,6 +106,7 @@
    "read_only": 1
   },
   {
+   "depends_on": "eval:!doc.__islocal",
    "fieldname": "generation_metadata_section",
    "fieldtype": "Section Break",
    "label": "Generation Metadata"
@@ -176,7 +179,7 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2026-06-27 20:22:48.040104",
+ "modified": "2026-06-28 18:45:13.620728",
  "modified_by": "Administrator",
  "module": "Strategy Tracker",
  "name": "Review Calendar",

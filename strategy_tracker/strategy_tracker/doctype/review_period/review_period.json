@@ -91,25 +91,29 @@
    "default": "0",
    "fieldname": "reminder_notification_sent",
    "fieldtype": "Check",
-   "label": "Reminder Notification Sent"
+   "label": "Reminder Notification Sent",
+   "read_only": 1
   },
   {
    "default": "0",
    "fieldname": "opening_notification_sent",
    "fieldtype": "Check",
-   "label": "Opening Notification Sent"
+   "label": "Opening Notification Sent",
+   "read_only": 1
   },
   {
    "default": "0",
    "fieldname": "deadline_notification_sent",
    "fieldtype": "Check",
-   "label": "Deadline Notification Sent"
+   "label": "Deadline Notification Sent",
+   "read_only": 1
   },
   {
    "default": "0",
    "fieldname": "review_meeting_notification_sent",
    "fieldtype": "Check",
-   "label": "Review Meeting Notification Sent"
+   "label": "Review Meeting Notification Sent",
+   "read_only": 1
   },
   {
    "default": "Planning",
@@ -136,7 +140,7 @@
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-06-27 20:39:11.020262",
+ "modified": "2026-06-28 18:46:57.356434",
  "modified_by": "Administrator",
  "module": "Strategy Tracker",
  "name": "Review Period",

@@ -226,7 +226,8 @@ class KPIPeriodEntry(Document):
 
 				"kpi_reference": row.kpi,
 				"kpi_name": getattr(row, "kpi_name", row.kpi),
-
+    
+				"action_owner": self.function_head,
 				"function": self.function,
 
 				"action_description": row.corrective_action_summary,

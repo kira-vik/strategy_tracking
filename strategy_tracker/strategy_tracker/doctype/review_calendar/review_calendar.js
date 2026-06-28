@@ -44,6 +44,38 @@ frappe.ui.form.on("Review Calendar", {
                });
                frm.set_value("first_review_meeting_date", null);
           }
+
+          frappe.call({
+               method: "check_spillover_meeting_exists",
+               doc: frm.doc,
+               args: {
+                    meeting_date: date,
+                    current_doc: frm.doc.name || ""
+               },
+               callback: function (r) {
+                    if (r.message) {
+                         const originalDate = new Date(date);
+
+                         // suggest next week
+                         const suggestedDate = new Date(originalDate);
+                         suggestedDate.setDate(suggestedDate.getDate() + 7);
+
+                         const formatted = frappe.datetime.obj_to_str(suggestedDate);
+
+                         frappe.confirm(
+                              `This date is already used as a spillover meeting date in a previous review calendar.<br><br>
+                              Suggested alternative date: <b>${formatted}</b><br><br>
+                              Do you want to use this date instead?`,
+                              () => {
+                              frm.set_value("first_review_meeting_date", formatted);
+                              },
+                              () => {
+                              frm.set_value("first_review_meeting_date", null);
+                              }
+                         );
+                    }
+               }
+          });
      },
 
      // --------------------------------------------------------

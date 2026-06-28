@@ -93,7 +93,16 @@ class ReviewCalendar(Document):
 		"""
 
 		self.clear_review_periods()
-
+  
+	@frappe.whitelist()
+	def check_spillover_meeting_exists(self, meeting_date, current_doc=None):
+		return frappe.db.exists(
+			"Review Calendar",
+			{
+				"spillover_meeting": meeting_date,
+				"name": ["!=", current_doc] if current_doc else None
+			}
+		)
 
 	@frappe.whitelist()
 	def generate_review_calendar(self):
