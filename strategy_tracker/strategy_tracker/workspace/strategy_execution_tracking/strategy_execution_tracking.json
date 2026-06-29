@@ -1,6 +1,6 @@
 {
  "charts": [],
- "content": "[{\"id\":\"FwCsFdziWf\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Reports &amp; Masters</b></span>\",\"col\":12}},{\"id\":\"Nb8EqKUMuv\",\"type\":\"card\",\"data\":{\"card_name\":\"KPI Execution\",\"col\":4}},{\"id\":\"0NJy1b-3Bf\",\"type\":\"card\",\"data\":{\"card_name\":\"Review Management\",\"col\":4}},{\"id\":\"WkNW9WdS64\",\"type\":\"card\",\"data\":{\"card_name\":\"KPI Library\",\"col\":4}},{\"id\":\"3ju-0bSip_\",\"type\":\"card\",\"data\":{\"card_name\":\"Action & Governance\",\"col\":4}}]",
+ "content": "[{\"id\":\"FwCsFdziWf\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Reports &amp; Masters</b></span>\",\"col\":12}},{\"id\":\"Nb8EqKUMuv\",\"type\":\"card\",\"data\":{\"card_name\":\"KPI Execution\",\"col\":4}},{\"id\":\"0NJy1b-3Bf\",\"type\":\"card\",\"data\":{\"card_name\":\"Review Management\",\"col\":4}},{\"id\":\"WkNW9WdS64\",\"type\":\"card\",\"data\":{\"card_name\":\"KPI Library\",\"col\":4}},{\"id\":\"3ju-0bSip_\",\"type\":\"card\",\"data\":{\"card_name\":\"Action & Governance\",\"col\":4}},{\"id\":\"fVF_DydEzQ\",\"type\":\"card\",\"data\":{\"card_name\":\"Setup & Configuration\",\"col\":4}}]",
  "creation": "2026-06-24 15:32:27.555341",
  "custom_blocks": [],
  "docstatus": 0,
@@ -128,9 +128,28 @@
    "link_type": "DocType",
    "onboard": 0,
    "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Setup & Configuration",
+   "link_count": 1,
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Strategy Settings",
+   "link_count": 0,
+   "link_to": "Strategy Tracking Settings",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
   }
  ],
- "modified": "2026-06-28 17:57:09.409448",
+ "modified": "2026-06-29 13:14:09.749172",
  "modified_by": "Administrator",
  "module": "Strategy Tracker",
  "name": "Strategy Execution Tracking",

@@ -14,7 +14,7 @@
   "calendar_start_date",
   "calendar_end_date",
   "review_configuration_section",
-  "first_review_meeting_date",
+  "first_scheduled_review_meeting",
   "last_review_meeting_date",
   "column_break_yivt",
   "review_frequency",
@@ -65,33 +65,24 @@
   {
    "fieldname": "calendar_start_date",
    "fieldtype": "Date",
-   "label": "Calendar Start Date",
-   "read_only": 1
+   "label": "Calendar Start Date"
   },
   {
    "fieldname": "calendar_end_date",
    "fieldtype": "Date",
-   "label": "Calendar End Date",
-   "read_only": 1
+   "label": "Calendar End Date"
   },
   {
+   "depends_on": "eval:doc.calendar_year",
    "fieldname": "review_configuration_section",
    "fieldtype": "Section Break",
    "label": "Review Configuration"
   },
   {
-   "fieldname": "first_review_meeting_date",
-   "fieldtype": "Date",
-   "label": "First Review Meeting Date",
-   "reqd": 1
-  },
-  {
-   "default": "Biweekly",
    "fieldname": "review_frequency",
    "fieldtype": "Select",
    "label": "Review Frequency",
-   "options": "Biweekly\nWeekly\nMonthly",
-   "read_only": 1
+   "options": "\nBiweekly\nWeekly\nMonthly"
   },
   {
    "fieldname": "last_review_meeting_date",
@@ -173,13 +164,18 @@
   {
    "fieldname": "column_break_yivt",
    "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "first_scheduled_review_meeting",
+   "fieldtype": "Date",
+   "label": "First Scheduled Review Meeting"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2026-06-28 18:45:13.620728",
+ "modified": "2026-06-29 17:00:01.642968",
  "modified_by": "Administrator",
  "module": "Strategy Tracker",
  "name": "Review Calendar",

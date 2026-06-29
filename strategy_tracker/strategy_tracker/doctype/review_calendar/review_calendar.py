@@ -2,9 +2,12 @@
 # For license information, please see license.txt
 
 import frappe
+from frappe import _
 from frappe.model.document import Document
-from frappe.utils import getdate, now, formatdate, now_datetime
-from datetime import timedelta
+from frappe.utils import getdate, now, formatdate, now_datetime, cint
+from datetime import date, timedelta
+import calendar
+from calendar import monthrange
 
 
 class ReviewCalendar(Document):
@@ -31,69 +34,59 @@ class ReviewCalendar(Document):
 			)
 
 		# --------------------------------------------------------
-		# Ensure calendar dates are present
+		# Ensure calendar dates are valid
 		# --------------------------------------------------------
 		if self.calendar_start_date and self.calendar_end_date:
 			if getdate(self.calendar_start_date) >= getdate(self.calendar_end_date):
 				frappe.throw(
-				"Calendar End Date must be after Calendar Start Date.",
-				title="Invalid Calendar Dates",
+					"Calendar End Date must be after Calendar Start Date.",
+					title="Invalid Calendar Dates",
 				)
 
 		# --------------------------------------------------------
-		# Validate first review meeting date
+		# Validate first scheduled review meeting
 		# --------------------------------------------------------
-		if self.first_review_meeting_date:
+		if self.first_scheduled_review_meeting:
 
-			review_date = getdate(self.first_review_meeting_date)
+			review_date = getdate(self.first_scheduled_review_meeting)
 
 			# Must belong to selected calendar year
-			if review_date.year != int(self.calendar_year):
+			if review_date.year != cint(self.calendar_year):
 				frappe.throw(
-				"The First Review Meeting Date must fall within the selected Calendar Year.",
-				title="Invalid Review Date",
+					"The First Scheduled Review Meeting must fall within the selected Calendar Year.",
+					title="Invalid Review Date",
 				)
 
-			# Tuesday = weekday 1
-			if review_date.weekday() != 1:
-				frappe.throw(
-				"The First Review Meeting Date must be a Tuesday.",
-				title="Invalid Review Meeting Day",
-				)
+			settings = frappe.get_cached_doc("Strategy Tracking Settings")
 
+			if settings.review_frequency in ["Weekly", "Biweekly"]:
+
+				if review_date.strftime("%A") != settings.meeting_weekday:
+					frappe.throw(
+						_("The First Scheduled Review Meeting must be a {0}.")
+						.format(settings.meeting_weekday),
+						title="Invalid Review Meeting Day",
+					)
+
+			elif settings.review_frequency == "Monthly":
+
+				if review_date.day != cint(settings.meeting_day_of_month):
+					frappe.throw(
+						_("The First Scheduled Review Meeting must fall on day {0} of the month.")
+						.format(settings.meeting_day_of_month),
+						title="Invalid Review Meeting Day",
+					)
 
 	def on_submit(self):
-		"""
-		Prevent submission unless review periods have been generated
-		and published.
-		"""
-
-		# --------------------------------------------------------
-		# Must have generated the calendar first
-		# --------------------------------------------------------
 		if not self.review_calendar_generated:
-			frappe.throw(
-				"You must generate the Review Calendar before submitting.",
-				title="Review Calendar Not Generated",
-			)
+			frappe.throw("You must generate the Review Calendar before submitting.")
 
-		# --------------------------------------------------------
-		# Must have published review periods
-		# --------------------------------------------------------
 		if not self.review_periods_published:
-			frappe.throw(
-				"You must publish Review Periods before submitting the calendar.",
-				title="Review Periods Not Published",
-			)
-
+			frappe.throw("You must publish Review Periods before submitting the calendar.")
 
 	def on_cancel(self):
-		"""
-		Clean up all Review Periods when calendar is cancelled.
-		"""
-
 		self.clear_review_periods()
-  
+
 	@frappe.whitelist()
 	def check_spillover_meeting_exists(self, meeting_date, current_doc=None):
 		return frappe.db.exists(
@@ -106,38 +99,37 @@ class ReviewCalendar(Document):
 
 	@frappe.whitelist()
 	def generate_review_calendar(self):
-		"""
-		Generate biweekly review schedule anchored on first_review_meeting_date.
-
-		Rules:
-		- Review meetings are every 14 days (Tuesday → Tuesday)
-		- Submission deadline = Monday before review meeting
-		- Review window starts = previous review meeting + 1 day
-		- First window starts = calendar_start_date
-		- Only 1 spillover review (first review meeting in next year)
-		"""
 
 		# --------------------------------------------------------
 		# Safety checks
 		# --------------------------------------------------------
 		if self.is_new():
-			frappe.throw("Please save the Review Calendar before generating.")
+			frappe.throw(_("Please save the Review Calendar before generating."))
 
 		if self.review_calendar_generated:
-			frappe.throw("Review Calendar has already been generated.")
+			frappe.throw(_("Review Calendar has already been generated."))
 
-		if not self.first_review_meeting_date:
-			frappe.throw("Please set First Review Meeting Date.")
+		if not self.first_scheduled_review_meeting:
+			frappe.throw(_("Please set the First Scheduled Review Meeting."))
 
 		if not self.calendar_year:
-			frappe.throw("Please set Calendar Year.")
+			frappe.throw(_("Please set the Calendar Year."))
 
-		# --------------------------------------------------------
-		# Clear existing rows
-		# --------------------------------------------------------
+		if not self.calendar_start_date:
+			frappe.throw(_("Please set the Calendar Start Date."))
+
 		self.set("review_dates", [])
 
-		first_review = getdate(self.first_review_meeting_date)
+		# --------------------------------------------------------
+		# Load schedule
+		# --------------------------------------------------------
+		schedule = self._get_schedule_settings()
+		self.review_frequency = schedule["frequency"]
+
+		first_review = getdate(self.first_scheduled_review_meeting)
+
+		self._validate_first_review_meeting(first_review, schedule)
+
 		calendar_start = getdate(self.calendar_start_date)
 
 		current_review = first_review
@@ -145,7 +137,6 @@ class ReviewCalendar(Document):
 
 		review_no = 1
 		spillover_added = False
-
 		last_review_in_year = None
 
 		# --------------------------------------------------------
@@ -153,11 +144,7 @@ class ReviewCalendar(Document):
 		# --------------------------------------------------------
 		while True:
 
-			# ----------------------------------------------------
-			# Stop condition:
-			# allow ONLY one spillover review into next year
-			# ----------------------------------------------------
-			if current_review.year > int(self.calendar_year):
+			if current_review.year > cint(self.calendar_year):
 
 				if spillover_added:
 					break
@@ -169,26 +156,20 @@ class ReviewCalendar(Document):
 				spillover = False
 
 			# ----------------------------------------------------
-			# Submission deadline = Monday before review meeting
+			# Submission deadline
 			# ----------------------------------------------------
 			submission_deadline = current_review - timedelta(days=1)
 
 			# ----------------------------------------------------
-			# Window start logic
+			# Window start
 			# ----------------------------------------------------
 			if previous_review:
 				window_start = previous_review + timedelta(days=1)
 			else:
 				window_start = calendar_start
 
-			# ----------------------------------------------------
-			# Label
-			# ----------------------------------------------------
 			review_label = f"Review {review_no} ({current_review.strftime('%d %b %Y')})"
 
-			# ----------------------------------------------------
-			# Quarter
-			# ----------------------------------------------------
 			month = current_review.month
 			if month <= 3:
 				quarter = "Q1"
@@ -199,9 +180,6 @@ class ReviewCalendar(Document):
 			else:
 				quarter = "Q4"
 
-			# ----------------------------------------------------
-			# Append row
-			# ----------------------------------------------------
 			self.append("review_dates", {
 				"review_no": review_no,
 				"review_label": review_label,
@@ -213,20 +191,19 @@ class ReviewCalendar(Document):
 				"spillover": 1 if spillover else 0
 			})
 
-			# Track last valid review in base year
-			if current_review.year == int(self.calendar_year):
+			if current_review.year == cint(self.calendar_year):
 				last_review_in_year = current_review
 
-			# ----------------------------------------------------
-			# Move forward
-			# ----------------------------------------------------
 			previous_review = current_review
-			current_review = current_review + timedelta(days=14)
+
+			# IMPORTANT: advance AFTER row creation
+			current_review = self._calculate_next_review_meeting(
+				current_review,
+				schedule
+			)
+
 			review_no += 1
 
-		# --------------------------------------------------------
-		# Metadata
-		# --------------------------------------------------------
 		self.last_review_meeting_date = last_review_in_year or first_review
 		self.spillover_meeting = previous_review if spillover_added else None
 
@@ -236,19 +213,9 @@ class ReviewCalendar(Document):
 
 		self.save()
 
-
 	@frappe.whitelist()
 	def publish_review_periods(self):
-		"""
-		Publishes the review calendar:
-		- submits the calendar (locks structure)
-		- creates Review Period records
-		- prevents regeneration
-		"""
 
-		# -----------------------------------------------------
-		# 1. Guard clauses
-		# -----------------------------------------------------
 		if self.docstatus != 0:
 			frappe.throw("Only draft calendars can be published.")
 
@@ -261,16 +228,13 @@ class ReviewCalendar(Document):
 		created = 0
 		skipped = 0
 
-		# -----------------------------------------------------
-		# 2. Create Review Periods
-		# -----------------------------------------------------
 		for row in self.review_dates:
 
 			exists = frappe.db.exists(
 				"Review Period",
 				{
-				"calendar": self.name,
-				"review_no": row.review_no
+					"calendar": self.name,
+					"review_no": row.review_no
 				}
 			)
 
@@ -278,44 +242,152 @@ class ReviewCalendar(Document):
 				skipped += 1
 				continue
 
-			period = frappe.get_doc({
+			doc = frappe.get_doc({
 				"doctype": "Review Period",
 				"review_name": f"Review {row.review_no} ({row.review_meeting_date})",
 				"review_no": row.review_no,
 				"calendar": self.name,
-
 				"review_window_start": row.review_window_start,
 				"submission_deadline": row.submission_deadline,
 				"review_meeting_date": row.review_meeting_date,
-
 				"calendar_year": self.calendar_year,
-
 				"status": "Upcoming"
 			})
 
-			period.insert(ignore_permissions=True)
+			doc.insert(ignore_permissions=True)
 			created += 1
 
-		# -----------------------------------------------------
-		# 3. Mark calendar as published
-		# -----------------------------------------------------
 		self.review_periods_published = 1
 		self.published_on = now_datetime()
 		self.published_by = frappe.session.user
 
-		# -----------------------------------------------------
-		# 4. Submit calendar (locks it permanently)
-		# -----------------------------------------------------
 		self.save()
 		self.submit()
 
 		frappe.db.commit()
 
+		return {"created": created, "skipped": skipped}
+
+	def clear_review_periods(self):
+
+		periods = frappe.get_all(
+			"Review Period",
+			filters={"calendar": self.name},
+			fields=["name"]
+		)
+
+		for p in periods:
+			frappe.delete_doc("Review Period", p.name, ignore_permissions=True)
+
+	# --------------------------------------------------------
+	# HELPERS
+	# --------------------------------------------------------
+	def _get_schedule_settings(self):
+
+		settings = frappe.get_cached_doc("Strategy Tracking Settings")
+
 		return {
-			"created": created,
-			"skipped": skipped
+			"frequency": settings.review_frequency,
+			"meeting_weekday": settings.meeting_weekday,
+			"meeting_day": settings.meeting_day_of_month,
 		}
 
+	def _validate_first_review_meeting(self, first_review, schedule):
+
+		frequency = schedule["frequency"]
+
+		if frequency == "Monthly":
+
+			if first_review.day != schedule["meeting_day"]:
+				frappe.throw(
+					f"The First Scheduled Review Meeting must fall on day {schedule['meeting_day']} of the month."
+				)
+
+		else:
+
+			if first_review.strftime("%A") != schedule["meeting_weekday"]:
+				frappe.throw(
+					f"The First Scheduled Review Meeting must be a {schedule['meeting_weekday']}."
+				)
+
+	def _calculate_next_review_meeting(self, current_review, schedule):
+
+		frequency = schedule["frequency"]
+
+		if frequency == "Weekly":
+			return current_review + timedelta(days=7)
+
+		elif frequency == "Biweekly":
+			return current_review + timedelta(days=14)
+
+		elif frequency == "Monthly":
+
+			year = current_review.year
+			month = current_review.month + 1
+
+			if month > 12:
+				month = 1
+				year += 1
+
+			day = schedule["meeting_day"]
+			last_day = monthrange(year, month)[1]
+
+			return date(year, month, min(day, last_day))
+
+		frappe.throw(_("Unsupported review frequency: {0}").format(frequency))
+  
+	@frappe.whitelist()
+	def get_initial_review_meeting(self, calendar_start_date):
+		"""
+		Return first valid review meeting after calendar start date.
+		"""
+
+		if not calendar_start_date:
+			return None
+
+		start_date = getdate(calendar_start_date)
+
+		settings = frappe.get_cached_doc("Strategy Tracking Settings")
+
+		frequency = settings.review_frequency
+
+		if frequency == "Monthly":
+
+			day = cint(settings.meeting_day_of_month)
+
+			year = start_date.year
+			month = start_date.month
+
+			if start_date.day >= day:
+				month += 1
+				if month > 12:
+					month = 1
+					year += 1
+
+			last_day = calendar.monthrange(year, month)[1]
+
+			return date(year, month, min(day, last_day))
+
+		else:
+
+			weekday_map = {
+				"Monday": 0,
+				"Tuesday": 1,
+				"Wednesday": 2,
+				"Thursday": 3,
+				"Friday": 4,
+				"Saturday": 5,
+				"Sunday": 6,
+			}
+
+			target = weekday_map.get(settings.meeting_weekday)
+
+			days_until = (target - start_date.weekday()) % 7
+
+			if days_until == 0:
+				days_until = 7
+
+			return start_date + timedelta(days=days_until)
 
 	@frappe.whitelist()
 	def get_calendar_summary(self):
@@ -332,7 +404,6 @@ class ReviewCalendar(Document):
 
 		total_reviews = len(self.review_dates)
 
-		# Ensure we safely convert strings → date objects
 		first_review = getdate(self.review_dates[0].review_meeting_date)
 		last_review = getdate(self.review_dates[-1].review_meeting_date)
 
@@ -351,44 +422,3 @@ class ReviewCalendar(Document):
 			summary += f" Includes {spillovers} spillover review period(s) into the next year."
 
 		return summary
-
-
-	def clear_review_periods(self):
-		"""
-		Deletes all Review Periods linked to this Review Calendar.
-		Used when cancelling or resetting the calendar.
-		"""
-
-		try:
-			# --------------------------------------------------------
-			# Fetch all linked Review Periods
-			# --------------------------------------------------------
-			periods = frappe.get_all(
-				"Review Period",
-				filters={"calendar": self.name},
-				fields=["name"]
-			)
-
-			# --------------------------------------------------------
-			# Delete each Review Period
-			# --------------------------------------------------------
-			deleted_count = 0
-
-			for p in periods:
-				doc = frappe.get_doc("Review Period", p.name)
-				doc.delete(ignore_permissions=True)
-				deleted_count += 1
-
-			# --------------------------------------------------------
-			# Optional user feedback
-			# --------------------------------------------------------
-			frappe.msgprint(
-				f"Deleted {deleted_count} Review Period(s) linked to this calendar.",
-				title="Cleanup Successful"
-			)
-
-		except Exception as e:
-			frappe.msgprint(
-				f"Error while deleting Review Periods: {str(e)}",
-				title="Cleanup Failed"
-			)
