@@ -196,7 +196,6 @@ class ReviewCalendar(Document):
 
 			previous_review = current_review
 
-			# IMPORTANT: advance AFTER row creation
 			current_review = self._calculate_next_review_meeting(
 				current_review,
 				schedule
