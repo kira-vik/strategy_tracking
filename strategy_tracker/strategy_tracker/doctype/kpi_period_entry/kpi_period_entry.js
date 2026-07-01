@@ -527,9 +527,23 @@ function set_kpi_dashboard_headline(frm) {
 
      if (state === "Draft") {
           if (is_function_head) {
-               frm.dashboard.set_headline(
-                    __("Kindly complete the required fields in the KPI Period Entry before sending it for review.")
-               );
+               if (frm.is_new()) {
+                    frm.dashboard.set_headline(
+                         __("Please save the record before fetching configured KPIs.")
+                    );
+               }
+
+               else if (!frm.is_new() && !frm.doc.kpis_fetched) {
+                    frm.dashboard.set_headline(
+                         __("Click the 'Fetch KPIs' button to retrieve configured KPIs before proceeding.")
+                    );
+               }
+
+               else {
+                    frm.dashboard.set_headline(
+                         __("Kindly complete the required fields in the KPI Period Entry before sending it for review.")
+                    );
+               }
           }
 
           if (is_performance_reviewer) {
