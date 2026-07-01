@@ -18,8 +18,13 @@
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
- "links": [],
- "modified": "2026-07-01 10:15:02.193121",
+ "links": [
+  {
+   "link_doctype": "KPI",
+   "link_fieldname": "pillar"
+  }
+ ],
+ "modified": "2026-07-01 16:57:34.529820",
  "modified_by": "Administrator",
  "module": "Strategy Tracker",
  "name": "Pillar",

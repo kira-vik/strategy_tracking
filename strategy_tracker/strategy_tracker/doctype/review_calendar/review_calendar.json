@@ -175,8 +175,13 @@
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
- "links": [],
- "modified": "2026-07-01 10:12:16.960651",
+ "links": [
+  {
+   "link_doctype": "Review Period",
+   "link_fieldname": "calendar"
+  }
+ ],
+ "modified": "2026-07-01 16:59:07.743366",
  "modified_by": "Administrator",
  "module": "Strategy Tracker",
  "name": "Review Calendar",

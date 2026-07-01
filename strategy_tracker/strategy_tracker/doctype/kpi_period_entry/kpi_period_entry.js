@@ -108,7 +108,7 @@ frappe.ui.form.on("KPI Period Entry", {
 
           // Case 2: Mark as Reviewed
           else if (action === "Mark as Reviewed") {
-               if (frappe.session.user !== frm.doc.reports_to) {
+               if (frappe.session.user !== frm.doc.reports_to && frappe.session.user !== "Administrator") {
                     frappe.throw({
                     title: __("Permission Denied"),
                     message: __(

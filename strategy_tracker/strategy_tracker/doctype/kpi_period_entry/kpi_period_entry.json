@@ -301,8 +301,17 @@
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
- "links": [],
- "modified": "2026-07-01 15:33:45.369804",
+ "links": [
+  {
+   "link_doctype": "KPI Action",
+   "link_fieldname": "kpi_period_entry"
+  },
+  {
+   "link_doctype": "KPI Entry Submission Override Log",
+   "link_fieldname": "kpi_period_entry_record"
+  }
+ ],
+ "modified": "2026-07-01 16:56:51.417056",
  "modified_by": "Administrator",
  "module": "Strategy Tracker",
  "name": "KPI Period Entry",

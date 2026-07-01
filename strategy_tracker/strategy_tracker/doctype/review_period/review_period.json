@@ -146,8 +146,17 @@
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
- "links": [],
- "modified": "2026-07-01 10:10:38.893237",
+ "links": [
+  {
+   "link_doctype": "KPI Period Entry",
+   "link_fieldname": "review_period"
+  },
+  {
+   "link_doctype": "KPI Action",
+   "link_fieldname": "review_period"
+  }
+ ],
+ "modified": "2026-07-01 16:55:36.393013",
  "modified_by": "Administrator",
  "module": "Strategy Tracker",
  "name": "Review Period",
