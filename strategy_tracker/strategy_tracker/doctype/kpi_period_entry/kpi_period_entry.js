@@ -4,27 +4,10 @@
 
 frappe.ui.form.on("KPI Period Entry", {
      refresh(frm) {
-
-          if (frm.is_new()) {
-               if (!frm.doc.function_head) {
-                    frm.set_value("function_head", frappe.session.user);
-               }
-
-               frm.add_custom_button(__('Fetch KPIs'), function () {
-                    fetch_kpis(frm);
-               });
-          }
-
-          const can_show_hr_override =
-               !frm.is_new() &&
-               frm.doc.docstatus === 0 &&
-               !frm.doc.hr_override_approved &&
-               frappe.user.has_role("HR Manager");
-
-          if (can_show_hr_override) {
-               add_hr_override_button(frm);
-          }
-
+          display_kpi_message(frm);
+          set_default_function_head(frm);
+          setup_fetch_kpi_button(frm);
+          setup_hr_override_button(frm);
           apply_rag_colors(frm);
      },
 
@@ -49,7 +32,17 @@ frappe.ui.form.on("KPI Period Entry", {
 
 	function(frm) {
 		check_duplicate(frm);
-	}
+	},
+
+     function_head(frm) {
+        if (!frm.doc.function_head) {
+            frm.set_value("function", null);
+            return;
+        }
+
+     //    populate_function(frm);
+        fetch_reporting_details(frm);
+    }
 });
 
 frappe.ui.form.on('KPI Entry Line', {
@@ -63,6 +56,70 @@ frappe.ui.form.on('KPI Entry Line', {
      }
 });
 
+function set_default_function_head(frm) {
+     if (frm.is_new() && !frm.doc.function_head) {
+          frm.set_value("function_head", frappe.session.user);
+     }
+}
+
+function display_kpi_message(frm) {
+
+     let message = "";
+
+     if (frm.is_new()) {
+
+          message = `
+               <span class="indicator blue">
+                    Please save the record before retrieving your configured KPIs.
+               </span>
+          `;
+
+     } else if (!frm.doc.kpis_fetched) {
+
+          message = `
+               <span class="indicator blue">
+                    Please click the <strong>Fetch KPIs</strong> button to retrieve your configured KPIs.
+               </span>
+          `;
+
+     } else {
+
+          // KPIs already fetched → show nothing
+          frm.dashboard.clear_headline_alert();
+          return;
+     }
+
+     if (frm.__last_headline === message) return;
+
+     frm.dashboard.set_headline_alert(message);
+     frm.__last_headline = message;
+}
+
+function setup_fetch_kpi_button(frm) {
+
+     frm.clear_custom_buttons();
+
+     if (frm.is_new()) return;
+
+     if (!frm.doc.kpis_fetched) {
+          frm.add_custom_button(__('Fetch KPIs'), function () {
+               fetch_kpis(frm);
+          });
+     }
+}
+
+function setup_hr_override_button(frm) {
+
+     const can_show_hr_override =
+          !frm.is_new() &&
+          frm.doc.docstatus === 0 &&
+          !frm.doc.hr_override_approved &&
+          frappe.user.has_role("HR Manager");
+
+     if (can_show_hr_override) {
+          add_hr_override_button(frm);
+     }
+}
 
 function add_hr_override_button(frm) {
 
@@ -149,7 +206,12 @@ function fetch_kpis(frm) {
                frm.refresh_field("kpi_reviews");
                update_kpi_summary(frm);
 
-               frappe.msgprint("KPIs loaded successfully");
+               frm.save().then(() => {
+                    frappe.show_alert({
+                         message: "KPIs loaded successfully",
+                         indicator: "green"
+                    });
+               });
           }
      });
 }
@@ -243,3 +305,61 @@ function apply_rag_colors(frm) {
 		});
 	}, 100);
 }
+
+// function populate_function(frm) {
+//      frappe.call({
+//           method: "get_function_by_head",
+//           doc: frm.doc,
+//           args: {
+//                function_head: frm.doc.function_head
+//           },
+//           callback(r) {
+//                frm.set_value("function", r.message || null);
+//           }
+//      });
+// }
+
+function fetch_reporting_details(frm) {
+     if (!frm.doc.function_head) return;
+
+     frappe.call({
+          method: "get_reporting_details",
+          doc: frm.doc,
+          args: {
+               function_head: frm.doc.function_head
+          },
+          callback: function (r) {
+               if (!r.message) return;
+
+               let changed = false;
+
+               if (frm.doc.reports_to !== r.message.reports_to) {
+                    frm.set_value("reports_to", r.message.reports_to || "");
+                    changed = true;
+               }
+
+               if (frm.doc.reports_to_name !== r.message.reports_to_name) {
+                    frm.set_value("reports_to_name", r.message.reports_to_name || "");
+                    changed = true;
+               }
+
+               if (!frm.is_new() && changed) {
+                    frm.save();
+               }
+
+               if (
+                    (!r.message.reports_to || !r.message.reports_to_name) &&
+                    !frm.__missing_reporting_manager_shown
+               ) {
+                    frm.__missing_reporting_manager_shown = true;
+
+                    frappe.msgprint({
+                    title: __("Missing Reporting Manager"),
+                    indicator: "orange",
+                    message: __("No reporting manager is configured for this Function Head."),
+                    });
+               }
+          }
+     });
+}
+

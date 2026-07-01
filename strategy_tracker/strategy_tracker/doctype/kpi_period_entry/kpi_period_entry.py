@@ -9,7 +9,8 @@ from frappe.utils import now_datetime, getdate, now
 class KPIPeriodEntry(Document):
 	def validate(self):
 		self.prevent_duplicates()
-		self.validate_kpi_fetch()
+		self.get_reporting_details()
+		# self.validate_kpi_fetch()
 		self.calculate_summary()
 
 	def before_submit(self):
@@ -22,6 +23,38 @@ class KPIPeriodEntry(Document):
 	def on_cancel(self):
 		self.cancel_kpi_actions()
 		self.clear_kpi_action_links()
+  
+	@frappe.whitelist()
+	def get_function_by_head(self):
+		if not self.function_head:
+			return None
+
+		return frappe.db.get_value(
+			"Department",
+			{"custom_department_head": self.function_head},
+			"name"
+		)
+  
+	@frappe.whitelist()
+	def get_reporting_manager(self):
+		if not self.function_head:
+			return ""
+
+		employee = frappe.db.get_value(
+			"Employee",
+			{"user_id": self.function_head},
+			["name", "reports_to"],
+			as_dict=True
+		)
+
+		if not employee or not employee.reports_to:
+			return ""
+
+		return frappe.db.get_value(
+			"Employee",
+			employee.reports_to,
+			"user_id"
+		) or ""
 
 	def validate_kpi_fetch(self):
 		if self.kpis_fetched != True:
@@ -105,18 +138,18 @@ class KPIPeriodEntry(Document):
 		return "HR override approved"
 
 	@frappe.whitelist()
-	def fetch_kpis(self, function):
+	def fetch_kpis(self):
 		"""
 		Fetch active KPIs for a given function (Department)
 		"""
 
-		if not function:
+		if not self.function:
 			frappe.throw("Function is required to fetch KPIs")
 
 		kpis = frappe.get_all(
 		"KPI",
 		filters={
-			"function": function,
+			"function": self.function,
 			"active": 1
 		},
 		fields=[
@@ -274,13 +307,49 @@ class KPIPeriodEntry(Document):
 		self.green_count = green
 		self.escalation = 1 if escalation else 0
 
-		if red > 0:
+		total_assessed = red + amber + green
+
+		if total_assessed == 0:
+			self.overall_rag = None
+		elif red > 0:
 			self.overall_rag = "Red"
 		elif amber > 0:
 			self.overall_rag = "Amber"
 		else:
 			self.overall_rag = "Green"
+   
+	@frappe.whitelist()
+	def get_reporting_details(self):
+		if not self.function_head:
+			return {}
 
+		# Get employee of function head
+		employee = frappe.db.get_value(
+			"Employee",
+			{"user_id": self.function_head},
+			["name", "reports_to"],
+			as_dict=True
+		)
+
+		if not employee or not employee.reports_to:
+			return {}
+
+		# Get manager employee
+		manager = frappe.db.get_value(
+			"Employee",
+			employee.reports_to,
+			["user_id", "employee_name"],
+			as_dict=True
+		)
+
+		if not manager:
+			return {}
+
+		return {
+			"reports_to": manager.user_id,
+			"reports_to_name": manager.employee_name
+		}
+ 
 	def cancel_kpi_actions(self):
 		actions = frappe.get_all(
 			"KPI Action",
