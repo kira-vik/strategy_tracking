@@ -12,7 +12,7 @@ frappe.ui.form.on("KPI Period Entry", {
                          frappe.throw({
                          title: __("Function Not Found"),
                          message: __(
-                              "No Department is configured with {0} as its Head. Please contact your administrator.",
+                              "No Department is configured with {0} as its Head. Please contact IT Support for resolution.",
                               [frm.doc.function_head]
                          )
                          });
@@ -70,6 +70,19 @@ frappe.ui.form.on("KPI Period Entry", {
 
      before_workflow_action(frm) {
           const action = frm.selected_workflow_action;
+
+          const invalid_rows = (frm.doc.kpi_reviews || []).filter(row => {
+               return !row.actual_performance || !row.rag_status;
+          });
+
+          if (invalid_rows.length > 0) {
+               frappe.throw({
+                    title: __("Incomplete KPI Reviews"),
+                    message: __(
+                         "All KPI review lines must have Actual Performance and Status (RAG) filled before proceeding."
+                    )
+               });
+          }
 
           // Case 1: Send for Review
           if (action === "Send for Review") {
