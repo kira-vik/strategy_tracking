@@ -9,12 +9,13 @@
   "reference_information_section",
   "pillar",
   "kpi",
-  "weight",
   "column_break_tnab",
   "target",
   "baseline",
+  "weight",
   "performance_section",
   "actual_performance",
+  "column_break_cxhb",
   "actual_numeric",
   "variance",
   "rag_status",
@@ -41,25 +42,29 @@
    "fieldtype": "Link",
    "in_list_view": 1,
    "label": "Pillar",
-   "options": "Pillar"
+   "options": "Pillar",
+   "read_only": 1
   },
   {
    "fieldname": "weight",
    "fieldtype": "Percent",
-   "label": "Weight (%)",
-   "precision": "1"
+   "label": "Weightage (%)",
+   "precision": "1",
+   "read_only": 1
   },
   {
    "fieldname": "target",
    "fieldtype": "Small Text",
    "in_list_view": 1,
-   "label": "Target"
+   "label": "Target",
+   "read_only": 1
   },
   {
    "fieldname": "baseline",
    "fieldtype": "Data",
    "in_list_view": 1,
-   "label": "Baseline"
+   "label": "Baseline",
+   "read_only": 1
   },
   {
    "fieldname": "column_break_tnab",
@@ -86,7 +91,7 @@
    "fieldname": "rag_status",
    "fieldtype": "Select",
    "label": "Status",
-   "options": "Red\nAmber\nGreen"
+   "options": "\nRed\nAmber\nGreen"
   },
   {
    "depends_on": "eval:!doc.__islocal",
@@ -137,13 +142,17 @@
   {
    "fieldname": "column_break_juma",
    "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "column_break_cxhb",
+   "fieldtype": "Column Break"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2026-07-01 11:46:32.179621",
+ "modified": "2026-07-01 14:21:30.882950",
  "modified_by": "Administrator",
  "module": "Strategy Tracker",
  "name": "KPI Entry Line",

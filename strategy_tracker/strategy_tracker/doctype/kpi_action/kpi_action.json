@@ -189,7 +189,7 @@
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-07-01 10:21:43.843930",
+ "modified": "2026-07-01 14:14:13.733068",
  "modified_by": "Administrator",
  "module": "Strategy Tracker",
  "name": "KPI Action",
@@ -251,6 +251,18 @@
    "read": 1,
    "report": 1,
    "role": "General Manager - Life",
+   "select": 1,
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Reporting Manager",
    "select": 1,
    "share": 1,
    "write": 1

@@ -15,11 +15,12 @@
   "column_break_dcpx",
   "reports_to",
   "reports_to_name",
-  "column_break_hoqs",
+  "section_break_vuwt",
+  "review_period",
+  "column_break_lbfh",
   "submission_deadline",
   "review_meeting_date",
   "section_break_kset",
-  "review_period",
   "kpi_reviews",
   "kpis_fetched",
   "section_break_eaaj",
@@ -78,12 +79,14 @@
   {
    "fieldname": "general_comments",
    "fieldtype": "Small Text",
-   "label": "Function Head Reflection"
+   "label": "Review Period Reflection"
   },
   {
+   "depends_on": "eval:doc.workflow_state == \"Pending Review\"",
    "fieldname": "general_manager_comments",
    "fieldtype": "Small Text",
-   "label": "General Manager Comments"
+   "label": "Performance Reviewer Feedback",
+   "mandatory_depends_on": "eval:doc.workflow_state == \"Pending Review\""
   },
   {
    "fieldname": "review_period",
@@ -163,6 +166,7 @@
    "in_standard_filter": 1,
    "label": "Function",
    "options": "Department",
+   "read_only": 1,
    "reqd": 1
   },
   {
@@ -173,10 +177,6 @@
   },
   {
    "fieldname": "column_break_qajz",
-   "fieldtype": "Column Break"
-  },
-  {
-   "fieldname": "column_break_hoqs",
    "fieldtype": "Column Break"
   },
   {
@@ -232,7 +232,7 @@
    "fieldtype": "Section Break"
   },
   {
-   "depends_on": "eval:!doc.__islocal",
+   "depends_on": "eval:doc.kpis_fetched == 1",
    "fieldname": "kpi_reviews",
    "fieldtype": "Table",
    "options": "KPI Entry Line"
@@ -288,13 +288,21 @@
    "fieldname": "head_of_function_name",
    "fieldtype": "Data",
    "label": "Head of Function Name"
+  },
+  {
+   "fieldname": "section_break_vuwt",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "column_break_lbfh",
+   "fieldtype": "Column Break"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2026-07-01 12:48:52.137910",
+ "modified": "2026-07-01 15:33:45.369804",
  "modified_by": "Administrator",
  "module": "Strategy Tracker",
  "name": "KPI Period Entry",
@@ -344,6 +352,18 @@
    "read": 1,
    "report": 1,
    "role": "General Manager - Finance",
+   "select": 1,
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  },
+  {
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Performance Reviewer",
    "select": 1,
    "share": 1,
    "submit": 1,
