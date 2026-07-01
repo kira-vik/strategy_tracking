@@ -14,9 +14,9 @@
   "quarter",
   "section_break_xwod",
   "review_window_start",
-  "review_meeting_date",
+  "submission_deadline",
   "column_break_ierb",
-  "submission_deadline"
+  "review_meeting_date"
  ],
  "fields": [
   {
@@ -82,7 +82,7 @@
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2026-06-27 20:24:22.744484",
+ "modified": "2026-07-01 08:27:38.971538",
  "modified_by": "Administrator",
  "module": "Strategy Tracker",
  "name": "Review Calendar Details",

@@ -19,7 +19,7 @@
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-06-09 09:57:54.264947",
+ "modified": "2026-07-01 10:15:02.193121",
  "modified_by": "Administrator",
  "module": "Strategy Tracker",
  "name": "Pillar",
@@ -37,6 +37,24 @@
    "role": "System Manager",
    "share": 1,
    "write": 1
+  },
+  {
+   "create": 1,
+   "read": 1,
+   "role": "HR Manager",
+   "select": 1,
+   "write": 1
+  },
+  {
+   "read": 1,
+   "role": "KPI Registry Manager",
+   "select": 1,
+   "write": 1
+  },
+  {
+   "read": 1,
+   "role": "Employee",
+   "select": 1
   }
  ],
  "row_format": "Dynamic",

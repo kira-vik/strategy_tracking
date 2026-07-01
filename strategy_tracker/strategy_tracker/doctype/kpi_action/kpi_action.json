@@ -74,10 +74,12 @@
   },
   {
    "fieldname": "supporting_team",
-   "fieldtype": "Small Text",
-   "label": "Supporting Team"
+   "fieldtype": "Table MultiSelect",
+   "label": "Supporting Team",
+   "options": "KPI Action Support Team"
   },
   {
+   "default": "Medium",
    "fieldname": "priority",
    "fieldtype": "Select",
    "label": "Priority",
@@ -107,7 +109,7 @@
    "fieldname": "rag_status",
    "fieldtype": "Select",
    "label": "RAG Status",
-   "options": "Red\nAmber\nGreen"
+   "options": "\nRed\nAmber\nGreen"
   },
   {
    "fieldname": "dependencies_and_risks",
@@ -187,7 +189,7 @@
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-06-28 17:59:56.699016",
+ "modified": "2026-07-01 10:21:43.843930",
  "modified_by": "Administrator",
  "module": "Strategy Tracker",
  "name": "KPI Action",
@@ -203,6 +205,53 @@
    "read": 1,
    "report": 1,
    "role": "System Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Function Head",
+   "select": 1,
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "General Manager - Finance",
+   "select": 1,
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "General Manager - GI/Operations",
+   "select": 1,
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "General Manager - Life",
+   "select": 1,
    "share": 1,
    "write": 1
   }

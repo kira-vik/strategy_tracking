@@ -65,12 +65,12 @@
   {
    "fieldname": "calendar_start_date",
    "fieldtype": "Date",
-   "label": "Calendar Start Date"
+   "label": "Review Calendar Start"
   },
   {
    "fieldname": "calendar_end_date",
    "fieldtype": "Date",
-   "label": "Calendar End Date"
+   "label": "Review Calendar End"
   },
   {
    "depends_on": "eval:doc.calendar_year",
@@ -82,7 +82,8 @@
    "fieldname": "review_frequency",
    "fieldtype": "Select",
    "label": "Review Frequency",
-   "options": "\nBiweekly\nWeekly\nMonthly"
+   "options": "\nBiweekly\nWeekly\nMonthly",
+   "read_only": 1
   },
   {
    "fieldname": "last_review_meeting_date",
@@ -175,7 +176,7 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2026-06-29 17:00:01.642968",
+ "modified": "2026-07-01 10:12:16.960651",
  "modified_by": "Administrator",
  "module": "Strategy Tracker",
  "name": "Review Calendar",
@@ -191,6 +192,36 @@
    "read": 1,
    "report": 1,
    "role": "System Manager",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "HR Manager",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  },
+  {
+   "read": 1,
+   "role": "Employee",
+   "select": 1
+  },
+  {
+   "create": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "KPI Registry Manager",
+   "select": 1,
    "share": 1,
    "submit": 1,
    "write": 1

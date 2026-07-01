@@ -99,7 +99,6 @@ class ReviewCalendar(Document):
 
 	@frappe.whitelist()
 	def generate_review_calendar(self):
-
 		# --------------------------------------------------------
 		# Safety checks
 		# --------------------------------------------------------
@@ -118,6 +117,15 @@ class ReviewCalendar(Document):
 		if not self.calendar_start_date:
 			frappe.throw(_("Please set the Calendar Start Date."))
 
+		if not self.calendar_end_date:
+			frappe.throw(_("Please set the Calendar End Date."))
+   
+		if getdate(self.calendar_end_date) < getdate(self.calendar_start_date):
+			frappe.throw(_("Review Calendar End Date cannot be earlier than the Review Calendar Start Date."))
+
+		if getdate(self.first_scheduled_review_meeting) > getdate(self.calendar_end_date):
+			frappe.throw(_("First Scheduled Review Meeting Date cannot be after the Review Calendar End Date."))
+
 		self.set("review_dates", [])
 
 		# --------------------------------------------------------
@@ -127,10 +135,10 @@ class ReviewCalendar(Document):
 		self.review_frequency = schedule["frequency"]
 
 		first_review = getdate(self.first_scheduled_review_meeting)
+		calendar_start = getdate(self.calendar_start_date)
+		calendar_end = getdate(self.calendar_end_date)
 
 		self._validate_first_review_meeting(first_review, schedule)
-
-		calendar_start = getdate(self.calendar_start_date)
 
 		current_review = first_review
 		previous_review = None
@@ -144,7 +152,7 @@ class ReviewCalendar(Document):
 		# --------------------------------------------------------
 		while True:
 
-			if current_review.year > cint(self.calendar_year):
+			if current_review > calendar_end:
 
 				if spillover_added:
 					break
@@ -191,7 +199,7 @@ class ReviewCalendar(Document):
 				"spillover": 1 if spillover else 0
 			})
 
-			if current_review.year == cint(self.calendar_year):
+			if current_review <= calendar_end:
 				last_review_in_year = current_review
 
 			previous_review = current_review
@@ -357,7 +365,8 @@ class ReviewCalendar(Document):
 			year = start_date.year
 			month = start_date.month
 
-			if start_date.day >= day:
+			# if start_date.day >= day:
+			if start_date:
 				month += 1
 				if month > 12:
 					month = 1
@@ -413,11 +422,11 @@ class ReviewCalendar(Document):
 
 		summary = (
 			f"This calendar contains {total_reviews} review periods. "
-			f"It starts on {formatdate(first_review)} "
-			f"and ends on {formatdate(last_review)}."
+			f"The first review meeting is on {formatdate(first_review)}, "
+			f"and the last one is on {formatdate(last_review)}."
 		)
 
 		if spillovers:
-			summary += f" Includes {spillovers} spillover review period(s) into the next year."
+			summary += f" It includes {spillovers} spillover review period(s)."
 
 		return summary

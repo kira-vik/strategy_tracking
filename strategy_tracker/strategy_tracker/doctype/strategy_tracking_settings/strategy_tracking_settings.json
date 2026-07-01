@@ -46,7 +46,7 @@
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2026-06-29 14:28:04.365391",
+ "modified": "2026-07-01 10:33:45.424936",
  "modified_by": "Administrator",
  "module": "Strategy Tracker",
  "name": "Strategy Tracking Settings",
@@ -59,6 +59,15 @@
    "print": 1,
    "read": 1,
    "role": "System Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "email": 1,
+   "print": 1,
+   "read": 1,
+   "role": "HR Manager",
+   "select": 1,
    "share": 1,
    "write": 1
   }
