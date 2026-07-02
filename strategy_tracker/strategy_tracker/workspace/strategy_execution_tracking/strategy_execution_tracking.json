@@ -1,6 +1,6 @@
 {
  "charts": [],
- "content": "[{\"id\":\"FwCsFdziWf\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Reports &amp; Masters</b></span>\",\"col\":12}},{\"id\":\"WkNW9WdS64\",\"type\":\"card\",\"data\":{\"card_name\":\"KPI Library\",\"col\":4}},{\"id\":\"Nb8EqKUMuv\",\"type\":\"card\",\"data\":{\"card_name\":\"KPI Execution\",\"col\":4}},{\"id\":\"_G0NRCu3PR\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"0NJy1b-3Bf\",\"type\":\"card\",\"data\":{\"card_name\":\"Review Management\",\"col\":4}},{\"id\":\"3ju-0bSip_\",\"type\":\"card\",\"data\":{\"card_name\":\"Action & Governance\",\"col\":4}},{\"id\":\"fVF_DydEzQ\",\"type\":\"card\",\"data\":{\"card_name\":\"Setup & Configuration\",\"col\":4}}]",
+ "content": "[{\"id\":\"QVkD57CBpp\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Your Shortcuts</b></span>\",\"col\":12}},{\"id\":\"EKgMtxX-bM\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Review Calendar\",\"col\":3}},{\"id\":\"P2uRwnPHMi\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"KPI\",\"col\":3}},{\"id\":\"wN2lFoPJHM\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Kpi Period Entry\",\"col\":3}},{\"id\":\"idyxcyTXXv\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"FwCsFdziWf\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Reports &amp; Masters</b></span>\",\"col\":12}},{\"id\":\"WkNW9WdS64\",\"type\":\"card\",\"data\":{\"card_name\":\"KPI Library\",\"col\":4}},{\"id\":\"Nb8EqKUMuv\",\"type\":\"card\",\"data\":{\"card_name\":\"KPI Execution\",\"col\":4}},{\"id\":\"_G0NRCu3PR\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"0NJy1b-3Bf\",\"type\":\"card\",\"data\":{\"card_name\":\"Review Management\",\"col\":4}},{\"id\":\"3ju-0bSip_\",\"type\":\"card\",\"data\":{\"card_name\":\"Action & Governance\",\"col\":4}},{\"id\":\"fVF_DydEzQ\",\"type\":\"card\",\"data\":{\"card_name\":\"Setup & Configuration\",\"col\":4}}]",
  "creation": "2026-06-24 15:32:27.555341",
  "custom_blocks": [],
  "docstatus": 0,
@@ -149,7 +149,7 @@
    "type": "Link"
   }
  ],
- "modified": "2026-07-01 08:53:57.382443",
+ "modified": "2026-07-02 15:49:30.714458",
  "modified_by": "Administrator",
  "module": "Strategy Tracker",
  "name": "Strategy Execution Tracking",
@@ -160,6 +160,31 @@
  "quick_lists": [],
  "roles": [],
  "sequence_id": 33.0,
- "shortcuts": [],
+ "shortcuts": [
+  {
+   "color": "Blue",
+   "doc_view": "List",
+   "label": "KPI",
+   "link_to": "KPI",
+   "stats_filter": "[[\"KPI\",\"active\",\"=\",1,false]]",
+   "type": "DocType"
+  },
+  {
+   "color": "Grey",
+   "doc_view": "List",
+   "label": "Review Calendar",
+   "link_to": "Review Calendar",
+   "stats_filter": "[]",
+   "type": "DocType"
+  },
+  {
+   "color": "Green",
+   "doc_view": "List",
+   "label": "Kpi Period Entry",
+   "link_to": "KPI Period Entry",
+   "stats_filter": "[[\"KPI Period Entry\",\"workflow_state\",\"=\",\"Reviewed\",false]]",
+   "type": "DocType"
+  }
+ ],
  "title": "Strategy Execution Tracking"
 }
