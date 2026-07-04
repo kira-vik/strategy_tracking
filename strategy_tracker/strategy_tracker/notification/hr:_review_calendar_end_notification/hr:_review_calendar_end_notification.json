@@ -1,0 +1,30 @@
+{
+ "attach_files": "",
+ "attach_print": 0,
+ "channel": "Email",
+ "creation": "2026-07-04 19:42:24.348898",
+ "date_changed": "calendar_end_date",
+ "days_in_advance": 30,
+ "docstatus": 0,
+ "doctype": "Notification",
+ "document_type": "Review Calendar",
+ "enabled": 1,
+ "event": "Days Before",
+ "idx": 0,
+ "is_standard": 1,
+ "message": "<!DOCTYPE html>\r\n<html lang=\"en\">\r\n<head>\r\n<meta charset=\"UTF-8\">\r\n\r\n<style>\r\n    body {\r\n        font-family: Arial, sans-serif;\r\n        background: #f4f4f4;\r\n        margin: 0;\r\n        padding: 0;\r\n        color: #333;\r\n    }\r\n\r\n    .container {\r\n        max-width: 600px;\r\n        margin: 0 auto;\r\n        background: #ffffff;\r\n        padding: 24px;\r\n        border-radius: 8px;\r\n    }\r\n\r\n    p {\r\n        font-size: 14px;\r\n        line-height: 1.6;\r\n        color: #555;\r\n        margin: 10px 0;\r\n    }\r\n\r\n    .alert {\r\n        background: #e7f1ff;\r\n        border-left: 4px solid #0d6efd;\r\n        padding: 12px 14px;\r\n        margin: 16px 0;\r\n        border-radius: 4px;\r\n    }\r\n\r\n    ul {\r\n        font-size: 14px;\r\n        color: #555;\r\n        line-height: 1.6;\r\n        margin-top: 8px;\r\n    }\r\n\r\n    .footer {\r\n        font-size: 12px;\r\n        color: #888;\r\n        text-align: center;\r\n        margin-top: 24px;\r\n    }\r\n</style>\r\n\r\n</head>\r\n\r\n<body>\r\n\r\n<div class=\"container\">\r\n\r\n    <p>Dear HR Team,</p>\r\n\r\n    <div class=\"alert\">\r\n        <p style=\"margin:0;\">\r\n            The KPI Review Calendar <strong>{{ doc.name }} ({{ doc.calendar_year }})</strong> is approaching closure.\r\n        </p>\r\n    </div>\r\n\r\n    <p>\r\n        This marks the conclusion of the current KPI review cycle. All outstanding activities should be finalized to ensure a clean and accurate closure of the period.\r\n    </p>\r\n\r\n    <p>\r\n        <strong>HR Responsibilities:</strong>\r\n    </p>\r\n\r\n    <ul>\r\n        <li>Ensure all KPI Period Entries and review activities are fully completed</li>\r\n        <li>Confirm closure of the current KPI review cycle with all relevant stakeholders</li>\r\n        <li>Prepare and create the Review Calendar for the next KPI Review cycle</li>\r\n        <li>Ensure the next cycle is configured in advance to avoid operational delays or gaps</li>\r\n    </ul>\r\n\r\n    <p>\r\n        Proactive preparation of the next review calendar is essential to ensure continuity of the KPI tracking process and to avoid any disruption between cycles.\r\n    </p>\r\n\r\n    <p>\r\n        Best Regards,<br>\r\n        Strategy Execution Tracking System\r\n    </p>\r\n\r\n    <div class=\"footer\">\r\n        This is an automated message. Please do not reply.\r\n    </div>\r\n\r\n</div>\r\n\r\n</body>\r\n</html>",
+ "message_type": "HTML",
+ "modified": "2026-07-04 19:42:24.348898",
+ "modified_by": "Administrator",
+ "module": "Strategy Tracker",
+ "name": "HR: Review Calendar End Notification",
+ "owner": "Administrator",
+ "recipients": [
+  {
+   "receiver_by_role": "HR Manager"
+  }
+ ],
+ "send_system_notification": 0,
+ "send_to_all_assignees": 0,
+ "subject": "KPI Review Calendar Closing : {{ doc.name }}"
+}

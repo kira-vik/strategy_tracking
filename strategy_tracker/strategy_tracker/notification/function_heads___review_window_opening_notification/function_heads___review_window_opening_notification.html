@@ -2,39 +2,110 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>KPI Review Period Opened - {{ doc.review_name }}</title>
+
     <style>
-        body { font-family: Arial; background:#f4f4f4; margin:0; padding:0; }
-        .container { max-width:600px; margin:0 auto; background:#fff; padding:20px; border-radius:8px; }
-        h2 { font-size:18px; color:#333; }
-        p { font-size:14px; color:#555; line-height:1.5; }
-        .footer { font-size:12px; color:#888; text-align:center; margin-top:20px; }
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: #ffffff;
+            padding: 24px;
+            border-radius: 8px;
+        }
+
+        p {
+            font-size: 14px;
+            line-height: 1.6;
+            color: #555;
+            margin: 10px 0;
+        }
+
+        .alert {
+            background: #e7f1ff;
+            border-left: 4px solid #0d6efd;
+            padding: 12px 14px;
+            margin: 16px 0;
+            border-radius: 4px;
+        }
+
+        ul {
+            font-size: 14px;
+            color: #555;
+            line-height: 1.6;
+            margin-top: 8px;
+        }
+
+        a {
+            color: #0d6efd;
+            text-decoration: none;
+        }
+
+        .footer {
+            font-size: 12px;
+            color: #888;
+            text-align: center;
+            margin-top: 24px;
+        }
     </style>
 </head>
+
 <body>
+
 <div class="container">
 
-<p>The KPI Review Period for <strong>{{ doc.review_name }} ({{ doc.calendar_year }})</strong> has officially opened.</p>
+    <p>Dear Team,</p>
 
-<p>You are required to:</p>
-<ul>
-    <li>Create KPI Period Entry records for your function</li>
-    <li>Review and update all KPI entries</li>
-    <li>Forward completed entries for review</li>
-</ul>
+    <div class="alert">
+        <p style="margin:0;">
+            The KPI Review Period for <strong>{{ doc.review_name }} ({{ doc.calendar_year }})</strong> has officially commenced.
+        </p>
+    </div>
 
-<p><strong>Submission Deadline:</strong> {{ doc.submission_deadline }}</p>
+    <p>
+        This marks the beginning of the KPI tracking and performance review cycle for the period.
+        All functions are required to initiate their KPI preparation and submission activities accordingly.
+    </p>
 
-<p>Please ensure all submissions are completed before the deadline.</p>
+    <p>
+        <strong>Key Responsibilities:</strong>
+    </p>
 
-<p>Access the record here:
-<a href="{{ frappe.utils.get_url() }}/app/kpi-period-entry">Go To KPI Period Entry List</a></p>
+    <ul>
+        <li>Create KPI Period Entry records for your respective functions</li>
+        <li>Review and update all assigned KPI entries</li>
+        <li>Submit completed entries for formal review and validation</li>
+    </ul>
 
-<p>Best Regards,<br>
-Strategy Execution Tracking System</p>
+    <p>
+        <strong>Submission Deadline:</strong> {{ doc.submission_deadline }}
+    </p>
 
-<div class="footer">This is an automated message. Please do not reply.</div>
+    <p>
+        All submissions must be completed within the defined timeline to ensure a smooth and timely review cycle.
+    </p>
+
+    <p>
+        Access the KPI Period Entry module here:<br>
+        <a href="{{ frappe.utils.get_url() }}/app/kpi-period-entry">Open KPI Period Entry List</a>
+    </p>
+
+    <p>
+        Best Regards,<br>
+        Strategy Execution Tracking System
+    </p>
+
+    <div class="footer">
+        This is an automated message. Please do not reply.
+    </div>
 
 </div>
+
 </body>
 </html>

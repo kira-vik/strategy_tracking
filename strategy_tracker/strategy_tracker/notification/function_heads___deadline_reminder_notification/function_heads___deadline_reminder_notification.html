@@ -2,31 +2,99 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+
     <style>
-        body { font-family: Arial; background:#f4f4f4; margin:0; padding:0; }
-        .container { max-width:600px; margin:0 auto; background:#fff; padding:20px; border-radius:8px; }
-        h2 { font-size:18px; color:#333; }
-        p { font-size:14px; color:#555; }
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: #ffffff;
+            padding: 24px;
+            border-radius: 8px;
+        }
+
+        p {
+            font-size: 14px;
+            line-height: 1.6;
+            color: #555;
+            margin: 10px 0;
+        }
+
+        .alert {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 12px 14px;
+            margin: 16px 0;
+            border-radius: 4px;
+        }
+
+        ul {
+            font-size: 14px;
+            color: #555;
+            line-height: 1.6;
+            margin-top: 8px;
+        }
+
+        .footer {
+            font-size: 12px;
+            color: #888;
+            text-align: center;
+            margin-top: 24px;
+        }
     </style>
 </head>
+
 <body>
+
 <div class="container">
 
-<p>Only <strong>3 days remain</strong> for KPI submission for <strong>{{ doc.review_name }}</strong>.</p>
+    <p>Dear Team,</p>
 
-<p><strong>Deadline:</strong> {{ doc.submission_deadline }}</p>
+    <div class="alert">
+        <p style="margin:0;">
+            Only <strong>3 days remain</strong> for KPI submission for <strong>{{ doc.review_name }}</strong>.
+        </p>
+    </div>
 
-<p>Please ensure:</p>
-<ul>
-    <li>All KPI Period Entries are completed</li>
-    <li>All KPIs are reviewed and approved</li>
-    <li>Final submissions are completed on time</li>
-</ul>
+    <p>
+        <strong>Submission Deadline:</strong> {{ doc.submission_deadline }}
+    </p>
 
-<p>Late submissions may not be accepted after the deadline.</p>
+    <p>
+        Teams are advised to ensure all KPI entries are progressing toward final completion within the defined timeline.
+    </p>
 
-<p>Best Regards,<br>Strategy Execution Tracking System</p>
+    <p>
+        <strong>Key Requirements Before Deadline:</strong>
+    </p>
+
+    <ul>
+        <li>Completion of all KPI Period Entries</li>
+        <li>Review and validation of all KPI submissions</li>
+        <li>Final approval and submission before closure</li>
+    </ul>
+
+    <p>
+        Submissions received after the deadline may not be included in the current review cycle.
+    </p>
+
+    <p>
+        Best Regards,<br>
+        Strategy Execution Tracking System
+    </p>
+
+    <div class="footer">
+        This is an automated message. Please do not reply.
+    </div>
 
 </div>
+
 </body>
 </html>

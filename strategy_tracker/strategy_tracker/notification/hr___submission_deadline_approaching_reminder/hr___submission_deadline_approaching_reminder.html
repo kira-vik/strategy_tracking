@@ -2,20 +2,81 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>KPI Deadline Reminder - {{ doc.review_name }}</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: #ffffff;
+            padding: 24px;
+            border-radius: 8px;
+        }
+
+        p {
+            font-size: 14px;
+            line-height: 1.6;
+            color: #555;
+            margin: 10px 0;
+        }
+
+        .alert {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 12px 14px;
+            margin: 16px 0;
+            border-radius: 4px;
+        }
+
+        .footer {
+            font-size: 12px;
+            color: #888;
+            text-align: center;
+            margin-top: 24px;
+        }
+    </style>
 </head>
+
 <body>
 
 <div class="container">
 
-<p>The KPI submission deadline for <strong>{{ doc.review_name }}</strong> is in 3 days.</p>
+    <p>Dear Team,</p>
 
-<p><strong>Deadline:</strong> {{ doc.submission_deadline }}</p>
+    <div class="alert">
+        <p style="margin:0;">
+            The KPI submission deadline for <strong>{{ doc.review_name }}</strong> is approaching in <strong>3 days</strong>.
+        </p>
+    </div>
 
-<p>HR may begin follow-ups with Function Heads to ensure completion.</p>
+    <p>
+        <strong>Submission Deadline:</strong> {{ doc.submission_deadline }}
+    </p>
 
-<p>Best Regards,<br>
-Strategy Execution Tracking System</p>
+    <p>
+        Teams are encouraged to ensure all KPI entries are reviewed, validated, and submitted within the stipulated timeline to avoid delays in the review cycle.
+    </p>
+
+    <p>
+        HR may initiate follow-ups with Function Heads where necessary to support timely completion.
+    </p>
+
+    <p>
+        Best Regards,<br>
+        Strategy Execution Tracking System
+    </p>
+
+    <div class="footer">
+        This is an automated message. Please do not reply.
+    </div>
+
 </div>
 
 </body>

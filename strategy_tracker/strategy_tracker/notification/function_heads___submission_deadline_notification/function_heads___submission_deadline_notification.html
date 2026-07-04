@@ -2,30 +2,98 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+
 <style>
-body { font-family: Arial; background:#f4f4f4; margin:0; }
-.container { max-width:600px; margin:auto; background:#fff; padding:20px; border-radius:8px; }
+    body {
+        font-family: Arial, sans-serif;
+        background: #f4f4f4;
+        margin: 0;
+        padding: 0;
+        color: #333;
+    }
+
+    .container {
+        max-width: 600px;
+        margin: 0 auto;
+        background: #ffffff;
+        padding: 24px;
+        border-radius: 8px;
+    }
+
+    p {
+        font-size: 14px;
+        line-height: 1.6;
+        color: #555;
+        margin: 10px 0;
+    }
+
+    .alert {
+        background: #fff3cd;
+        border-left: 4px solid #ffc107;
+        padding: 12px 14px;
+        margin: 16px 0;
+        border-radius: 4px;
+    }
+
+    ul {
+        font-size: 14px;
+        color: #555;
+        line-height: 1.6;
+        margin-top: 8px;
+    }
+
+    .footer {
+        font-size: 12px;
+        color: #888;
+        text-align: center;
+        margin-top: 24px;
+    }
 </style>
+
 </head>
+
 <body>
 
 <div class="container">
 
-<p>Today is the <strong>final day</strong> for KPI submissions for <strong>{{ doc.review_name }}</strong>.</p>
+    <p>Dear Team,</p>
 
-<p><strong>Deadline:</strong> {{ doc.submission_deadline }}</p>
+    <div class="alert">
+        <p style="margin:0;">
+            Today is the <strong>final day</strong> for KPI submissions for <strong>{{ doc.review_name }}</strong>.
+        </p>
+    </div>
 
-<p>Please ensure all KPI entries are:</p>
-<ul>
-<li>Completed</li>
-<li>Reviewed</li>
-<li>Submitted before close of business</li>
-</ul>
+    <p>
+        <strong>Submission Deadline:</strong> {{ doc.submission_deadline }}
+    </p>
 
-<p>No submissions will be accepted after the deadline.</p>
+    <p>
+        All KPI entries must be completed, reviewed, and submitted within the business day.
+    </p>
 
-<p>Best Regards,<br>
-Strategy Execution Tracking System</p>
+    <p>
+        <strong>Required Actions Before Close of Business:</strong>
+    </p>
+
+    <ul>
+        <li>Ensure all KPI entries are fully completed</li>
+        <li>Validate and review all submitted data</li>
+        <li>Confirm final submission before deadline closure</li>
+    </ul>
+
+    <p>
+        Submissions received after the deadline may not be considered for the current review cycle and will be treated as part of the next cycle, subject to governance approval.
+    </p>
+
+    <p>
+        Best Regards,<br>
+        Strategy Execution Tracking System
+    </p>
+
+    <div class="footer">
+        This is an automated message. Please do not reply.
+    </div>
 
 </div>
 

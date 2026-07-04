@@ -2,22 +2,91 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background: #f4f4f4;
+        margin: 0;
+        padding: 0;
+        color: #333;
+    }
+
+    .container {
+        max-width: 600px;
+        margin: 0 auto;
+        background: #ffffff;
+        padding: 24px;
+        border-radius: 8px;
+    }
+
+    p {
+        font-size: 14px;
+        line-height: 1.6;
+        color: #555;
+        margin: 10px 0;
+    }
+
+    .alert {
+        background: #f8d7da;
+        border-left: 4px solid #dc3545;
+        padding: 12px 14px;
+        margin: 16px 0;
+        border-radius: 4px;
+    }
+
+    ul {
+        font-size: 14px;
+        color: #555;
+        line-height: 1.6;
+        margin-top: 8px;
+    }
+
+    .footer {
+        font-size: 12px;
+        color: #888;
+        text-align: center;
+        margin-top: 24px;
+    }
+</style>
+
 </head>
+
 <body>
 
 <div class="container">
 
-<p>The KPI submission deadline for <strong>{{ doc.review_name }}</strong> is today.</p>
+    <p>Dear Team,</p>
 
-<p>HR is requested to:</p>
-<ul>
-<li>Follow up with Function Heads</li>
-<li>Ensure all submissions are completed</li>
-<li>Escalate pending cases</li>
-</ul>
+    <div class="alert">
+        <p style="margin:0;">
+            The KPI submission deadline for <strong>{{ doc.review_name }}</strong> is <strong>TODAY</strong>.
+            Immediate action is required to ensure all submissions are completed within the approved timeline.
+        </p>
+    </div>
 
-<p>Best Regards,<br>
-Strategy Execution Tracking System</p>
+    <p>
+        <strong>HR Action Required:</strong>
+    </p>
+
+    <ul>
+        <li>Follow up with Function Heads on pending submissions</li>
+        <li>Ensure all KPI entries are completed and validated</li>
+        <li>Escalate any unresolved or delayed submissions</li>
+    </ul>
+
+    <p>
+        Timely closure is critical to ensure smooth progression into the review and evaluation phase.
+    </p>
+
+    <p>
+        Best Regards,<br>
+        Strategy Execution Tracking System
+    </p>
+
+    <div class="footer">
+        This is an automated message. Please do not reply.
+    </div>
 
 </div>
 

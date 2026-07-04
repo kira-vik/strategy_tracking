@@ -2,28 +2,108 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+
     <style>
-        body { font-family: Arial; background:#f4f4f4; margin:0; padding:0; }
-        .container { max-width:600px; margin:0 auto; background:#fff; padding:20px; border-radius:8px; }
-        h2 { font-size:18px; color:#333; }
-        p { font-size:14px; color:#555; line-height:1.5; }
-        .footer { font-size:12px; color:#888; text-align:center; margin-top:20px; }
+        /* =========================
+           Base Reset
+        ========================= */
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+
+        /* =========================
+           Layout Container
+        ========================= */
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: #ffffff;
+            padding: 24px;
+            border-radius: 8px;
+        }
+
+        /* =========================
+           Typography
+        ========================= */
+        p {
+            font-size: 14px;
+            line-height: 1.6;
+            color: #555;
+            margin: 10px 0;
+        }
+
+        h2 {
+            font-size: 18px;
+            color: #333;
+            margin-bottom: 12px;
+        }
+
+        /* =========================
+           Highlight Block
+        ========================= */
+        .highlight {
+            background: #f8f9fa;
+            border-left: 4px solid #0d6efd;
+            padding: 12px 14px;
+            margin: 16px 0;
+            border-radius: 4px;
+        }
+
+        /* =========================
+           Footer
+        ========================= */
+        .footer {
+            font-size: 12px;
+            color: #888;
+            text-align: center;
+            margin-top: 24px;
+        }
     </style>
 </head>
+
 <body>
+
 <div class="container">
 
-<p>The KPI Review Period <strong>{{ doc.review_name }} ({{ doc.calendar_year }})</strong> has started on <strong>{{ doc.review_window_start }}</strong>.</p>
+    <p>Dear Team,</p>
 
-<p>This is for your information.</p>
+    <p>
+        This is to inform you that the KPI Review Period
+        <strong>{{ doc.review_name }} ({{ doc.calendar_year }})</strong>
+        has officially commenced.
+    </p>
 
-<p>HR may monitor progress and support Function Heads where required.</p>
+    <div class="highlight">
+        <p style="margin:0;">
+            <strong>Start Date:</strong> {{ doc.review_window_start }}<br>
+            <strong>Review Period:</strong> {{ doc.review_name }}<br>
+            <strong>Calendar Year:</strong> {{ doc.calendar_year }}
+        </p>
+    </div>
 
-<p>Best Regards,<br>
-Strategy Execution Tracking System</p>
+    <p>
+        All KPI tracking activities for this cycle are now active.
+        Function Heads and responsible teams are expected to ensure timely updates and accurate reporting throughout the review period.
+    </p>
 
-<div class="footer">This is an automated message. Please do not reply.</div>
+    <p>
+        HR and the Strategy Execution team will monitor progress and provide support where required to ensure consistency and alignment across all functions.
+    </p>
+
+    <p>
+        Best Regards,<br>
+        Strategy Execution Tracking System
+    </p>
+
+    <div class="footer">
+        This is an automated message. Please do not reply.
+    </div>
 
 </div>
+
 </body>
 </html>

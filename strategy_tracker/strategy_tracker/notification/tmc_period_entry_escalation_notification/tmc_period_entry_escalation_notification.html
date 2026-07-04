@@ -66,7 +66,7 @@
     <div class="container">
 
         <p>
-            Dear Top Management Committee Member,
+            Dear TMC Member,
         </p>
 
         <p>
@@ -90,25 +90,23 @@
                     <th>KPI</th>
                     <th>Actual Performance</th>
                     <th>Target</th>
-                    <th>Status</th>
                     <th>Action Plan</th>
                 </tr>
             </thead>
             <tbody>
                 {% for row in red_kpis %}
                 <tr>
-                    <td>{{ row.kpi }}</td>
+                    <td>{{ row.kpi_description }}</td>
                     <td>{{ row.actual_performance }}</td>
                     <td>{{ row.target }}</td>
-                    <td style="color:#dc3545; font-weight:bold;">
-                        {{ row.rag_status }}
-                    </td>
                     <td>{{ row.corrective_action_summary }}</td>
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
         {% endif %}
+        
+        <br>
 
         <div class="cta">
             <strong>Action Required</strong><br>
