@@ -1,0 +1,23 @@
+[
+ {
+  "docstatus": 0,
+  "doctype": "Workflow Action Master",
+  "modified": "2026-07-01 14:09:27.709421",
+  "name": "Send for Review",
+  "workflow_action_name": "Send for Review"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow Action Master",
+  "modified": "2026-07-01 14:09:52.983115",
+  "name": "Mark as Reviewed",
+  "workflow_action_name": "Mark as Reviewed"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow Action Master",
+  "modified": "2026-07-01 14:10:49.517445",
+  "name": "Cancel",
+  "workflow_action_name": "Cancel"
+ }
+]

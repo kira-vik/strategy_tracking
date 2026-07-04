@@ -252,3 +252,63 @@ scheduler_events = {
 # List of apps whose translatable strings should be excluded from this app's translations.
 # ignore_translatable_strings_from = []
 
+fixtures = [
+	{
+		"doctype": "Workflow",
+		"filters": [
+			[
+				"workflow_name",
+				"in",
+				[
+				"KPI Period Entry Review Matrix",
+				],
+			]
+		],
+	},
+	{
+		"doctype": "Workflow State",
+		"filters": [
+			[
+				"workflow_state_name",
+				"in",
+				[
+				"Pending Review",
+				"Reviewed",
+				"Cancelled",
+				],
+			]
+		],
+	},
+	{
+		"doctype": "Workflow Action Master",
+		"filters": [
+			[
+				"workflow_action_name",
+				"in",
+				[
+				"Send for Review",
+				"Cancel",
+				"Mark as Reviewed",
+				],
+			]
+		],
+	},
+	{
+		"doctype": "Role",
+		"filters": [
+			[
+				"role_name",
+				"in",
+				[
+				"Performance Reviewer",
+				"Chief Operating Officer",
+				"Function Head",
+				"Managing Director",
+				"General Manager - Finance",
+				"General Manager - GI/Operations",
+				"General Manager - Life",
+				],
+			]
+		],
+	},
+]

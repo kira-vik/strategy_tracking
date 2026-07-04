@@ -1,0 +1,93 @@
+[
+ {
+  "desk_access": 1,
+  "disabled": 0,
+  "docstatus": 0,
+  "doctype": "Role",
+  "home_page": null,
+  "is_custom": 0,
+  "modified": "2026-06-28 19:50:02.327977",
+  "name": "Function Head",
+  "restrict_to_domain": null,
+  "role_name": "Function Head",
+  "two_factor_auth": 0
+ },
+ {
+  "desk_access": 1,
+  "disabled": 0,
+  "docstatus": 0,
+  "doctype": "Role",
+  "home_page": null,
+  "is_custom": 0,
+  "modified": "2026-07-01 09:09:17.025834",
+  "name": "Chief Operating Officer",
+  "restrict_to_domain": null,
+  "role_name": "Chief Operating Officer",
+  "two_factor_auth": 0
+ },
+ {
+  "desk_access": 1,
+  "disabled": 0,
+  "docstatus": 0,
+  "doctype": "Role",
+  "home_page": null,
+  "is_custom": 0,
+  "modified": "2026-07-01 09:09:38.635607",
+  "name": "Managing Director",
+  "restrict_to_domain": null,
+  "role_name": "Managing Director",
+  "two_factor_auth": 0
+ },
+ {
+  "desk_access": 1,
+  "disabled": 0,
+  "docstatus": 0,
+  "doctype": "Role",
+  "home_page": null,
+  "is_custom": 0,
+  "modified": "2026-07-01 09:11:44.697155",
+  "name": "General Manager - Finance",
+  "restrict_to_domain": null,
+  "role_name": "General Manager - Finance",
+  "two_factor_auth": 0
+ },
+ {
+  "desk_access": 1,
+  "disabled": 0,
+  "docstatus": 0,
+  "doctype": "Role",
+  "home_page": null,
+  "is_custom": 0,
+  "modified": "2026-07-01 09:12:01.425241",
+  "name": "General Manager - GI/Operations",
+  "restrict_to_domain": null,
+  "role_name": "General Manager - GI/Operations",
+  "two_factor_auth": 0
+ },
+ {
+  "desk_access": 1,
+  "disabled": 0,
+  "docstatus": 0,
+  "doctype": "Role",
+  "home_page": null,
+  "is_custom": 0,
+  "modified": "2026-07-01 09:12:12.048492",
+  "name": "General Manager - Life",
+  "restrict_to_domain": null,
+  "role_name": "General Manager - Life",
+  "two_factor_auth": 0
+ },
+ {
+  "desk_access": 1,
+  "disabled": 0,
+  "docstatus": 0,
+  "doctype": "Role",
+  "home_page": null,
+  "is_custom": 0,
+  "modified": "2026-07-01 14:07:53.217985",
+  "name": "Performance Reviewer",
+  "restrict_to_domain": null,
+  "role_name": "Performance Reviewer",
+  "two_factor_auth": 0
+ }
+]
