@@ -127,7 +127,10 @@ frappe.fh_strategy_dash.report = {
 			</div>
 
 			<div class="section-card mb-4">
-				<div class="section-card-title">KPI Performance — This Period</div>
+				<div class="section-card-title d-flex justify-content-between align-items-center">
+					<span>KPI Performance — This Period</span>
+					<div class="kpi-status-filter-wrap"></div>
+				</div>
 				<div class="kpi-table-wrap"></div>
 			</div>
 
@@ -145,8 +148,27 @@ frappe.fh_strategy_dash.report = {
 		this.function_badge = this.main_section.find(".function-badge");
 		this.cards_row = this.main_section.find(".cards-row");
 		this.kpi_table_wrap = this.main_section.find(".kpi-table-wrap");
+		this.kpi_status_filter_wrap = this.main_section.find(".kpi-status-filter-wrap");
 		this.actions_table_wrap = this.main_section.find(".actions-table-wrap");
 		this.action_funnel_wrap = this.main_section.find(".action-funnel");
+
+		this._buildKpiStatusFilter();
+	},
+
+	// Plain native <select> (styled to match the pill/badge language) rather
+	// than a full frappe.ui.form control — this filter only ever slices data
+	// already on the client, it never triggers a server round-trip.
+	_buildKpiStatusFilter: function () {
+		this.kpi_status_filter_wrap.html(`
+			<select class="kpi-status-select">
+				<option value="">All Statuses</option>
+				<option value="Green">Green</option>
+				<option value="Amber">Amber</option>
+				<option value="Red">Red</option>
+				<option value="__not_rated__">Not Rated</option>
+			</select>
+		`);
+		this.kpi_status_filter_wrap.find(".kpi-status-select").on("change", () => this._renderKpiTableRows());
 	},
 
 	_injectStyles: function () {
@@ -154,29 +176,37 @@ frappe.fh_strategy_dash.report = {
 		const style = document.createElement("style");
 		style.id = "fh-strategy-dash-style";
 		style.innerHTML = `
-			.function-badge{font-weight:600;font-size:13px;color:var(--text-color,#374151);background:var(--control-bg,#f0fdf4);border:1px solid var(--border-color,#bbf7d0);border-radius:20px;padding:6px 14px;}
-			.filters-bar{background:var(--card-bg,transparent);border-color:var(--border-color,#e5e7eb)!important;}
+			:root{--fh-radius:14px;}
+			.function-badge{font-weight:600;font-size:12.5px;letter-spacing:.01em;color:var(--text-color,#166534);background:linear-gradient(180deg,#f0fdf4,#e7fbec);border:1px solid var(--border-color,#bbf7d0);border-radius:20px;padding:6px 14px;}
+			.filters-bar{background:var(--card-bg,#fff);border-color:var(--border-color,#e9eaec)!important;border-radius:var(--fh-radius);box-shadow:0 1px 2px rgba(16,24,40,0.04),0 4px 12px -4px rgba(16,24,40,0.06);}
 			.cards-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:14px;}
-			.metric-card{background:var(--card-bg,transparent);border:1px solid var(--border-color,#e5e7eb);border-radius:12px;padding:14px 16px;}
-			.metric-card .m-label{font-size:11px;text-transform:uppercase;letter-spacing:0.05em;color:var(--text-muted,#9ca3af);font-weight:600;margin-bottom:6px;}
-			.metric-card .m-value{font-size:24px;font-weight:700;color:var(--text-color,#111827);}
-			.metric-card.rag-green{border-left:4px solid #16a34a;}
-			.metric-card.rag-amber{border-left:4px solid #f59e0b;}
-			.metric-card.rag-red{border-left:4px solid #dc2626;}
-			.overall-badge{display:inline-block;padding:4px 12px;border-radius:20px;font-size:13px;font-weight:700;}
-			.chart-card,.section-card{background:var(--card-bg,transparent);border:1px solid var(--border-color,#e5e7eb);border-radius:12px;padding:16px;height:100%;}
-			.chart-card-title,.section-card-title{font-size:13px;font-weight:700;color:var(--text-muted,#374151);margin-bottom:12px;text-transform:uppercase;letter-spacing:0.03em;}
+			.metric-card{position:relative;background:var(--card-bg,#fff);border:1px solid var(--border-color,#edeef0);border-radius:var(--fh-radius);padding:16px 18px;box-shadow:0 1px 2px rgba(16,24,40,0.04),0 6px 16px -6px rgba(16,24,40,0.10);transition:box-shadow .18s ease,transform .18s ease;}
+			.metric-card:hover{box-shadow:0 2px 4px rgba(16,24,40,0.05),0 12px 22px -8px rgba(16,24,40,0.14);transform:translateY(-2px);}
+			.metric-card .m-label{font-size:10.5px;text-transform:uppercase;letter-spacing:0.07em;color:var(--text-muted,#9ca3af);font-weight:700;margin-bottom:7px;}
+			.metric-card .m-value{font-size:25px;font-weight:700;color:var(--text-color,#111827);letter-spacing:-0.02em;}
+			.metric-card.rag-green{box-shadow:inset 3px 0 0 #16a34a,0 1px 2px rgba(16,24,40,0.04),0 6px 16px -6px rgba(16,24,40,0.10);}
+			.metric-card.rag-amber{box-shadow:inset 3px 0 0 #f59e0b,0 1px 2px rgba(16,24,40,0.04),0 6px 16px -6px rgba(16,24,40,0.10);}
+			.metric-card.rag-red{box-shadow:inset 3px 0 0 #dc2626,0 1px 2px rgba(16,24,40,0.04),0 6px 16px -6px rgba(16,24,40,0.10);}
+			.metric-card.rag-green:hover{box-shadow:inset 3px 0 0 #16a34a,0 2px 4px rgba(16,24,40,0.05),0 12px 22px -8px rgba(16,24,40,0.14);}
+			.metric-card.rag-amber:hover{box-shadow:inset 3px 0 0 #f59e0b,0 2px 4px rgba(16,24,40,0.05),0 12px 22px -8px rgba(16,24,40,0.14);}
+			.metric-card.rag-red:hover{box-shadow:inset 3px 0 0 #dc2626,0 2px 4px rgba(16,24,40,0.05),0 12px 22px -8px rgba(16,24,40,0.14);}
+			.overall-badge{display:inline-block;padding:4px 13px;border-radius:20px;font-size:13px;font-weight:700;letter-spacing:.01em;}
+			.chart-card,.section-card{background:var(--card-bg,#fff);border:1px solid var(--border-color,#edeef0);border-radius:var(--fh-radius);padding:18px;height:100%;box-shadow:0 1px 2px rgba(16,24,40,0.04),0 6px 18px -6px rgba(16,24,40,0.09);}
+			.chart-card-title,.section-card-title{font-size:12.5px;font-weight:700;color:var(--text-muted,#374151);margin-bottom:14px;padding-bottom:12px;text-transform:uppercase;letter-spacing:0.05em;border-bottom:1px solid var(--border-color,#f0f1f3);}
 			.chart-card-body{position:relative;height:260px;}
-			.rag-badge{display:inline-block;padding:2px 10px;border-radius:20px;font-size:11px;font-weight:600;}
+			.rag-badge{display:inline-block;padding:2px 10px;border-radius:20px;font-size:11px;font-weight:700;letter-spacing:.01em;}
 			.inline-bar-wrap{display:flex;align-items:center;gap:6px;}
-			.inline-bar-bg{width:60px;height:6px;background:var(--border-color,#e5e7eb);border-radius:3px;overflow:hidden;flex-shrink:0;}
-			.inline-bar-fill{height:100%;border-radius:3px;}
-			.fh-table-wrap{overflow-x:auto;border-radius:10px;border:1px solid var(--border-color,#e5e7eb);}
+			.inline-bar-bg{width:60px;height:6px;background:var(--border-color,#eceef0);border-radius:3px;overflow:hidden;flex-shrink:0;}
+			.inline-bar-fill{height:100%;border-radius:3px;transition:width .2s ease;}
+			.fh-table-wrap{overflow-x:auto;border-radius:10px;border:1px solid var(--border-color,#edeef0);}
+			.fh-table-wrap.scrollable{max-height:232px;overflow-y:auto;}
 			.fh-table{width:100%;border-collapse:collapse;font-size:12.5px;}
-			.fh-table thead th{background:var(--control-bg,#f9fafb);padding:9px 12px;text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:0.04em;color:var(--text-muted,#6b7280);border-bottom:2px solid var(--border-color,#e5e7eb);white-space:nowrap;}
-			.fh-table tbody td{padding:9px 12px;border-bottom:1px solid var(--border-color,#f0f1f3);vertical-align:middle;color:var(--text-color,#111827);}
+			.fh-table thead th{background:var(--control-bg,#f9fafb);padding:10px 12px;text-align:left;font-size:10.5px;text-transform:uppercase;letter-spacing:0.05em;font-weight:700;color:var(--text-muted,#6b7280);border-bottom:2px solid var(--border-color,#edeef0);white-space:nowrap;position:sticky;top:0;z-index:1;}
+			.fh-table tbody td{padding:10px 12px;border-bottom:1px solid var(--border-color,#f4f5f6);vertical-align:middle;color:var(--text-color,#111827);}
+			.fh-table tbody tr{transition:background-color .12s ease;}
 			.fh-table tbody tr:hover{background:var(--control-bg,#f9fafb);}
 			.fh-table tbody tr:last-child td{border-bottom:none;}
+			.fh-table a{font-weight:500;}
 			.pill{display:inline-block;padding:2px 9px;border-radius:20px;font-size:11px;font-weight:600;background:var(--control-bg,#f3f4f6);color:var(--text-color,#374151);}
 			.pill.overdue{background:#fee2e2;color:#991b1b;}
 			.pill.high{background:#fee2e2;color:#991b1b;}
@@ -185,6 +215,9 @@ frappe.fh_strategy_dash.report = {
 			.funnel-mini{display:flex;gap:10px;font-size:12px;color:var(--text-muted,#4b5563);}
 			.funnel-mini span b{color:var(--text-color,#111827);}
 			.empty-state{padding:40px;text-align:center;color:var(--text-muted,#9ca3af);font-size:13px;}
+			.kpi-status-select{appearance:none;-webkit-appearance:none;font-size:12px;font-weight:600;letter-spacing:.01em;color:var(--text-color,#374151);background:var(--control-bg,#f9fafb) url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="10" height="6" viewBox="0 0 10 6"><path d="M1 1l4 4 4-4" stroke="%236b7280" stroke-width="1.5" fill="none" fill-rule="evenodd"/></svg>') no-repeat right 10px center;border:1px solid var(--border-color,#e5e7eb);border-radius:20px;padding:5px 28px 5px 13px;cursor:pointer;transition:border-color .15s ease,box-shadow .15s ease;}
+			.kpi-status-select:hover{border-color:#c7cad0;}
+			.kpi-status-select:focus{outline:none;border-color:#93c5fd;box-shadow:0 0 0 3px rgba(59,130,246,0.15);}
 		`;
 		document.head.appendChild(style);
 	},
@@ -445,16 +478,38 @@ frappe.fh_strategy_dash.report = {
 	},
 
 	renderKpiTable: function (data) {
-		const lines = data.kpi_lines || [];
-		if (!data.has_entry) {
+		// Cache the raw payload so the status filter can re-slice it locally
+		// without a server round-trip, then reset the filter back to "All"
+		// whenever a new period is loaded.
+		this._kpi_has_entry = !!data.has_entry;
+		this._kpi_lines = data.kpi_lines || [];
+		const select = this.kpi_status_filter_wrap.find(".kpi-status-select");
+		if (select.length) select.val("");
+		this._renderKpiTableRows();
+	},
+
+	_renderKpiTableRows: function () {
+		if (!this._kpi_has_entry) {
 			this.kpi_table_wrap.html(`<div class="empty-state">No KPI Period Entry has been created for this review period yet.</div>`);
 			return;
 		}
+		const lines = this._kpi_lines || [];
 		if (!lines.length) {
 			this.kpi_table_wrap.html(`<div class="empty-state">No KPI lines recorded for this period.</div>`);
 			return;
 		}
-		const rows = lines.map(l => {
+
+		const statusFilter = this.kpi_status_filter_wrap.find(".kpi-status-select").val() || "";
+		const filtered = !statusFilter
+			? lines
+			: lines.filter(l => statusFilter === "__not_rated__" ? !l.rag_status : l.rag_status === statusFilter);
+
+		if (!filtered.length) {
+			this.kpi_table_wrap.html(`<div class="empty-state">No KPIs match this status filter.</div>`);
+			return;
+		}
+
+		const rows = filtered.map(l => {
 			const rag = l.rag_status || "";
 			const barPct = rag === "Green" ? 100 : rag === "Amber" ? 60 : rag === "Red" ? 25 : 0;
 			return `
@@ -474,8 +529,12 @@ frappe.fh_strategy_dash.report = {
 			`;
 		}).join("");
 
+		// Scrollable body once we exceed 4 rows, so the section stops eating
+		// vertical space in production once KPI lists grow.
+		const scrollable = filtered.length > 4 ? " scrollable" : "";
+
 		this.kpi_table_wrap.html(`
-			<div class="fh-table-wrap">
+			<div class="fh-table-wrap${scrollable}">
 				<table class="fh-table">
 					<thead><tr><th>Pillar</th><th>KPI</th><th>Target</th><th>Actual</th><th>Status</th><th></th></tr></thead>
 					<tbody>${rows}</tbody>
