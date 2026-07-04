@@ -9,9 +9,11 @@
   "section_break_uwgh",
   "amended_from",
   "naming_series",
+  "function",
+  "column_break_zxby",
   "function_head",
   "head_of_function_name",
-  "function",
+  "employee",
   "column_break_dcpx",
   "reports_to",
   "reports_to_name",
@@ -77,6 +79,7 @@
    "label": "Comments"
   },
   {
+   "depends_on": "eval:doc.kpis_fetched == 1",
    "fieldname": "general_comments",
    "fieldtype": "Small Text",
    "label": "Review Period Reflection"
@@ -95,7 +98,8 @@
    "in_standard_filter": 1,
    "label": "Review Period",
    "options": "Review Period",
-   "reqd": 1
+   "reqd": 1,
+   "search_index": 1
   },
   {
    "depends_on": "eval:doc.hr_override_approved == 1",
@@ -180,7 +184,7 @@
    "fieldtype": "Column Break"
   },
   {
-   "depends_on": "eval:!doc.__islocal",
+   "depends_on": "eval:doc.kpis_fetched == 1",
    "fieldname": "summary_section",
    "fieldtype": "Section Break",
    "label": "Summary",
@@ -240,6 +244,7 @@
   {
    "fieldname": "function_head",
    "fieldtype": "Link",
+   "hidden": 1,
    "in_list_view": 1,
    "label": "Head of Function",
    "options": "User",
@@ -281,7 +286,8 @@
    "fetch_from": "reports_to.full_name",
    "fieldname": "reports_to_name",
    "fieldtype": "Data",
-   "label": "Reports To Name"
+   "label": "Reports To Name",
+   "read_only": 1
   },
   {
    "fetch_from": "function_head.full_name",
@@ -295,6 +301,17 @@
   },
   {
    "fieldname": "column_break_lbfh",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "employee",
+   "fieldtype": "Link",
+   "label": "Employee ID",
+   "options": "Employee",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_zxby",
    "fieldtype": "Column Break"
   }
  ],
@@ -311,7 +328,7 @@
    "link_fieldname": "kpi_period_entry_record"
   }
  ],
- "modified": "2026-07-01 16:56:51.417056",
+ "modified": "2026-07-04 17:23:46.516937",
  "modified_by": "Administrator",
  "module": "Strategy Tracker",
  "name": "KPI Period Entry",

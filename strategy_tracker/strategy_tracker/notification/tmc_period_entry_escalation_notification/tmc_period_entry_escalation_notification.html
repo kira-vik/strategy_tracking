@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KPI Period Entry Escalation - {{ doc.name }}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            width: 100%;
+            max-width: 700px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            color: #333333;
+            font-size: 20px;
+            margin-bottom: 15px;
+        }
+        p {
+            color: #555555;
+            line-height: 1.6;
+            font-size: 14px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        table th {
+            background-color: #dc3545;
+            color: #ffffff;
+            padding: 10px;
+            text-align: left;
+            font-size: 14px;
+        }
+        table td {
+            border: 1px solid #dddddd;
+            padding: 10px;
+            font-size: 13px;
+        }
+        .cta {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin-top: 20px;
+            color: #664d03;
+        }
+        .footer {
+            font-size: 12px;
+            color: #888888;
+            text-align: center;
+            margin-top: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+
+        <p>
+            Dear Top Management Committee Member,
+        </p>
+
+        <p>
+            A KPI Period Entry has been <strong>escalated</strong> following completion of the review process due to one or more KPIs being assessed as <strong>Red</strong>.
+        </p>
+
+        <p>
+            <strong>Function Head:</strong> {{ doc.head_of_function_name }}<br>
+            <strong>KPI Period Entry:</strong> {{ doc.name }}<br>
+            <strong>Overall Status:</strong> {{ doc.overall_rag }}
+        </p>
+
+        {% set red_kpis = doc.kpi_reviews | selectattr("rag_status", "equalto", "Red") | list %}
+
+        {% if red_kpis %}
+        <p>The following KPI(s) require management attention:</p>
+        
+        <table>
+            <thead>
+                <tr>
+                    <th>KPI</th>
+                    <th>Actual Performance</th>
+                    <th>Target</th>
+                    <th>Status</th>
+                    <th>Action Plan</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in red_kpis %}
+                <tr>
+                    <td>{{ row.kpi }}</td>
+                    <td>{{ row.actual_performance }}</td>
+                    <td>{{ row.target }}</td>
+                    <td style="color:#dc3545; font-weight:bold;">
+                        {{ row.rag_status }}
+                    </td>
+                    <td>{{ row.corrective_action_summary }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% endif %}
+
+        <div class="cta">
+            <strong>Action Required</strong><br>
+            Please review the escalated KPI Period Entry and the affected KPI(s). Where necessary, provide strategic guidance, approve corrective interventions, or engage the responsible Function Head to ensure appropriate recovery actions are implemented.
+        </div>
+
+        <p>
+            You can review the complete KPI Period Entry using the link below:
+        </p>
+
+        <p>
+            <a href="{{ frappe.utils.get_url() }}/app/{{ doc.doctype.replace(' ', '-') | lower }}/{{ doc.name }}">
+                Open KPI Period Entry
+            </a>
+        </p>
+
+        <p>
+            Best Regards,<br>
+            Strategy Execution Tracking System</p>
+        </p>
+
+        <div class="footer">
+            <p>This is an automated message. Please do not reply to this email.</p>
+        </div>
+
+    </div>
+</body>
+</html>

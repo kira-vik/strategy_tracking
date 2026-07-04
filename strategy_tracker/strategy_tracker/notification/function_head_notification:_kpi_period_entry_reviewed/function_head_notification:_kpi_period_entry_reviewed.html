@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KPI Period Entry Reviewed - {{ doc.name }}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            color: #333333;
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+        p {
+            color: #555555;
+            line-height: 1.5;
+            font-size: 14px;
+        }
+        .footer {
+            font-size: 12px;
+            color: #888888;
+            text-align: center;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+
+        <p>Your KPI Period Entry record {{ doc.name }} has been <strong>successfully reviewed</strong> by your line manager.</p>
+        
+        {% if doc.overall_rag in ["Red", "Amber"] %}
+        <p>
+            Based on the outcome of your review, <strong>KPI Action(s)</strong> have been created from this KPI Period Entry.
+            Please review the assigned actions in the system and update their progress as appropriate to support performance improvement.
+        </p>
+        {% endif %}
+
+        <p>You can access the reviewed document anytime in the system for reference.</p>
+
+        <p>Please begin preparing for your next review cycle and ensure alignment with upcoming objectives.</p>
+
+        <p>You can view the record here:
+            <a href="{{ frappe.utils.get_url() }}/app/{{ doc.doctype.replace(' ', '-') | lower }}/{{ doc.name }}">
+                Open KPI Period Entry Record
+            </a>
+        </p>
+
+        <p>Best Regards,<br>
+        Strategy Execution Tracking System</p>
+
+        <div class="footer">
+            <p>This is an automated message. Please do not reply to this email.</p>
+        </div>
+    </div>
+</body>
+</html>

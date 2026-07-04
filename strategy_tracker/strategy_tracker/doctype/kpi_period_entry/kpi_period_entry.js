@@ -133,7 +133,7 @@ frappe.ui.form.on("KPI Period Entry", {
           frm.reload_doc().then(() => {
                set_kpi_dashboard_headline(frm);
           });
-     }
+     },
 });
 
 frappe.ui.form.on("KPI Entry Line", {
@@ -462,54 +462,40 @@ function apply_rag_colors(frm) {
  * Sync Reports-To details from the selected Function Head.
  */
 function fetch_reporting_details(frm) {
-     if (!frm.doc.function_head) return;
+	if (!frm.doc.function_head) return;
 
-     frappe.call({
-          method: "get_reporting_details",
-          doc: frm.doc,
-          args: {
-               function_head: frm.doc.function_head
-          },
-          callback(r) {
-               if (!r.message) return;
+	frappe.call({
+		method: "get_reporting_details",
+		doc: frm.doc,
+		callback(r) {
+			const details = r.message || {};
 
-               let changed = false;
+			frm.set_value("reports_to", details.reports_to || "");
+			frm.set_value("reports_to_name", details.reports_to_name || "");
 
-               if (frm.doc.reports_to !== r.message.reports_to) {
-                    frm.set_value("reports_to", r.message.reports_to || "");
-                    changed = true;
-               }
+			if (
+				(!details.reports_to || !details.reports_to_name) &&
+				!frm.__missing_reporting_manager_shown
+			) {
+				frm.__missing_reporting_manager_shown = true;
 
-               if (frm.doc.reports_to_name !== r.message.reports_to_name) {
-                    frm.set_value("reports_to_name", r.message.reports_to_name || "");
-                    changed = true;
-               }
-
-               if (!frm.is_new() && changed) {
-                    frm.save();
-               }
-
-               if (
-                    (!r.message.reports_to || !r.message.reports_to_name) &&
-                    !frm.__missing_reporting_manager_shown
-               ) {
-                    frm.__missing_reporting_manager_shown = true;
-
-                    frappe.msgprint({
-                    title: __("Missing Reporting Manager"),
-                    indicator: "orange",
-                    message: __("No reporting manager is configured for this Function Head.")
-                    });
-               }
-          },
-          error() {
-               frappe.msgprint({
-                    title: __("Error"),
-                    indicator: "red",
-                    message: __("Could not fetch reporting details for this Function Head.")
-               });
-          }
-     });
+				frappe.msgprint({
+					title: __("Missing Reporting Manager"),
+					indicator: "orange",
+					message: __(
+						"No reporting manager is configured for this Function Head."
+					)
+				});
+			}
+		},
+		error() {
+			frappe.msgprint({
+				title: __("Error"),
+				indicator: "red",
+				message: __("Could not fetch reporting details for this Function Head.")
+			});
+		}
+	});
 }
 
 /**
@@ -541,7 +527,7 @@ function set_kpi_dashboard_headline(frm) {
 
                else {
                     frm.dashboard.set_headline(
-                         __("Kindly complete the required fields in the KPI Period Entry before sending it for review.")
+                         __("Kindly complete the required fields in the KPI Period Entry record before sending it for review.")
                     );
                }
           }

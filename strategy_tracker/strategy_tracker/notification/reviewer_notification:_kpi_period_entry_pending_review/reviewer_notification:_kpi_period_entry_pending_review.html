@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KPI Period Entry Self-Review Submitted - {{ doc.name }}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            color: #333333;
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+        p {
+            color: #555555;
+            line-height: 1.5;
+            font-size: 14px;
+        }
+        .footer {
+            font-size: 12px;
+            color: #888888;
+            text-align: center;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <p><strong>{{ doc.head_of_function_name }}</strong> has completed their self-review <strong>{{ doc.name }}</strong> and submitted it for your review.</p>
+
+        <p><strong>Action Required:</strong></p>
+        <ul>
+            <li>Review the Function Head’s self-assessment</li>
+            <li>Provide comments or feedback where necessary</li>
+            <li>Finalize the review outcome</li>
+        </ul>
+
+        <p>You can access the review here:
+            <a href="{{ frappe.utils.get_url() }}/app/{{ doc.doctype.replace(' ', '-') | lower }}/{{ doc.name }}">
+                View KPI Period Entry record
+            </a>
+        </p>
+
+        <p>Best Regards,<br>
+        Strategy Execution Tracking System</p>
+
+        <div class="footer">
+            <p>This is an automated message. Please do not reply to this email.</p>
+        </div>
+    </div>
+</body>
+</html>

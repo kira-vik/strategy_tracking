@@ -152,9 +152,9 @@ scheduler_events = {
 	# "all": [
 	# 	"strategy_tracker.tasks.all"
 	# ],
-	# "daily": [
-	# 	"strategy_tracker.tasks.daily"
-	# ],
+	"daily": [
+		"strategy_tracker.strategy_tracker.doctype.kpi_action.kpi_action.bulk_update_overdue"
+	],
 	# "hourly": [
 	# 	"strategy_tracker.tasks.hourly"
 	# ],

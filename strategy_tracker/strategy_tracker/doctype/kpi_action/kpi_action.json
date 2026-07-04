@@ -26,10 +26,13 @@
   "action_description",
   "dependencies_and_risks",
   "next_steps",
-  "escalated",
-  "last_updated",
   "column_break_iyvb",
-  "supporting_team"
+  "supporting_team",
+  "section_break_gzhq",
+  "is_overdue",
+  "escalated",
+  "column_break_pzwg",
+  "last_updated"
  ],
  "fields": [
   {
@@ -127,7 +130,8 @@
    "default": "0",
    "fieldname": "escalated",
    "fieldtype": "Check",
-   "label": "Escalated"
+   "label": "Escalated",
+   "read_only": 1
   },
   {
    "fieldname": "last_updated",
@@ -142,7 +146,8 @@
    "in_standard_filter": 1,
    "label": "Review Period",
    "options": "Review Period",
-   "read_only": 1
+   "read_only": 1,
+   "search_index": 1
   },
   {
    "fieldname": "kpi_period_entry",
@@ -151,7 +156,8 @@
    "in_standard_filter": 1,
    "label": "KPI Period Entry",
    "options": "KPI Period Entry",
-   "read_only": 1
+   "read_only": 1,
+   "search_index": 1
   },
   {
    "fieldname": "kpi_entry_line_id",
@@ -184,12 +190,27 @@
   {
    "fieldname": "column_break_iyvb",
    "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "section_break_gzhq",
+   "fieldtype": "Section Break"
+  },
+  {
+   "default": "0",
+   "fieldname": "is_overdue",
+   "fieldtype": "Check",
+   "label": "Is Overdue",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_pzwg",
+   "fieldtype": "Column Break"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-07-01 14:14:13.733068",
+ "modified": "2026-07-04 17:00:42.316038",
  "modified_by": "Administrator",
  "module": "Strategy Tracker",
  "name": "KPI Action",
@@ -262,7 +283,7 @@
    "print": 1,
    "read": 1,
    "report": 1,
-   "role": "Reporting Manager",
+   "role": "Performance Reviewer",
    "select": 1,
    "share": 1,
    "write": 1

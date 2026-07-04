@@ -9,8 +9,8 @@ from frappe.utils import now_datetime, getdate, now
 class KPIPeriodEntry(Document):
 	def validate(self):
 		self.prevent_duplicates()
-		self.get_reporting_details()
-		# self.validate_kpi_fetch()
+		self.set_reporting_details()
+		self.set_employee()
 		self.calculate_summary()
 
 	def before_submit(self):
@@ -34,7 +34,15 @@ class KPIPeriodEntry(Document):
 			{"custom_department_head": self.function_head},
 			"name"
 		)
-  
+
+	def set_employee(self):
+		if not self.employee:
+			self.employee = frappe.db.get_value(
+				"Employee",
+				{"user_id": self.function_head},
+				"name"
+			)
+
 	@frappe.whitelist()
 	def get_reporting_manager(self):
 		if not self.function_head:
@@ -317,13 +325,16 @@ class KPIPeriodEntry(Document):
 			self.overall_rag = "Amber"
 		else:
 			self.overall_rag = "Green"
-   
+
 	@frappe.whitelist()
 	def get_reporting_details(self):
+		return self._get_reporting_manager()
+
+	def _get_reporting_manager(self):
 		if not self.function_head:
 			return {}
 
-		# Get employee of function head
+		# Get employee record for the Function Head
 		employee = frappe.db.get_value(
 			"Employee",
 			{"user_id": self.function_head},
@@ -334,7 +345,7 @@ class KPIPeriodEntry(Document):
 		if not employee or not employee.reports_to:
 			return {}
 
-		# Get manager employee
+		# Get the reporting manager
 		manager = frappe.db.get_value(
 			"Employee",
 			employee.reports_to,
@@ -349,7 +360,13 @@ class KPIPeriodEntry(Document):
 			"reports_to": manager.user_id,
 			"reports_to_name": manager.employee_name
 		}
- 
+
+	def set_reporting_details(self):
+		details = self._get_reporting_manager()
+
+		self.reports_to = details.get("reports_to")
+		self.reports_to_name = details.get("reports_to_name")
+   
 	def cancel_kpi_actions(self):
 		actions = frappe.get_all(
 			"KPI Action",
