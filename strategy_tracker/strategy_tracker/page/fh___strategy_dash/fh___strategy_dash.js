@@ -460,9 +460,9 @@ frappe.fh_strategy_dash.report = {
 			return `
 				<tr>
 					<td>${frappe.utils.escape_html(l.pillar || "")}</td>
-					<td><a href="/app/kpi/${encodeURIComponent(l.kpi)}" target="_blank">${frappe.utils.escape_html(l.kpi_description || "")}</a></td>
-					<td>${frappe.utils.escape_html(l.target || "")}</td>
-					<td>${frappe.utils.escape_html(l.actual_performance || "")}</td>
+					<td style="width:25%;"><a href="/app/kpi/${encodeURIComponent(l.kpi)}" target="_blank">${frappe.utils.escape_html(l.kpi_description || "")}</a></td>
+					<td style="width:25%;">${frappe.utils.escape_html(l.target || "")}</td>
+					<td style="width:25%;">${frappe.utils.escape_html(l.actual_performance || "")}</td>
 					<td>
 						<div class="inline-bar-wrap">
 							<span class="rag-badge" style="background:${RAG_BG[rag]};color:${RAG_TEXT[rag]};">${rag || "Not Rated"}</span>
