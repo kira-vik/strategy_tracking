@@ -1,0 +1,35 @@
+{
+ "content": null,
+ "creation": "2026-07-02 08:47:29.787283",
+ "docstatus": 0,
+ "doctype": "Page",
+ "idx": 0,
+ "modified": "2026-07-02 08:47:29.787283",
+ "modified_by": "Administrator",
+ "module": "Strategy Tracker",
+ "name": "tmc---strategy-dash",
+ "owner": "Administrator",
+ "page_name": "tmc---strategy-dash",
+ "roles": [
+  {
+   "role": "Managing Director"
+  },
+  {
+   "role": "Chief Operating Officer"
+  },
+  {
+   "role": "General Manager - Finance"
+  },
+  {
+   "role": "General Manager - GI/Operations"
+  },
+  {
+   "role": "General Manager - Life"
+  }
+ ],
+ "script": null,
+ "standard": "Yes",
+ "style": null,
+ "system_page": 0,
+ "title": "Strategy Execution Dashboard - TMC"
+}

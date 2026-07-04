@@ -14,6 +14,7 @@
   "kpi_entry_line_id",
   "kpi_name",
   "kpi_reference",
+  "kpi_description",
   "section_break_vxyp",
   "action_owner",
   "start_date",
@@ -205,12 +206,20 @@
   {
    "fieldname": "column_break_pzwg",
    "fieldtype": "Column Break"
+  },
+  {
+   "fetch_from": "kpi_reference.kpi_name",
+   "fieldname": "kpi_description",
+   "fieldtype": "Small Text",
+   "hidden": 1,
+   "label": "KPI Description",
+   "read_only": 1
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-07-04 19:04:04.816383",
+ "modified": "2026-07-04 20:58:24.713171",
  "modified_by": "Administrator",
  "module": "Strategy Tracker",
  "name": "KPI Action",

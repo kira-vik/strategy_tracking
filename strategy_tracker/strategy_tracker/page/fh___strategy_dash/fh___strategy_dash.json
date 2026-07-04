@@ -1,0 +1,23 @@
+{
+ "content": null,
+ "creation": "2026-07-02 08:46:13.072278",
+ "docstatus": 0,
+ "doctype": "Page",
+ "idx": 0,
+ "modified": "2026-07-02 08:46:13.072278",
+ "modified_by": "Administrator",
+ "module": "Strategy Tracker",
+ "name": "fh---strategy-dash",
+ "owner": "Administrator",
+ "page_name": "fh---strategy-dash",
+ "roles": [
+  {
+   "role": "Function Head"
+  }
+ ],
+ "script": null,
+ "standard": "Yes",
+ "style": null,
+ "system_page": 0,
+ "title": "Strategy Execution Dashboard - FH"
+}
