@@ -12,18 +12,18 @@
   "docstatus": 0,
   "doctype": "Workflow State",
   "icon": "",
-  "modified": "2026-07-01 14:08:06.160204",
-  "name": "Reviewed",
+  "modified": "2026-07-01 14:06:13.077057",
+  "name": "Pending Review",
   "style": "",
-  "workflow_state_name": "Reviewed"
+  "workflow_state_name": "Pending Review"
  },
  {
   "docstatus": 0,
   "doctype": "Workflow State",
   "icon": "",
-  "modified": "2026-07-01 14:06:13.077057",
-  "name": "Pending Review",
+  "modified": "2026-07-01 14:08:06.160204",
+  "name": "Reviewed",
   "style": "",
-  "workflow_state_name": "Pending Review"
+  "workflow_state_name": "Reviewed"
  }
 ]
