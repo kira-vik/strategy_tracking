@@ -307,6 +307,7 @@ fixtures = [
 				"General Manager - Finance",
 				"General Manager - GI/Operations",
 				"General Manager - Life",
+				"KPI Registry Manager",
 				],
 			]
 		],
