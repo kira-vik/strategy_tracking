@@ -44,7 +44,6 @@ frappe.fh_strategy_dash.report = {
 		this.main_section = this.wrapper.find(".layout-main-section");
 		this.charts = {};
 
-		// Centered, comfortably-margined content instead of edge-to-edge.
 		this.main_section.css({
 			"max-width": "1440px",
 			"margin": "0 auto",
@@ -56,9 +55,6 @@ frappe.fh_strategy_dash.report = {
 
 		this.page.add_button("Refresh", () => this.loadDashboard());
 
-		// IMPORTANT: must be awaited — chart rendering will throw a
-		// ReferenceError (Chart is not defined) if this hasn't resolved yet,
-		// which silently aborts the rest of the render pass.
 		await frappe.require(CHART_JS_URL);
 		this._configureChartDefaults();
 
@@ -69,9 +65,6 @@ frappe.fh_strategy_dash.report = {
 	refresh: function () {},
 
 	_configureChartDefaults: function () {
-		// Neutral mid-tones that read fine on both light and dark desk themes,
-		// since Chart.js renders to a plain <canvas> and can't inherit
-		// Frappe's CSS custom properties automatically.
 		if (typeof Chart === "undefined") return;
 		Chart.defaults.color = "#94a3b8";
 		Chart.defaults.borderColor = "rgba(148,163,184,0.25)";
@@ -155,9 +148,6 @@ frappe.fh_strategy_dash.report = {
 		this._buildKpiStatusFilter();
 	},
 
-	// Plain native <select> (styled to match the pill/badge language) rather
-	// than a full frappe.ui.form control — this filter only ever slices data
-	// already on the client, it never triggers a server round-trip.
 	_buildKpiStatusFilter: function () {
 		this.kpi_status_filter_wrap.html(`
 			<select class="kpi-status-select">
@@ -177,21 +167,21 @@ frappe.fh_strategy_dash.report = {
 		style.id = "fh-strategy-dash-style";
 		style.innerHTML = `
 			:root{--fh-radius:14px;}
-			.function-badge{font-weight:600;font-size:12.5px;letter-spacing:.01em;color:var(--text-color,#166534);background:linear-gradient(180deg,#f0fdf4,#e7fbec);border:1px solid var(--border-color,#bbf7d0);border-radius:20px;padding:6px 14px;}
-			.filters-bar{background:var(--card-bg,#fff);border-color:var(--border-color,#e9eaec)!important;border-radius:var(--fh-radius);box-shadow:0 1px 2px rgba(16,24,40,0.04),0 4px 12px -4px rgba(16,24,40,0.06);}
+			.function-badge{font-weight:600;font-size:12.5px;letter-spacing:.01em;color:#166534;background:linear-gradient(180deg,#f0fdf4,#e7fbec);border:1px solid var(--border-color,#bbf7d0);border-radius:20px;padding:6px 14px;}
+			.filters-bar{background:var(--card-bg,#fff);border-color:var(--border-color,#e9eaec)!important;border-radius:var(--fh-radius);box-shadow:0 2px 4px rgba(16,24,40,0.06),0 8px 20px -6px rgba(16,24,40,0.12);}
 			.cards-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:14px;}
-			.metric-card{position:relative;background:var(--card-bg,#fff);border:1px solid var(--border-color,#edeef0);border-radius:var(--fh-radius);padding:16px 18px;box-shadow:0 1px 2px rgba(16,24,40,0.04),0 6px 16px -6px rgba(16,24,40,0.10);transition:box-shadow .18s ease,transform .18s ease;}
-			.metric-card:hover{box-shadow:0 2px 4px rgba(16,24,40,0.05),0 12px 22px -8px rgba(16,24,40,0.14);transform:translateY(-2px);}
+			.metric-card{position:relative;background:var(--card-bg,#fff);border:1px solid var(--border-color,#edeef0);border-radius:var(--fh-radius);padding:16px 18px;box-shadow:0 2px 4px rgba(16,24,40,0.07),0 10px 24px -8px rgba(16,24,40,0.18);transition:box-shadow .18s ease,transform .18s ease;}
+			.metric-card:hover{box-shadow:0 3px 6px rgba(16,24,40,0.08),0 16px 30px -10px rgba(16,24,40,0.22);transform:translateY(-2px);}
 			.metric-card .m-label{font-size:10.5px;text-transform:uppercase;letter-spacing:0.07em;color:var(--text-muted,#9ca3af);font-weight:700;margin-bottom:7px;}
 			.metric-card .m-value{font-size:25px;font-weight:700;color:var(--text-color,#111827);letter-spacing:-0.02em;}
-			.metric-card.rag-green{box-shadow:inset 3px 0 0 #16a34a,0 1px 2px rgba(16,24,40,0.04),0 6px 16px -6px rgba(16,24,40,0.10);}
-			.metric-card.rag-amber{box-shadow:inset 3px 0 0 #f59e0b,0 1px 2px rgba(16,24,40,0.04),0 6px 16px -6px rgba(16,24,40,0.10);}
-			.metric-card.rag-red{box-shadow:inset 3px 0 0 #dc2626,0 1px 2px rgba(16,24,40,0.04),0 6px 16px -6px rgba(16,24,40,0.10);}
-			.metric-card.rag-green:hover{box-shadow:inset 3px 0 0 #16a34a,0 2px 4px rgba(16,24,40,0.05),0 12px 22px -8px rgba(16,24,40,0.14);}
-			.metric-card.rag-amber:hover{box-shadow:inset 3px 0 0 #f59e0b,0 2px 4px rgba(16,24,40,0.05),0 12px 22px -8px rgba(16,24,40,0.14);}
-			.metric-card.rag-red:hover{box-shadow:inset 3px 0 0 #dc2626,0 2px 4px rgba(16,24,40,0.05),0 12px 22px -8px rgba(16,24,40,0.14);}
+			.metric-card.rag-green{box-shadow:inset 3px 0 0 #16a34a,0 2px 4px rgba(16,24,40,0.07),0 10px 24px -8px rgba(16,24,40,0.18);}
+			.metric-card.rag-amber{box-shadow:inset 3px 0 0 #f59e0b,0 2px 4px rgba(16,24,40,0.07),0 10px 24px -8px rgba(16,24,40,0.18);}
+			.metric-card.rag-red{box-shadow:inset 3px 0 0 #dc2626,0 2px 4px rgba(16,24,40,0.07),0 10px 24px -8px rgba(16,24,40,0.18);}
+			.metric-card.rag-green:hover{box-shadow:inset 3px 0 0 #16a34a,0 3px 6px rgba(16,24,40,0.08),0 16px 30px -10px rgba(16,24,40,0.22);}
+			.metric-card.rag-amber:hover{box-shadow:inset 3px 0 0 #f59e0b,0 3px 6px rgba(16,24,40,0.08),0 16px 30px -10px rgba(16,24,40,0.22);}
+			.metric-card.rag-red:hover{box-shadow:inset 3px 0 0 #dc2626,0 3px 6px rgba(16,24,40,0.08),0 16px 30px -10px rgba(16,24,40,0.22);}
 			.overall-badge{display:inline-block;padding:4px 13px;border-radius:20px;font-size:13px;font-weight:700;letter-spacing:.01em;}
-			.chart-card,.section-card{background:var(--card-bg,#fff);border:1px solid var(--border-color,#edeef0);border-radius:var(--fh-radius);padding:18px;height:100%;box-shadow:0 1px 2px rgba(16,24,40,0.04),0 6px 18px -6px rgba(16,24,40,0.09);}
+			.chart-card,.section-card{background:var(--card-bg,#fff);border:1px solid var(--border-color,#edeef0);border-radius:var(--fh-radius);padding:18px;height:100%;box-shadow:0 2px 4px rgba(16,24,40,0.06),0 10px 26px -8px rgba(16,24,40,0.16);}
 			.chart-card-title,.section-card-title{font-size:12.5px;font-weight:700;color:var(--text-muted,#374151);margin-bottom:14px;padding-bottom:12px;text-transform:uppercase;letter-spacing:0.05em;border-bottom:1px solid var(--border-color,#f0f1f3);}
 			.chart-card-body{position:relative;height:260px;}
 			.rag-badge{display:inline-block;padding:2px 10px;border-radius:20px;font-size:11px;font-weight:700;letter-spacing:.01em;}
@@ -215,6 +205,8 @@ frappe.fh_strategy_dash.report = {
 			.funnel-mini{display:flex;gap:10px;font-size:12px;color:var(--text-muted,#4b5563);}
 			.funnel-mini span b{color:var(--text-color,#111827);}
 			.empty-state{padding:40px;text-align:center;color:var(--text-muted,#9ca3af);font-size:13px;}
+			.loading-state{font-weight:600;letter-spacing:.02em;animation:fh-pulse 1.1s ease-in-out infinite;}
+			@keyframes fh-pulse{0%,100%{opacity:.45;}50%{opacity:1;}}
 			.kpi-status-select{appearance:none;-webkit-appearance:none;font-size:12px;font-weight:600;letter-spacing:.01em;color:var(--text-color,#374151);background:var(--control-bg,#f9fafb) url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="10" height="6" viewBox="0 0 10 6"><path d="M1 1l4 4 4-4" stroke="%236b7280" stroke-width="1.5" fill="none" fill-rule="evenodd"/></svg>') no-repeat right 10px center;border:1px solid var(--border-color,#e5e7eb);border-radius:20px;padding:5px 28px 5px 13px;cursor:pointer;transition:border-color .15s ease,box-shadow .15s ease;}
 			.kpi-status-select:hover{border-color:#c7cad0;}
 			.kpi-status-select:focus{outline:none;border-color:#93c5fd;box-shadow:0 0 0 3px rgba(59,130,246,0.15);}
@@ -317,13 +309,19 @@ frappe.fh_strategy_dash.report = {
 
 	loadDashboard: async function () {
 		const review_period = this.review_period_field ? this.review_period_field.get_value() : null;
-		this.cards_row.html(`<div class="empty-state">Loading dashboard&hellip;</div>`);
+		this._startLoadingSequence();
 
-		const r = await frappe.call({
-			method: `${METHOD_BASE}.get_dashboard_data`,
-			args: { review_period },
-		});
-		const data = r.message || {};
+		let data = {};
+		try {
+			const r = await frappe.call({
+				method: `${METHOD_BASE}.get_dashboard_data`,
+				args: { review_period },
+			});
+			data = r.message || {};
+		} finally {
+			this._stopLoadingSequence();
+		}
+
 		this.renderCards(data);
 		this._safe(() => this.renderDonut(data), "donut");
 		this._safe(() => this.renderTrend(data), "trend");
@@ -331,6 +329,26 @@ frappe.fh_strategy_dash.report = {
 		this._safe(() => this.renderPriorityChart(data), "priority");
 		this._safe(() => this.renderKpiTable(data), "kpi table");
 		this._safe(() => this.renderActionsTable(data), "actions table");
+	},
+
+	// Purely cosmetic: cycles a few short status messages in the cards row
+	// while the request is in flight, so a period switch reads as "working
+	// on it" rather than an instant, slightly jarring content swap.
+	_startLoadingSequence: function () {
+		const messages = ["Fetching data…", "Organizing charts…", "Presenting now…"];
+		let i = 0;
+		this.cards_row.html(`<div class="empty-state loading-state">${messages[0]}</div>`);
+		this._loading_interval = setInterval(() => {
+			i = (i + 1) % messages.length;
+			this.cards_row.find(".loading-state").text(messages[i]);
+		}, 500);
+	},
+
+	_stopLoadingSequence: function () {
+		if (this._loading_interval) {
+			clearInterval(this._loading_interval);
+			this._loading_interval = null;
+		}
 	},
 
 	_safe: function (fn, label) {
@@ -347,21 +365,17 @@ frappe.fh_strategy_dash.report = {
 
 	renderCards: function (data) {
 		const c = data.cards || {};
-		const ragClass = (c.overall_rag || "").toLowerCase();
 		this.cards_row.html(`
 			<div class="metric-card"><div class="m-label">Total KPIs</div><div class="m-value">${c.total_kpis || 0}</div></div>
 			<div class="metric-card rag-green"><div class="m-label">Green</div><div class="m-value" style="color:#16a34a;">${c.green_count || 0}</div></div>
 			<div class="metric-card rag-amber"><div class="m-label">Amber</div><div class="m-value" style="color:#f59e0b;">${c.amber_count || 0}</div></div>
 			<div class="metric-card rag-red"><div class="m-label">Red</div><div class="m-value" style="color:#dc2626;">${c.red_count || 0}</div></div>
 			<div class="metric-card"><div class="m-label">Open Actions</div><div class="m-value">${c.open_actions || 0}</div></div>
-			<div class="metric-card"><div class="m-label">Overdue Actions</div><div class="m-value" style="color:${(c.overdue_actions || 0) > 0 ? '#dc2626' : '#111827'};">${c.overdue_actions || 0}</div></div>
-			<div class="metric-card">
-				<div class="m-label">Overall RAG</div>
-				<div class="overall-badge" style="background:${RAG_BG[c.overall_rag] || RAG_BG['']};color:${RAG_TEXT[c.overall_rag] || RAG_TEXT['']};">
-					${c.overall_rag || "No Data"}
-				</div>
-			</div>
+			<div class="metric-card"><div class="m-label">Overdue Actions</div><div class="m-value" style="color:${(c.overdue_actions || 0) > 0 ? '#dc2626' : 'var(--text-color,#111827)'};">${c.overdue_actions || 0}</div></div>
 		`);
+
+		const ragIndicator = { Green: "green", Amber: "orange", Red: "red" }[c.overall_rag] || "gray";
+		this.page.set_indicator(c.overall_rag || "No Data", ragIndicator);
 	},
 
 	renderDonut: function (data) {
