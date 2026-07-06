@@ -59,18 +59,19 @@
    "in_standard_filter": 1,
    "label": "Calendar Year",
    "non_negative": 1,
-   "reqd": 1,
-   "unique": 1
+   "reqd": 1
   },
   {
    "fieldname": "calendar_start_date",
    "fieldtype": "Date",
-   "label": "Review Calendar Start"
+   "label": "Review Calendar Start",
+   "reqd": 1
   },
   {
    "fieldname": "calendar_end_date",
    "fieldtype": "Date",
-   "label": "Review Calendar End"
+   "label": "Review Calendar End",
+   "reqd": 1
   },
   {
    "depends_on": "eval:doc.calendar_year",
@@ -181,7 +182,7 @@
    "link_fieldname": "calendar"
   }
  ],
- "modified": "2026-07-01 16:59:07.743366",
+ "modified": "2026-07-06 10:25:30.208440",
  "modified_by": "Administrator",
  "module": "Strategy Tracker",
  "name": "Review Calendar",

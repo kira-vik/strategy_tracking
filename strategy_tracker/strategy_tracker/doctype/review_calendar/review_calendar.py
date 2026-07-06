@@ -16,21 +16,43 @@ class ReviewCalendar(Document):
 		"""Validate Review Calendar before saving."""
 
 		# --------------------------------------------------------
-		# Prevent duplicate calendars for the same year
+		# Prevent overlapping review calendars
 		# --------------------------------------------------------
-		existing = frappe.db.exists(
-			"Review Calendar",
-			{
-				"calendar_year": self.calendar_year,
-				"name": ["!=", self.name],
-			},
+		# existing = frappe.db.exists(
+		# 	"Review Calendar",
+		# 	{
+		# 		"calendar_year": self.calendar_year,
+		# 		"name": ["!=", self.name],
+		# 	},
+		# )
+
+		# if existing:
+		# 	frappe.throw(
+		# 		f"A Review Calendar already exists for the year {self.calendar_year}. "
+		# 		"Please choose another calendar year.",
+		# 		title="Duplicate Calendar",
+		# 	)
+		overlapping = frappe.db.sql(
+			"""
+			SELECT name
+			FROM `tabReview Calendar`
+			WHERE name != %s
+				AND calendar_start_date <= %s
+				AND calendar_end_date >= %s
+			LIMIT 1
+			""",
+			(
+				self.name,
+				self.calendar_end_date,
+				self.calendar_start_date,
+			),
 		)
 
-		if existing:
+		if overlapping:
 			frappe.throw(
-				f"A Review Calendar already exists for the year {self.calendar_year}. "
-				"Please choose another calendar year.",
-				title="Duplicate Calendar",
+				f"This review calendar overlaps with {overlapping[0][0]}. "
+				"Review calendar periods cannot overlap.",
+				title="Overlapping Calendar",
 			)
 
 		# --------------------------------------------------------
