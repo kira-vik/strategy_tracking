@@ -18,20 +18,6 @@ class ReviewCalendar(Document):
 		# --------------------------------------------------------
 		# Prevent overlapping review calendars
 		# --------------------------------------------------------
-		# existing = frappe.db.exists(
-		# 	"Review Calendar",
-		# 	{
-		# 		"calendar_year": self.calendar_year,
-		# 		"name": ["!=", self.name],
-		# 	},
-		# )
-
-		# if existing:
-		# 	frappe.throw(
-		# 		f"A Review Calendar already exists for the year {self.calendar_year}. "
-		# 		"Please choose another calendar year.",
-		# 		title="Duplicate Calendar",
-		# 	)
 		overlapping = frappe.db.sql(
 			"""
 			SELECT name
@@ -63,6 +49,23 @@ class ReviewCalendar(Document):
 				frappe.throw(
 					"Calendar End Date must be after Calendar Start Date.",
 					title="Invalid Calendar Dates",
+				)
+
+		# --------------------------------------------------------
+		# Ensure all key dates fall on weekdays
+		# --------------------------------------------------------
+		for fieldname, label in [
+			("calendar_start_date", "Review Calendar Start"),
+			("calendar_end_date", "Review Calendar End"),
+			("first_scheduled_review_meeting", "First Scheduled Review Meeting"),
+		]:
+
+			value = self.get(fieldname)
+
+			if value and self._is_weekend(value):
+				frappe.throw(
+					_("{0} must fall on a weekday (Monday to Friday).").format(label),
+					title=_("Weekend Date"),
 				)
 
 		# --------------------------------------------------------
@@ -188,7 +191,11 @@ class ReviewCalendar(Document):
 			# ----------------------------------------------------
 			# Submission deadline
 			# ----------------------------------------------------
-			submission_deadline = current_review - timedelta(days=1)
+			# submission_deadline = current_review - timedelta(days=1)
+			submission_deadline = self._calculate_submission_deadline(
+				current_review,
+				schedule["submission_deadline_days_before"]
+			)
 
 			# ----------------------------------------------------
 			# Window start
@@ -197,6 +204,20 @@ class ReviewCalendar(Document):
 				window_start = previous_review + timedelta(days=1)
 			else:
 				window_start = calendar_start
+    
+			if submission_deadline < window_start:
+				frappe.throw(
+					_(
+						"Submission deadline for Review {0} cannot fall before the review period start date.<br><br>"
+						"Review Period Start: {1}<br>"
+						"Submission Deadline: {2}"
+					).format(
+						review_no,
+						formatdate(window_start),
+						formatdate(submission_deadline)
+					),
+					title=_("Invalid Submission Deadline")
+				)
 
 			review_label = f"Review {review_no} ({current_review.strftime('%d %b %Y')})"
 
@@ -311,6 +332,41 @@ class ReviewCalendar(Document):
 	# --------------------------------------------------------
 	# HELPERS
 	# --------------------------------------------------------
+	def _is_weekend(self, value):
+		"""Return True if the supplied date falls on a weekend."""
+		return getdate(value).weekday() >= 5
+
+	def _get_next_weekday(self, value):
+		"""Return the next weekday (Monday-Friday)."""
+		d = getdate(value)
+
+		while d.weekday() >= 5:
+			d += timedelta(days=1)
+
+		return d
+
+	def _get_previous_weekday(self, value):
+		"""Return the previous weekday (Monday-Friday)."""
+		d = getdate(value)
+
+		while d.weekday() >= 5:
+			d -= timedelta(days=1)
+
+		return d
+
+	def _calculate_submission_deadline(self, review_date, days_before):
+		"""
+		Calculate submission deadline based on configured offset.
+		If the deadline falls on a weekend, move it back to the nearest Friday.
+		"""
+
+		deadline = getdate(review_date) - timedelta(days=days_before)
+
+		while deadline.weekday() >= 5:
+			deadline -= timedelta(days=1)
+
+		return deadline
+
 	def _get_schedule_settings(self):
 
 		settings = frappe.get_cached_doc("Strategy Tracking Settings")
@@ -319,9 +375,17 @@ class ReviewCalendar(Document):
 			"frequency": settings.review_frequency,
 			"meeting_weekday": settings.meeting_weekday,
 			"meeting_day": settings.meeting_day_of_month,
+			"submission_deadline_days_before": cint(
+				settings.submission_deadline_days_before or 1
+			),
 		}
 
 	def _validate_first_review_meeting(self, first_review, schedule):
+
+		if self._is_weekend(first_review):
+			frappe.throw(
+				_("The First Scheduled Review Meeting must fall on a weekday (Monday to Friday).")
+			)
 
 		frequency = schedule["frequency"]
 
@@ -361,7 +425,8 @@ class ReviewCalendar(Document):
 			day = schedule["meeting_day"]
 			last_day = monthrange(year, month)[1]
 
-			return date(year, month, min(day, last_day))
+			meeting = date(year, month, min(day, last_day))
+			return self._get_next_weekday(meeting)
 
 		frappe.throw(_("Unsupported review frequency: {0}").format(frequency))
   
@@ -396,7 +461,9 @@ class ReviewCalendar(Document):
 
 			last_day = calendar.monthrange(year, month)[1]
 
-			return date(year, month, min(day, last_day))
+			meeting = date(year, month, min(day, last_day))
+   
+			return self._get_next_weekday(meeting)
 
 		else:
 

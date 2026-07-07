@@ -1,19 +1,81 @@
 // Copyright (c) 2026, V W and contributors
 // For license information, please see license.txt
 
+// --------------------------------------------------------
+// Date helpers
+// --------------------------------------------------------
+function isWeekend(date) {
+	const d = new Date(date);
+	return d.getDay() === 0 || d.getDay() === 6;
+}
+
+function getNextWeekday(date) {
+	const d = new Date(date);
+
+	while (d.getDay() === 0 || d.getDay() === 6) {
+		d.setDate(d.getDate() + 1);
+	}
+
+	return frappe.datetime.obj_to_str(d);
+}
+
+function getPreviousWeekday(date) {
+	const d = new Date(date);
+
+	while (d.getDay() === 0 || d.getDay() === 6) {
+		d.setDate(d.getDate() - 1);
+	}
+
+	return frappe.datetime.obj_to_str(d);
+}
+
+function validateWeekday(frm, fieldname, label) {
+
+	const value = frm.doc[fieldname];
+
+	if (!value || !isWeekend(value)) {
+		return true;
+	}
+
+	const suggested = getNextWeekday(value);
+
+	frappe.confirm(
+		`${label} cannot fall on a weekend.<br><br>
+		The next available weekday is:<br>
+		<b>${frappe.datetime.str_to_user(suggested)}</b><br><br>
+		Would you like to use this date?`,
+
+		() => frm.set_value(fieldname, suggested),
+
+		() => frm.set_value(fieldname, null)
+	);
+
+	return false;
+}
 frappe.ui.form.on("Review Calendar", {
 
 	// --------------------------------------------------------
 	// Auto-fill calendar start/end dates
 	// --------------------------------------------------------
 	calendar_year: function (frm) {
-		if (frm.doc.calendar_year) {
-			frm.set_value("calendar_start_date", `${frm.doc.calendar_year}-01-01`);
-			frm.set_value("calendar_end_date", `${frm.doc.calendar_year}-12-31`);
-		} else {
+
+		if (!frm.doc.calendar_year) {
 			frm.set_value("calendar_start_date", null);
 			frm.set_value("calendar_end_date", null);
+			return;
 		}
+
+		const year = frm.doc.calendar_year;
+
+		frm.set_value(
+			"calendar_start_date",
+			getNextWeekday(`${year}-01-01`)
+		);
+
+		frm.set_value(
+			"calendar_end_date",
+			getPreviousWeekday(`${year}-12-31`)
+		);
 	},
 
 	// --------------------------------------------------------
@@ -23,6 +85,16 @@ frappe.ui.form.on("Review Calendar", {
 
 		const date = frm.doc.first_scheduled_review_meeting;
 		if (!date) return;
+
+		if (
+			!validateWeekday(
+				frm,
+				"first_scheduled_review_meeting",
+				"First Scheduled Review Meeting"
+			)
+		) {
+			return;
+		}
 
 		// ----------------------------------------------------
 		// Basic calendar year validation (client-side only hint)
@@ -57,7 +129,12 @@ frappe.ui.form.on("Review Calendar", {
 
 				if (!r.message) return;
 
-				const suggested = frappe.datetime.add_days(date, 7);
+				// const suggested = frappe.datetime.add_days(date, 7);
+				let suggested = frappe.datetime.add_days(date, 7);
+
+				while (isWeekend(suggested)) {
+					suggested = frappe.datetime.add_days(suggested, 1);
+				}
 
 				frappe.confirm(
 					`This date is already used as a spillover meeting in another Review Calendar.<br><br>
@@ -77,18 +154,45 @@ frappe.ui.form.on("Review Calendar", {
 
 		if (!frm.doc.calendar_start_date) return;
 
+		if (
+			!validateWeekday(
+				frm,
+				"calendar_start_date",
+				"Review Calendar Start"
+			)
+		) {
+			return;
+		}
+
 		frappe.call({
 			method: "get_initial_review_meeting",
-               doc: frm.doc,
+			doc: frm.doc,
 			args: {
 				calendar_start_date: frm.doc.calendar_start_date
 			},
 			callback: function (r) {
 				if (r.message) {
-					frm.set_value("first_scheduled_review_meeting", r.message);
+					frm.set_value(
+						"first_scheduled_review_meeting",
+						r.message
+					);
 				}
 			}
 		});
+	},
+
+	// --------------------------------------------------------
+	// Calendar end date
+	// --------------------------------------------------------
+	calendar_end_date: function (frm) {
+
+		if (!frm.doc.calendar_end_date) return;
+
+		validateWeekday(
+			frm,
+			"calendar_end_date",
+			"Review Calendar End"
+		);
 	},
 
 	// --------------------------------------------------------

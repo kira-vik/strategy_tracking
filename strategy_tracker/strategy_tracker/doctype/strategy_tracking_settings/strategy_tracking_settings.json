@@ -8,7 +8,9 @@
   "review_scheduling_section",
   "review_frequency",
   "meeting_weekday",
-  "meeting_day_of_month"
+  "meeting_day_of_month",
+  "column_break_xyze",
+  "submission_deadline_days_before"
  ],
  "fields": [
   {
@@ -40,13 +42,25 @@
    "fieldname": "review_scheduling_section",
    "fieldtype": "Section Break",
    "label": "Review Scheduling"
+  },
+  {
+   "fieldname": "column_break_xyze",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "1",
+   "fieldname": "submission_deadline_days_before",
+   "fieldtype": "Int",
+   "label": "Submission Deadline (Days Before Review Meeting)",
+   "non_negative": 1,
+   "reqd": 1
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2026-07-01 10:33:45.424936",
+ "modified": "2026-07-07 20:48:39.756178",
  "modified_by": "Administrator",
  "module": "Strategy Tracker",
  "name": "Strategy Tracking Settings",
