@@ -8,6 +8,8 @@ from frappe.utils import now_datetime, getdate, now
 
 class KPIPeriodEntry(Document):
 	def validate(self):
+		self.validate_edit_permission()
+
 		self.prevent_duplicates()
 		self.set_reporting_details()
 		self.set_employee()
@@ -69,6 +71,68 @@ class KPIPeriodEntry(Document):
 			frappe.throw(
 				f"Kindly fetch your assigned KPIs before saving this record",
 				title="KPI Fetch Alert"
+			)
+
+	def validate_edit_permission(self):
+		"""
+		Ensure only the appropriate users can update KPI Period Entry records
+		based on workflow state.
+		"""
+
+		# Allow creation of new records
+		if self.is_new():
+			return
+
+		user = frappe.session.user
+
+		roles = frappe.get_roles(user)
+
+		is_admin = user == "Administrator"
+		is_hr = "HR Manager" in roles
+		is_system_manager = "System Manager" in roles
+
+		# Elevated users bypass workflow restrictions
+		if is_admin or is_hr or is_system_manager:
+			return
+
+		is_function_head = user == self.function_head
+		is_performance_reviewer = user == self.reports_to
+
+		workflow_state = self.workflow_state
+
+		# --------------------------------------------------------
+		# Draft
+		# Function Head owns completion of self-review
+		# --------------------------------------------------------
+		if workflow_state == "Draft":
+
+			if not is_function_head:
+				frappe.throw(
+					"You do not have permission to update this KPI Period Entry while it is in Draft state.",
+					title="Permission Denied"
+				)
+
+		# --------------------------------------------------------
+		# Pending Review
+		# Performance Reviewer owns assessment
+		# --------------------------------------------------------
+		elif workflow_state == "Pending Review":
+
+			if not is_performance_reviewer:
+				frappe.throw(
+					"You do not have permission to update this KPI Period Entry while it is Pending Review.",
+					title="Permission Denied"
+				)
+
+		# --------------------------------------------------------
+		# Any other state
+		# Lock record from normal users
+		# --------------------------------------------------------
+		else:
+
+			frappe.throw(
+				"You do not have permission to update this KPI Period Entry.",
+				title="Permission Denied"
 			)
   
 	def prevent_duplicates(self):

@@ -30,6 +30,8 @@ frappe.ui.form.on("KPI Period Entry", {
           setup_fetch_kpi_button(frm);
           setup_hr_override_button(frm);
           set_kpi_dashboard_headline(frm);
+
+          apply_edit_permissions(frm);
      },
 
      setup(frm) {
@@ -552,4 +554,51 @@ function set_kpi_dashboard_headline(frm) {
                );
           }
      }
+}
+
+
+function apply_edit_permissions(frm) {
+
+	const user = frappe.session.user;
+
+	const is_admin = user === "Administrator";
+	const is_hr = frappe.user.has_role("HR Manager");
+
+	const is_function_head = user === frm.doc.function_head;
+	const is_performance_reviewer = user === frm.doc.reports_to;
+
+	let can_edit = false;
+
+	// --------------------------------------------------------
+	// Draft stage
+	// --------------------------------------------------------
+	if (frm.doc.workflow_state === "Draft") {
+
+		can_edit =
+			is_function_head ||
+			is_admin ||
+			is_hr;
+	}
+
+	// --------------------------------------------------------
+	// Pending Review stage
+	// --------------------------------------------------------
+	else if (frm.doc.workflow_state === "Pending Review") {
+
+		can_edit =
+			is_performance_reviewer ||
+			is_admin ||
+			is_hr;
+	}
+
+	// --------------------------------------------------------
+	// Any other workflow state
+	// --------------------------------------------------------
+	else {
+		can_edit =
+			is_admin ||
+			is_hr;
+	}
+
+	frm.set_read_only(!can_edit);
 }
