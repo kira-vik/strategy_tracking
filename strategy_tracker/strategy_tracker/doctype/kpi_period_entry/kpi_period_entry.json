@@ -245,7 +245,6 @@
   {
    "fieldname": "function_head",
    "fieldtype": "Link",
-   "in_list_view": 1,
    "label": "Head of Function",
    "options": "User",
    "read_only": 1
@@ -293,6 +292,7 @@
    "fetch_from": "function_head.full_name",
    "fieldname": "head_of_function_name",
    "fieldtype": "Data",
+   "in_list_view": 1,
    "label": "Head of Function Name"
   },
   {
@@ -333,7 +333,7 @@
    "link_fieldname": "kpi_period_entry_record"
   }
  ],
- "modified": "2026-07-04 20:02:33.887375",
+ "modified": "2026-07-08 15:32:32.354206",
  "modified_by": "Administrator",
  "module": "Strategy Tracker",
  "name": "KPI Period Entry",
