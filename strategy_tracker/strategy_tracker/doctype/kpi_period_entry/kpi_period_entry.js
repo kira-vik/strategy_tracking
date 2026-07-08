@@ -22,16 +22,14 @@ frappe.ui.form.on("KPI Period Entry", {
      },
 
      refresh(frm) {
-          // Prevent duplicate custom buttons from stacking up on repeated refreshes
-          frm.clear_custom_buttons();
+          set_default_function_head(frm);
+
+          apply_edit_permissions(frm);
 
           display_kpi_message(frm);
-          set_default_function_head(frm);
           setup_fetch_kpi_button(frm);
           setup_hr_override_button(frm);
           set_kpi_dashboard_headline(frm);
-
-          apply_edit_permissions(frm);
      },
 
      setup(frm) {
@@ -225,7 +223,13 @@ function display_kpi_message(frm) {
  * Add the "Fetch KPIs" button when KPIs have not yet been pulled in.
  */
 function setup_fetch_kpi_button(frm) {
+     const is_function_head = frappe.session.user === frm.doc.function_head;
+     const is_admin = frappe.session.user === "Administrator";
+
      if (frm.is_new()) return;
+
+     if (!is_function_head && !is_admin) return;
+     // if (frm.is_new()) return;
 
      if (!frm.doc.kpis_fetched) {
           frm.add_custom_button(__("Fetch KPIs"), () => fetch_kpis(frm));
@@ -558,47 +562,27 @@ function set_kpi_dashboard_headline(frm) {
 
 
 function apply_edit_permissions(frm) {
+     const user = frappe.session.user;
 
-	const user = frappe.session.user;
+     const is_admin = user === "Administrator";
+     const is_hr = frappe.user.has_role("HR Manager");
+     const is_function_head = user === frm.doc.function_head;
+     const is_performance_reviewer = user === frm.doc.reports_to;
 
-	const is_admin = user === "Administrator";
-	const is_hr = frappe.user.has_role("HR Manager");
+     let can_edit = false;
 
-	const is_function_head = user === frm.doc.function_head;
-	const is_performance_reviewer = user === frm.doc.reports_to;
+     if (frm.is_new()) {
+          can_edit = true;
+     }
+     else if (frm.doc.workflow_state === "Draft") {
+          can_edit = is_function_head || is_admin || is_hr;
+     }
+     else if (frm.doc.workflow_state === "Pending Review") {
+          can_edit = is_performance_reviewer || is_admin || is_hr;
+     }
+     else {
+          can_edit = is_admin || is_hr;
+     }
 
-	let can_edit = false;
-
-	// --------------------------------------------------------
-	// Draft stage
-	// --------------------------------------------------------
-	if (frm.doc.workflow_state === "Draft") {
-
-		can_edit =
-			is_function_head ||
-			is_admin ||
-			is_hr;
-	}
-
-	// --------------------------------------------------------
-	// Pending Review stage
-	// --------------------------------------------------------
-	else if (frm.doc.workflow_state === "Pending Review") {
-
-		can_edit =
-			is_performance_reviewer ||
-			is_admin ||
-			is_hr;
-	}
-
-	// --------------------------------------------------------
-	// Any other workflow state
-	// --------------------------------------------------------
-	else {
-		can_edit =
-			is_admin ||
-			is_hr;
-	}
-
-	frm.set_read_only(!can_edit);
+     frm.set_df_property("review_period", "read_only", can_edit ? 0 : 1);
 }
