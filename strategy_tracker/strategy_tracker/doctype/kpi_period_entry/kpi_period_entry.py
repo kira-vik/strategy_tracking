@@ -104,7 +104,56 @@ class KPIPeriodEntry(Document):
 		# Draft
 		# Function Head owns completion of self-review
 		# --------------------------------------------------------
-		if workflow_state == "Draft":
+		current_state = self.workflow_state
+
+		# State before save
+		previous_state = None
+		if not self.is_new():
+			previous_state = frappe.db.get_value(
+				self.doctype,
+				self.name,
+				"workflow_state"
+			)
+        
+		# if workflow_state == "Draft":
+
+		# 	if not is_function_head:
+		# 		frappe.throw(
+		# 			"You do not have permission to update this KPI Period Entry while it is in Draft state.",
+		# 			title="Permission Denied"
+		# 		)
+
+		# # --------------------------------------------------------
+		# # Pending Review
+		# # Performance Reviewer owns assessment
+		# # --------------------------------------------------------
+		# elif (
+		# 	previous_state == "Draft"
+		# 	and current_state == "Pending Review"
+		# 	and is_function_head
+		# ):
+		# 	return
+
+		# elif workflow_state == "Pending Review":
+
+		# 	if not is_performance_reviewer:
+		# 		frappe.throw(
+		# 			"You do not have permission to update this KPI Period Entry while it is Pending Review.",
+		# 			title="Permission Denied"
+		# 		)
+
+		# # --------------------------------------------------------
+		# # Any other state
+		# # Lock record from normal users
+		# # --------------------------------------------------------
+		# else:
+
+		# 	frappe.throw(
+		# 		"You do not have permission to update this KPI Period Entry.",
+		# 		title="Permission Denied"
+		# 	)
+		# Draft
+		if current_state == "Draft":
 
 			if not is_function_head:
 				frappe.throw(
@@ -112,11 +161,20 @@ class KPIPeriodEntry(Document):
 					title="Permission Denied"
 				)
 
-		# --------------------------------------------------------
+		# Function Head sending for review
+		elif (
+			previous_state == "Draft"
+			and current_state == "Pending Review"
+		):
+
+			if not is_function_head:
+				frappe.throw(
+					"Only the Function Head can send this record for review.",
+					title="Permission Denied"
+				)
+
 		# Pending Review
-		# Performance Reviewer owns assessment
-		# --------------------------------------------------------
-		elif workflow_state == "Pending Review":
+		elif current_state == "Pending Review":
 
 			if not is_performance_reviewer:
 				frappe.throw(
@@ -124,10 +182,19 @@ class KPIPeriodEntry(Document):
 					title="Permission Denied"
 				)
 
-		# --------------------------------------------------------
-		# Any other state
-		# Lock record from normal users
-		# --------------------------------------------------------
+		# Reviewer completing review (transition out of Pending Review)
+		elif (
+			previous_state == "Pending Review"
+			and current_state in ("Reviewed", "Submitted")
+		):
+
+			if not is_performance_reviewer:
+				frappe.throw(
+					"Only the Performance Reviewer can complete the review.",
+					title="Permission Denied"
+				)
+
+		# Everything else is locked
 		else:
 
 			frappe.throw(
