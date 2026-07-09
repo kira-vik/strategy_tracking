@@ -202,12 +202,17 @@ def get_dashboard_data(review_period=None):
 	trend = []
 	for p in window_periods:
 		p_entries = _submitted_entries(p.name, dept_names)
+		by_function = {
+			e.function: {"green": e.green_count or 0, "amber": e.amber_count or 0, "red": e.red_count or 0}
+			for e in p_entries
+		}
 		trend.append({
 			"review_period": p.name,
 			"review_name": p.review_name,
-			"green_count": sum(e.green_count or 0 for e in p_entries),
-			"amber_count": sum(e.amber_count or 0 for e in p_entries),
-			"red_count": sum(e.red_count or 0 for e in p_entries),
+			"green_count": sum(v["green"] for v in by_function.values()),
+			"amber_count": sum(v["amber"] for v in by_function.values()),
+			"red_count": sum(v["red"] for v in by_function.values()),
+			"by_function": by_function,
 		})
 
 	return {

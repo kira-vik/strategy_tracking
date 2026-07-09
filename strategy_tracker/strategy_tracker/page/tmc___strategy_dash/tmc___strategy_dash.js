@@ -90,7 +90,10 @@ frappe.tmc_strategy_dash.report = {
 			<div class="row mb-4">
 				<div class="col-md-12">
 					<div class="chart-card">
-						<div class="chart-card-title">RAG Trend — Last Periods (Org-Wide)</div>
+						<div class="chart-card-title d-flex justify-content-between align-items-center">
+							<span>RAG Trend — Last Periods</span>
+							<div class="trend-function-filter-wrap"></div>
+						</div>
 						<div class="chart-card-body" data-canvas-id="tmc-rag-trend"><canvas id="tmc-rag-trend"></canvas></div>
 					</div>
 				</div>
@@ -108,6 +111,25 @@ frappe.tmc_strategy_dash.report = {
 		this.cards_row = this.main_section.find(".cards-row");
 		this.comparison_table_wrap = this.main_section.find(".comparison-table-wrap");
 		this.heatmap_wrap = this.main_section.find(".heatmap-wrap");
+		this.trend_function_filter_wrap = this.main_section.find(".trend-function-filter-wrap");
+		this._buildTrendFunctionFilter();
+	},
+
+	_buildTrendFunctionFilter: function () {
+		this.trend_function_filter_wrap.html(`
+			<select class="kpi-status-select trend-function-select">
+				<option value="">All Functions (Org-Wide)</option>
+			</select>
+		`);
+		this.trend_function_filter_wrap.find(".trend-function-select").on("change", () => this._renderTrendChart());
+	},
+
+	_populateTrendFunctionOptions: function (grid) {
+		const select = this.trend_function_filter_wrap.find(".trend-function-select");
+		if (!select.length || select.data("populated")) return;
+		const options = (grid || []).map(r => `<option value="${frappe.utils.escape_html(r.function)}">${frappe.utils.escape_html(r.function)}</option>`).join("");
+		select.append(options);
+		select.data("populated", true);
 	},
 
 	_injectStyles: function () {
@@ -133,6 +155,9 @@ frappe.tmc_strategy_dash.report = {
 			.pill{display:inline-block;padding:2px 9px;border-radius:20px;font-size:11px;font-weight:600;background:var(--control-bg,#f3f4f6);color:var(--text-color,#374151);}
 			.pill.overdue{background:#fee2e2;color:#991b1b;}
 			.pill.not-submitted{background:var(--control-bg,#f3f4f6);color:var(--text-muted,#6b7280);}
+			.kpi-status-select{appearance:none;-webkit-appearance:none;font-size:12px;font-weight:600;letter-spacing:.01em;color:var(--text-color,#374151);background:var(--control-bg,#f9fafb) url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="10" height="6" viewBox="0 0 10 6"><path d="M1 1l4 4 4-4" stroke="%236b7280" stroke-width="1.5" fill="none" fill-rule="evenodd"/></svg>') no-repeat right 10px center;border:1px solid var(--border-color,#e5e7eb);border-radius:20px;padding:5px 28px 5px 13px;cursor:pointer;transition:border-color .15s ease,box-shadow .15s ease;}
+			.kpi-status-select:hover{border-color:#c7cad0;}
+			.kpi-status-select:focus{outline:none;border-color:#93c5fd;box-shadow:0 0 0 3px rgba(59,130,246,0.15);}
 			.empty-state{padding:40px;text-align:center;color:var(--text-muted,#9ca3af);font-size:13px;}
 			.loading-state{font-weight:600;letter-spacing:.02em;animation:tmc-pulse 1.1s ease-in-out infinite;}
 			@keyframes tmc-pulse{0%,100%{opacity:.45;}50%{opacity:1;}}
@@ -155,8 +180,9 @@ frappe.tmc_strategy_dash.report = {
 			.comparison-table .rag-count-strip b{font-weight:700;}
 
 			/* Pillar x Function heatmap */
-			.heatmap-table{width:100%;border-collapse:collapse;font-size:11.5px;}
+			.heatmap-table{width:100%;min-width:max-content;border-collapse:collapse;font-size:11.5px;}
 			.heatmap-table th,.heatmap-table td{padding:8px 10px;text-align:center;white-space:nowrap;border-bottom:1px solid var(--border-color,#f4f5f6);}
+			.heatmap-table th:not(:first-child),.heatmap-table td:not(:first-child){min-width:64px;}
 			.heatmap-table thead th{background:var(--control-bg,#f9fafb);font-size:10.5px;text-transform:uppercase;letter-spacing:0.04em;font-weight:700;color:var(--text-muted,#6b7280);border-bottom:2px solid var(--border-color,#edeef0);}
 			.heatmap-table th:first-child,.heatmap-table td:first-child{position:sticky;left:0;background:var(--card-bg,#fff);text-align:left;font-weight:600;color:var(--text-color,#111827);z-index:1;box-shadow:1px 0 0 var(--border-color,#edeef0);}
 			.heatmap-table thead th:first-child{background:var(--control-bg,#f9fafb);z-index:2;}
@@ -269,6 +295,7 @@ frappe.tmc_strategy_dash.report = {
 		this._data = data;
 		this.renderCards(data);
 		this._safe(() => this.renderComparisonGrid(data), "comparison grid");
+		this._safe(() => this._populateTrendFunctionOptions(data.grid), "trend filter options");
 		this._safe(() => this.renderTrend(data), "trend");
 		this._safe(() => this.renderHeatmap(data), "heatmap");
 	},
@@ -411,23 +438,64 @@ frappe.tmc_strategy_dash.report = {
 		});
 	},
 
+	// renderTrend: function (data) {
+	// 	this._destroyChart("trend");
+	// 	const ctx = this._resetCanvas("tmc-rag-trend");
+	// 	if (!ctx) return;
+	// 	const trend = data.trend || [];
+	// 	if (!trend.length) {
+	// 		ctx.parentElement.innerHTML = `<div class="empty-state">No trend data available</div>`;
+	// 		return;
+	// 	}
+	// 	this.charts.trend = new Chart(ctx, {
+	// 		type: "bar",
+	// 		data: {
+	// 			labels: trend.map(t => t.review_name || t.review_period),
+	// 			datasets: [
+	// 				{ label: "Green", data: trend.map(t => t.green_count), backgroundColor: RAG_COLORS.Green, stack: "s" },
+	// 				{ label: "Amber", data: trend.map(t => t.amber_count), backgroundColor: RAG_COLORS.Amber, stack: "s" },
+	// 				{ label: "Red", data: trend.map(t => t.red_count), backgroundColor: RAG_COLORS.Red, stack: "s" },
+	// 			],
+	// 		},
+	// 		options: {
+	// 			responsive: true, maintainAspectRatio: false,
+	// 			plugins: { legend: { position: "bottom", labels: { boxWidth: 10, font: { size: 11 } } } },
+	// 			scales: {
+	// 				x: { stacked: true, ticks: { font: { size: 10 } } },
+	// 				y: { stacked: true, beginAtZero: true, ticks: { precision: 0 } },
+	// 			},
+	// 		},
+	// 	});
+	// },
+
 	renderTrend: function (data) {
+		this._trend_data = data.trend || [];
+		this._renderTrendChart();
+	},
+
+	_renderTrendChart: function () {
 		this._destroyChart("trend");
 		const ctx = this._resetCanvas("tmc-rag-trend");
 		if (!ctx) return;
-		const trend = data.trend || [];
+		const trend = this._trend_data || [];
 		if (!trend.length) {
 			ctx.parentElement.innerHTML = `<div class="empty-state">No trend data available</div>`;
 			return;
 		}
+
+		const fn = this.trend_function_filter_wrap.find(".trend-function-select").val() || "";
+		const seriesFor = (t, key) => fn
+			? ((t.by_function || {})[fn] || {})[key] || 0
+			: t[`${key}_count`];
+
 		this.charts.trend = new Chart(ctx, {
 			type: "bar",
 			data: {
 				labels: trend.map(t => t.review_name || t.review_period),
 				datasets: [
-					{ label: "Green", data: trend.map(t => t.green_count), backgroundColor: RAG_COLORS.Green, stack: "s" },
-					{ label: "Amber", data: trend.map(t => t.amber_count), backgroundColor: RAG_COLORS.Amber, stack: "s" },
-					{ label: "Red", data: trend.map(t => t.red_count), backgroundColor: RAG_COLORS.Red, stack: "s" },
+					{ label: "Green", data: trend.map(t => seriesFor(t, "green")), backgroundColor: RAG_COLORS.Green, stack: "s" },
+					{ label: "Amber", data: trend.map(t => seriesFor(t, "amber")), backgroundColor: RAG_COLORS.Amber, stack: "s" },
+					{ label: "Red", data: trend.map(t => seriesFor(t, "red")), backgroundColor: RAG_COLORS.Red, stack: "s" },
 				],
 			},
 			options: {
