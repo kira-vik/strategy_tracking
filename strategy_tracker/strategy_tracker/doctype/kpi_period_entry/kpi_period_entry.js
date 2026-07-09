@@ -444,15 +444,17 @@ function apply_rag_colors(frm) {
                if (!row || !row.doc || !row.row) return;
 
                let bg = "";
-               let text = "#fff";
+               let text = "";
 
                if (row.doc.rag_status === "Green") {
                     bg = "#28a745";
+                    text = "#fff";
                } else if (row.doc.rag_status === "Amber") {
                     bg = "#ffc107";
                     text = "#000";
                } else if (row.doc.rag_status === "Red") {
                     bg = "#dc3545";
+                    text = "#fff";
                }
 
                $(row.row).css({
