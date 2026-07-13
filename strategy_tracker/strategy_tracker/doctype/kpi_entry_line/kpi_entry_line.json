@@ -95,15 +95,15 @@
    "options": "\nRed\nAmber\nGreen"
   },
   {
-   "depends_on": "eval:!doc.__islocal",
    "fieldname": "variance",
    "fieldtype": "Data",
+   "hidden": 1,
    "label": "Variance"
   },
   {
-   "depends_on": "eval:!doc.__islocal",
    "fieldname": "actual_numeric",
    "fieldtype": "Float",
+   "hidden": 1,
    "label": "Actual Numeric Performance",
    "precision": "3"
   },
@@ -138,6 +138,7 @@
    "default": "0",
    "fieldname": "escalation",
    "fieldtype": "Check",
+   "hidden": 1,
    "label": "Escalation"
   },
   {
@@ -161,7 +162,7 @@
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2026-07-04 19:20:22.028464",
+ "modified": "2026-07-13 08:17:24.351080",
  "modified_by": "Administrator",
  "module": "Strategy Tracker",
  "name": "KPI Entry Line",
