@@ -93,14 +93,14 @@ class ReviewCalendar(Document):
 						title="Invalid Review Meeting Day",
 					)
 
-			elif settings.review_frequency == "Monthly":
+			# elif settings.review_frequency == "Monthly":
 
-				if review_date.day != cint(settings.meeting_day_of_month):
-					frappe.throw(
-						_("The First Scheduled Review Meeting must fall on day {0} of the month.")
-						.format(settings.meeting_day_of_month),
-						title="Invalid Review Meeting Day",
-					)
+			# 	if review_date.day != cint(settings.meeting_day_of_month):
+			# 		frappe.throw(
+			# 			_("The First Scheduled Review Meeting must fall on day {0} of the month.")
+			# 			.format(settings.meeting_day_of_month),
+			# 			title="Invalid Review Meeting Day",
+			# 		)
 
 	def on_submit(self):
 		if not self.review_calendar_generated:
@@ -390,10 +390,24 @@ class ReviewCalendar(Document):
 		frequency = schedule["frequency"]
 
 		if frequency == "Monthly":
+       
+			expected_date = self._get_monthly_review_date(
+				first_review.year,
+				first_review.month,
+				schedule["meeting_day"],
+			)
 
-			if first_review.day != schedule["meeting_day"]:
+			# if first_review.day != schedule["meeting_day"]:
+			# 	frappe.throw(
+			# 		f"The First Scheduled Review Meeting must fall on day {schedule['meeting_day']} of the month."
+			# 	)
+			if first_review != expected_date:
 				frappe.throw(
-					f"The First Scheduled Review Meeting must fall on day {schedule['meeting_day']} of the month."
+					_(
+					"The First Scheduled Review Meeting should be {0} "
+					"based on the configured monthly meeting day."
+					).format(formatdate(expected_date)),
+					title=_("Invalid Review Meeting Date"),
 				)
 
 		else:
@@ -421,12 +435,18 @@ class ReviewCalendar(Document):
 			if month > 12:
 				month = 1
 				year += 1
+    
+			return self._get_monthly_review_date(
+					year,
+					month,
+					schedule["meeting_day"],
+				)
 
-			day = schedule["meeting_day"]
-			last_day = monthrange(year, month)[1]
+			# day = schedule["meeting_day"]
+			# last_day = monthrange(year, month)[1]
 
-			meeting = date(year, month, min(day, last_day))
-			return self._get_next_weekday(meeting)
+			# meeting = date(year, month, min(day, last_day))
+			# return self._get_next_weekday(meeting)
 
 		frappe.throw(_("Unsupported review frequency: {0}").format(frequency))
   
@@ -446,24 +466,29 @@ class ReviewCalendar(Document):
 		frequency = settings.review_frequency
 
 		if frequency == "Monthly":
+			return self._get_monthly_review_date(
+				start_date.year,
+				start_date.month + 1,
+				settings.meeting_day_of_month,
+			)
 
-			day = cint(settings.meeting_day_of_month)
+			# day = cint(settings.meeting_day_of_month)
 
-			year = start_date.year
-			month = start_date.month
+			# year = start_date.year
+			# month = start_date.month
 
-			# if start_date.day >= day:
-			if start_date:
-				month += 1
-				if month > 12:
-					month = 1
-					year += 1
+			# # if start_date.day >= day:
+			# if start_date:
+			# 	month += 1
+			# 	if month > 12:
+			# 		month = 1
+			# 		year += 1
 
-			last_day = calendar.monthrange(year, month)[1]
+			# last_day = calendar.monthrange(year, month)[1]
 
-			meeting = date(year, month, min(day, last_day))
+			# meeting = date(year, month, min(day, last_day))
    
-			return self._get_next_weekday(meeting)
+			# return self._get_next_weekday(meeting)
 
 		else:
 
@@ -519,3 +544,9 @@ class ReviewCalendar(Document):
 			summary += f" It includes {spillovers} spillover review period(s)."
 
 		return summary
+
+	def _get_monthly_review_date(self, year, month, meeting_day):
+		last_day = monthrange(year, month)[1]
+		meeting = date(year, month, min(cint(meeting_day), last_day))
+
+		return self._get_next_weekday(meeting)
